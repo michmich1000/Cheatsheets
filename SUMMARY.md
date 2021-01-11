@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Intro](README.md)
+* [Summary](README.md)
 
 ## Internal network <a id="internal"></a>
 
