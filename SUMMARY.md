@@ -12,8 +12,8 @@
 
 ## External \(Web\) <a id="external"></a>
 
-* [External Penetration Testing](external/untitled.md)
-* [Techno Specific](external/cms.md)
+* [External Penetration Testing](external/web-global.md)
+* [Techno Specific](external/web-techno-specific.md)
 
 ## Passwords
 
