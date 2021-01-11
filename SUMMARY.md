@@ -23,14 +23,11 @@
 
 ## Useful Commands
 
+* [Shells](useful-commands/reverse-shell.md)
 * [Bash](useful-commands/bash.md)
 * [Screen](useful-commands/screen.md)
 * [Powershell](useful-commands/powershell.md)
 * [Windows cmd](useful-commands/windows-cmd.md)
 * [Python](useful-commands/python.md)
-* [Shells](useful-commands/reverse-shell.md)
-
----
-
-* [Git](git.md)
+* [Git](useful-commands/git.md)
 
