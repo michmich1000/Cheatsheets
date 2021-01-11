@@ -97,7 +97,7 @@ user:md5_gen(1)MD5$SALT
 * [http://www.passwordtool.hu/joomla-password-hash-generator-salt-key](http://www.passwordtool.hu/joomla-password-hash-generator-salt-key)
 
 ```text
-creer new users INSERT INTO jos_users (name, username, password, usertype, gid, params) VALUES ('Ocd12345678', 'Ocd12345678', 'fcba92f4dd6b902f8a66054b8327ae6b:F2sVBzlFOUl51D3HtRZ0tionaJQGQqB', 'Super Administrator', 25, ''); INSERT INTO jos_core_acl_aro VALUES (NULL, 'users', LAST_INSERT_ID(), 0, 'Ocd12345678', 0); INSERT INTO jos_core_acl_groups_aro_map VALUES (25, '', LAST_INSERT_ID());
+creer new users INSERT INTO jos_users (name, username, password, usertype, gid, params) VALUES ('toto', 'toto', 'fcba92f4dd6b902f8a66054b8327ae6b:F2sVBzlFOUl51D3HtRZ0tionaJQGQqB', 'Super Administrator', 25, ''); INSERT INTO jos_core_acl_aro VALUES (NULL, 'users', LAST_INSERT_ID(), 0, 'toto', 0); INSERT INTO jos_core_acl_groups_aro_map VALUES (25, '', LAST_INSERT_ID());
 ```
 
 ## Reactjs
