@@ -4,9 +4,9 @@
 
 ## Internal network <a id="internal"></a>
 
-* [Internal Penetration Testing](internal/ipt.md)
+* [Internal Penetration Testing](internal/internal-global.md)
 * [WIFI](internal/wifi.md)
-* [LPE windows](internal/untitled-1-1.md)
+* [LPE windows](internal/lpe-windows.md)
 * [LPE Linux](internal/lpe-linux.md)
 * [Pivoting](internal/pivoting.md)
 
@@ -19,7 +19,7 @@
 
 * [Default pass](passwords/default-pass.md)
 * [Brute-force](passwords/brute-force.md)
-* [Hashs](passwords/untitled.md)
+* [Hashs](passwords/hashs.md)
 
 ## Useful Commands
 
