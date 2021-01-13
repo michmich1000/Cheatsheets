@@ -9,7 +9,6 @@
 * `OSCP` - Offensive Security Certified Professional.
 * `OSCE` - Offensive Security Certifed Expert.
 * `OSWE` - Offensive Security Web Expert.
-* `PASSI` - Prestataires d'audit de la sécurité des systèmes d'information.
 
 ## Profils
 
