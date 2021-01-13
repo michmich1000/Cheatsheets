@@ -1,6 +1,4 @@
-# Welcome to Michmich
-
-> Red teamer
+> Red teamer | Pentester | Ethical Hacker
 
 <img src="/assets/images/logo-split.png" data-canonical-src="/assets/images/logo-split.png" width="50%"/>
 
