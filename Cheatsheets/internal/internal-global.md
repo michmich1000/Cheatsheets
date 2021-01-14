@@ -166,8 +166,7 @@ python psexec.py '<user>:<pass>@<target>'
 
 ```bash
 enum4linux -a <target_dc> -u <USER> -p <PASSWORD> -d <domain>
-python bloodhound.py -d <domain> -u <user> -p <password> -ns <IP-DC> -c all
-bloodhound.py -d <domain> -u <user> -p <password> -ns <IP-DC> -c all
+bloodhound.py -d <DOMAIN> -u <user> -p <password> -dc <FQDN-SERVER> -c all
 python ldapdomaindump.py -u '<domain>\<user>' -p '<pass>' <target>
 sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domain>,dc=<fqdn>" -w '<pass>'
 ```
