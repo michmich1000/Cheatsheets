@@ -2,32 +2,32 @@
 
 ## Internal network
 
-* [Internal Penetration Testing](/Cheatsheets/internal/internal-global/)
-* [WIFI](/Cheatsheets/internal/wifi/)
-* [LPE windows](/Cheatsheets/internal/lpe-windows/)
-* [LPE Linux](/Cheatsheets/internal/lpe-linux/)
-* [Pivoting](/Cheatsheets/internal/pivoting/)
+* [Internal Penetration Testing](/Cheatsheets/internal/internal-global.md)
+* [WIFI](/Cheatsheets/internal/wifi.md)
+* [LPE windows](/Cheatsheets/internal/lpe-windows.md)
+* [LPE Linux](/Cheatsheets/internal/lpe-linux.md)
+* [Pivoting](/Cheatsheets/internal/pivoting.md)
 
-## External \(Web\)
+## External (Web)
 
-* [External Penetration Testing](/Cheatsheets/external/web-global/)
-* [Techno Specific](/Cheatsheets/external/web-techno-specific/)
+* [External Penetration Testing](/Cheatsheets/external/web-global.md)
+* [Techno Specific](/Cheatsheets/external/web-techno-specific.md)
 
 ## Passwords
 
-* [Default pass](/Cheatsheets/passwords/default-pass/)
-* [Brute-force](/Cheatsheets/passwords/brute-force/)
-* [Hashs](/Cheatsheets/passwords/hashs/)
+* [Default pass](/Cheatsheets/passwords/default-pass.md)
+* [Brute-force](/Cheatsheets/passwords/brute-force.md)
+* [Hashs](/Cheatsheets/passwords/hashs.md)
 
 ## Useful Commands
 
-* [Shells](/Cheatsheets/useful-commands/reverse-shell/)
-* [Bash](/Cheatsheets/useful-commands/bash/)
-* [Screen](/Cheatsheets/useful-commands/screen/)
-* [Powershell](/Cheatsheets/useful-commands/powershell/)
-* [Windows cmd](/Cheatsheets/useful-commands/windows-cmd/)
-* [Python](/Cheatsheets/useful-commands/python/)
-* [Git](/Cheatsheets/useful-commands/git/)
+* [Shells](/Cheatsheets/useful-commands/reverse-shell.md)
+* [Bash](/Cheatsheets/useful-commands/bash.md)
+* [Screen](/Cheatsheets/useful-commands/screen.md)
+* [Powershell](/Cheatsheets/useful-commands/powershell.md)
+* [Windows cmd](/Cheatsheets/useful-commands/windows-cmd.md)
+* [Python](/Cheatsheets/useful-commands/python.md)
+* [Git](/Cheatsheets/useful-commands/git.md)
 
 
 
