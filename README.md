@@ -1,40 +1,33 @@
 # Summary
 
-## Cheatsheets for pentest
+## Internal network
 
-# Table of contents
+* [Internal Penetration Testing](/Cheatsheets/internal/internal-global/)
+* [WIFI](/Cheatsheets/internal/wifi/)
+* [LPE windows](/Cheatsheets/internal/lpe-windows/)
+* [LPE Linux](/Cheatsheets/internal/lpe-linux/)
+* [Pivoting](/Cheatsheets/internal/pivoting/)
 
-* [Summary]
+## External \(Web\)
 
-## Internal network <a id="internal"></a>
-
-* [Internal Penetration Testing](docs/Cheatsheets/internal/internal-global.md)
-* [WIFI](docs/Cheatsheets/internal/wifi.md)
-* [LPE windows](docs/Cheatsheets/internal/lpe-windows.md)
-* [LPE Linux](docs/Cheatsheets/internal/lpe-linux.md)
-* [Pivoting](docs/Cheatsheets/internal/pivoting.md)
-
-## External \(Web\) <a id="external"></a>
-
-* [External Penetration Testing](docs/Cheatsheets/external/web-global.md)
-* [Techno Specific](docs/Cheatsheets/external/web-techno-specific.md)
+* [External Penetration Testing](/Cheatsheets/external/web-global/)
+* [Techno Specific](/Cheatsheets/external/web-techno-specific/)
 
 ## Passwords
 
-* [Default pass](docs/Cheatsheets/passwords/default-pass.md)
-* [Brute-force](docs/Cheatsheets/passwords/brute-force.md)
-* [Hashs](docs/Cheatsheets/passwords/hashs.md)
+* [Default pass](/Cheatsheets/passwords/default-pass/)
+* [Brute-force](/Cheatsheets/passwords/brute-force/)
+* [Hashs](/Cheatsheets/passwords/hashs/)
 
 ## Useful Commands
 
-* [Shells](docs/Cheatsheets/useful-commands/reverse-shell.md)
-* [Bash](docs/Cheatsheets/useful-commands/bash.md)
-* [Screen](docs/Cheatsheets/useful-commands/screen.md)
-* [Powershell](docs/Cheatsheets/useful-commands/powershell.md)
-* [Windows cmd](docs/Cheatsheets/useful-commands/windows-cmd.md)
-* [Python](docs/Cheatsheets/useful-commands/python.md)
-* [Git](docs/Cheatsheets/useful-commands/git.md)
-
+* [Shells](/Cheatsheets/useful-commands/reverse-shell/)
+* [Bash](/Cheatsheets/useful-commands/bash/)
+* [Screen](/Cheatsheets/useful-commands/screen/)
+* [Powershell](/Cheatsheets/useful-commands/powershell/)
+* [Windows cmd](/Cheatsheets/useful-commands/windows-cmd/)
+* [Python](/Cheatsheets/useful-commands/python/)
+* [Git](/Cheatsheets/useful-commands/git/)
 
 
 

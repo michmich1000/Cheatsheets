@@ -2,7 +2,7 @@
 
 ## Download file
 
-```text
+```bash
 Invoke-WebRequest <file_url> -Outfile <outfile>
 ```
 

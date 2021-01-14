@@ -2,7 +2,7 @@
 
 ## Download file
 
-```text
+```bash
 certutil.exe -urlcache -f <url> <outfile>
 ```
 

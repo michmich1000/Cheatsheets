@@ -2,33 +2,33 @@
 
 ## Search for files
 
-```text
+```bash
 find / -iname "*user.txt*" 2>/dev/null
 updatedb && locate <filename>
 ```
 
 ## Services listening
 
-```text
+```bash
 netstat -latupen |grep LISTEN
 ```
 
 ## Process running
 
-```text
+```bash
 ps faux
 ```
 
 ## Disk space
 
-```text
+```bash
 df -h
 du -sh
 ```
 
 ## Netcat send file
 
-```text
+```bash
 nc -l -p 1234 > out.file => listener 
 nc -w 3 [destination] 1234 < out.file => sender
 ```
@@ -37,26 +37,26 @@ nc -w 3 [destination] 1234 < out.file => sender
 
 Hosts up
 
-```text
+```bash
 cat *.gnmap | grep -i "open/tcp" | cut -d " " -f2 | sort -u > perim_up.txt
 ```
 
 Open Ports
 
-```text
+```bash
 cat *.nmap | grep -i "tcp open" | cut -d "/" -f1 | sort -u | paste -sd ';'
 ```
 
 ## Speak to other users
 
-```text
+```bash
 write tta /dev/pts/23
 echo "hello" |wall
 ```
 
 ## Nginx syslink
 
-```text
+```bash
 in "enable" do : ln -s ../site-avaible/ta-conf .
 ```
 

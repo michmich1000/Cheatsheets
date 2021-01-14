@@ -10,7 +10,7 @@ Hash to use with Nlmrelayx :`NET-NTLM / NET-NTLMV2`
 
 ### NTLM
 
-```text
+```bash
 aad3b435b51404eeaad3b435b51404ee:87247c6499ddef87b7348f262a3e203d 
 aad3b435b51404eeaad3b435b51404ee:64247c6499def845dsffg652a3e2052f
 ```
@@ -19,7 +19,7 @@ aad3b435b51404eeaad3b435b51404ee:64247c6499def845dsffg652a3e2052f
 
 ### LM
 
-```text
+```bash
 88647c6699d8ef87b6d48f262b2e2h3d:89244c64f9ddef87b7348f262a3e204d 
 12587c6654ddef87b67485sdfb2e203d:64247c6499def845dsffg652a3e2052f
 ```
