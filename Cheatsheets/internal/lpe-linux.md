@@ -2,8 +2,8 @@
 
 ## Tools 
 
-- [lse.sh](https://github.com/diego-treitos/linux-smart-enumeration")
-- [LinEnum](https://github.com/rebootuser/LinEnum")
+- [lse.sh](https://github.com/diego-treitos/linux-smart-enumeration)
+- [LinEnum](https://github.com/rebootuser/LinEnum)
 
 ## Systemd
 

