@@ -1,4 +1,4 @@
-# LPE Linux
+# Local Privilege Escalation Linux
 
 ## Tools 
 
