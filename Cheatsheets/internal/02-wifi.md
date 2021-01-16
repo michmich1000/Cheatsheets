@@ -1,6 +1,6 @@
 # WIFI
 
-## WPA
+## **WPA**
 
 Capture Handshake using airodump-ng + local crack using john or hashcat =&gt; cleartext password
 
@@ -64,7 +64,9 @@ Crack with hashcat
 
 _**todo**_
 
-## PEAP
+---
+
+## **PEAP**
 
 1. `apt install hostapd-wpe`
 2. Configure same channel and essid than the client's one in hostapd conf
@@ -78,7 +80,9 @@ cat peap_client_log.txt | grep username -A2 | sed '/^--/d' | awk '{print $2}' | 
 
 *Vulnerability fix : GPO validate certificate*
 
-## Captive portal
+---
+
+## **Captive portal**
 
 ### DNS tunneling
 
@@ -96,7 +100,9 @@ sudo nmcli radio wifi off
 sudo rfkill unblock wlan
 ```
 
-## Todo
+---
+
+## **Todo**
 
 ### PEAP hash replay
 

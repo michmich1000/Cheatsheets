@@ -1,4 +1,4 @@
-# LPE Linux
+# Priv-Esc Linux
 
 ## Tools 
 

