@@ -5,6 +5,22 @@
 - [lse.sh](https://github.com/diego-treitos/linux-smart-enumeration)
 - [LinEnum](https://github.com/rebootuser/LinEnum)
 
+## Kernel Exploitation
+
+Check version
+```sh
+uname -a
+cat /etc/*release
+cat /etc/issue
+```
+
+Compile for x86 on a x64 machine
+```sh
+sudo apt update && sudo apt install gcc-multilib 
+gcc -Wl,--hash-style=both -m32 <exploit.c>
+```
+
+
 ## Systemd
 
 ```bash

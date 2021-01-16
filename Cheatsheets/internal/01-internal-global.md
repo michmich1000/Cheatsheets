@@ -6,7 +6,7 @@
 
 * Crack WPA or crack/replay PEAP \(check next cheatsheet : WIFI\)
 
-### **NAC - MAC filtering**
+### NAC - MAC filtering
 
 * Spoof mac from any authorized device \(printer\) and disconnect it: `macchanger -r eth0`
 * force your static IP to match the one that you spoofed the mac from : `sudo ifconfig 10.11.12.13/24 && sudo ip route add default via <gateway_ip>`
