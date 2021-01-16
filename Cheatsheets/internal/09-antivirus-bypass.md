@@ -1,4 +1,4 @@
-# Bypass Antivirus and EDR Softwares
+# AV Bypass
 
 ## Practical 
 
