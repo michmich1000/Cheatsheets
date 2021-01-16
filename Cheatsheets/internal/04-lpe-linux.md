@@ -24,6 +24,12 @@ sudo apt update && sudo apt install gcc-multilib
 gcc -Wl,--hash-style=both -m32 <exploit.c>
 ```
 
+Cross-Compile for Windows from Linux
+
+```bash
+i686-w64-mingw32-gcc <exploit.c>
+```
+
 ---
 
 ## **Systemd**
