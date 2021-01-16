@@ -1,6 +1,6 @@
 # Screen
 
-## Screen mutliuser
+## Screen multiuser
 
 ```bash
 screen -S <screen_name>

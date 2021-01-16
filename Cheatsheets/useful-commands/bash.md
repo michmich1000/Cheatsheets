@@ -29,8 +29,11 @@ du -sh
 ## Netcat send file
 
 ```bash
-nc -l -p 1234 > out.file => listener 
-nc -w 3 [destination] 1234 < out.file => sender
+# listener
+nc -l -p 1234 > out.file
+
+# sender
+nc -w 3 <ip_listener> 1234 < in.file
 ```
 
 ## Nmap parsing
@@ -50,15 +53,13 @@ cat *.nmap | grep -i "tcp open" | cut -d "/" -f1 | sort -u | paste -sd ';'
 ## Speak to other users
 
 ```bash
-write tta /dev/pts/23
+who
+write <username> /dev/pts/<pts_number>
 echo "hello" |wall
 ```
 
 ## Nginx syslink
 
 ```bash
-in "enable" do : ln -s ../site-avaible/ta-conf .
+in "enable" do : ln -s ../site-avaible/<your-conf>.conf .
 ```
-
-
-

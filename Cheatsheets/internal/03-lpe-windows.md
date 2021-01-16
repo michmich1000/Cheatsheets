@@ -1,4 +1,4 @@
-# LPE windows
+# Local Privilege Escalation Windows
 
 ## Tools
 
