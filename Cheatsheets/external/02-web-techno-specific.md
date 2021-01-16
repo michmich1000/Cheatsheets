@@ -1,6 +1,6 @@
 # Techno Specific
 
-## CMS
+## **CMS**
 
 ### Tools
 
@@ -100,11 +100,16 @@ user:md5_gen(1)MD5$SALT
 creer new users INSERT INTO jos_users (name, username, password, usertype, gid, params) VALUES ('toto', 'toto', 'fcba92f4dd6b902f8a66054b8327ae6b:F2sVBzlFOUl51D3HtRZ0tionaJQGQqB', 'Super Administrator', 25, ''); INSERT INTO jos_core_acl_aro VALUES (NULL, 'users', LAST_INSERT_ID(), 0, 'toto', 0); INSERT INTO jos_core_acl_groups_aro_map VALUES (25, '', LAST_INSERT_ID());
 ```
 
-## Reactjs
+---
+
+## **Reactjs**
 
 Security Testers: Inject JavaScript and JSON wherever you can and see what happens. Developers: Don’t ever `useeval()` or `dangerouslySetInnerHTML`. Avoid parsing user-supplied JSON.
 
-## Angularjs
+---
+
+
+## **Angularjs**
 
 check the bypassSecurityTrustX / innerHTML function
 
@@ -116,13 +121,17 @@ bypassSecurityTrustUrl
 bypassSecurityTrustResourceUrl
 ```
 
-## ckfinder
+---
+
+## **ckfinder**
 
 ```bash
 ckfinder/ckfinder.html
 ```
 
-## Git
+---
+
+## **Git**
 
 ```bash
 https://github.com/internetwache/GitTools/tree/master/Dumper
@@ -130,7 +139,9 @@ https://github.com/arthaud/git-dumper
 run script post-merge https://docs.gitlab.com/ee/administration/custom_hooks.html  .git/hooks
 ```
 
-## Stormshield
+---
+
+## **Stormshield**
 
 * TCP PORT 1300
 
@@ -138,23 +149,31 @@ run script post-merge https://docs.gitlab.com/ee/administration/custom_hooks.htm
 
 Check default password : \(UpdatePasswd=1 if factory password, 0 if the password already have been changed\) CHPWD 101 code=00a01000 msg="Begin" format="section" \[Result\] UpdatePasswd=0
 
-## Fortigate
+---
+
+## **Fortigate**
 
 ```bash
 /remote/fgt_lang?lang=/../../../..//////////dev/cmdb/sslvpn_websession
 ```
 
-## Dana
+---
+
+## **Dana**
 
 * [https://XXXX/dana-na/setup/psalinstall.cgi](https://XXXX/dana-na/setup/psalinstall.cgi)
 
-## GPG decode
+---
+
+## **GPG decode**
 
 ```bash
 gpg --decrypt Test.zip.gpg > test.zip ( popup password )
 ```
 
-## SSL / TLS
+---
+
+## **SSL / TLS**
 
 * [testssh.sh](https://github.com/drwetter/testssl.sh)
 
@@ -180,7 +199,9 @@ check lucky13
 openssl s_client -cipher DES-CBC3-SHA -connect xx.fr:443
 ```
 
-## SSH 
+---
+
+## **SSH** 
 
 check if 4096 key
 
@@ -188,7 +209,9 @@ check if 4096 key
 ssh-keygen -l -f key.pub
 ```
 
-## `Android`
+---
+
+## **Android**
 
 `Apktool`
 

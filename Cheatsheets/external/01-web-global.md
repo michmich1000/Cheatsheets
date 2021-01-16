@@ -13,7 +13,7 @@ Burp Suite
 
 --- 
 
-## `Passive discovery`
+## **Passive discovery**
 
 get js script
 
@@ -106,7 +106,7 @@ wget -r --no-parent target.com/dir
 
 ---
 
-## ** Injections **
+## **Injections**
 
 ### SSTI
 
@@ -186,7 +186,7 @@ shell.php%00.jpg
 ---
 
 
-## `Burp Extenders`
+## **Burp Extenders**
 
 Extension|Description
 ---|----
