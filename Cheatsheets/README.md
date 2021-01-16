@@ -2,19 +2,19 @@
 
 ## Internal network
 
-* [Internal Penetration Testing](internal/internal-global.md)
-* [WIFI](internal/wifi.md)
-* [Local Privilege Escalation Windows](internal/lpe-windows.md)
-* [Local Privilege Escalation Linux](internal/lpe-linux.md)
-* [Post Exploitation Windows](internal/post-exploitation-windows.md)
-* [Post Exploitation Linux](internal/post-exploitation-linux.md)
-* [Pivoting](internal/pivoting.md)
-* [Domain Escalation](internal/domain-escalation.md)
+* [Internal Penetration Testing](internal/01-internal-global.md)
+* [WIFI](internal/02-wifi.md)
+* [Local Privilege Escalation Windows](internal/03-lpe-windows.md)
+* [Local Privilege Escalation Linux](internal/04-lpe-linux.md)
+* [Post Exploitation Windows](internal/05-post-exploitation-windows.md)
+* [Post Exploitation Linux](internal/06-post-exploitation-linux.md)
+* [Pivoting](internal/07-pivoting.md)
+* [Domain Escalation](internal/08-domain-escalation.md)
 
 ## External (Web)
 
-* [External Penetration Testing](external/web-global.md)
-* [Techno Specific](external/web-techno-specific.md)
+* [External Penetration Testing](external/01-web-global.md)
+* [Techno Specific](external/02-web-techno-specific.md)
 
 ## Passwords
 
