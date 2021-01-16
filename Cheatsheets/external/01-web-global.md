@@ -1,6 +1,6 @@
 # External Penetration Testing
 
-## ** Tools **
+## **Tools**
 
 ```sh
 amass
@@ -13,7 +13,7 @@ Burp Suite
 
 --- 
 
-## Passive discovery
+## `Passive discovery`
 
 get js script
 
@@ -41,7 +41,7 @@ in js file => curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9.
 
 ---
 
-## Active discovery
+## **Active discovery**
 
 ### Services
 
