@@ -460,9 +460,9 @@ accesschk.exe -ucqv Spooler
 
 
 ```
-For Windows XP and 2003, use an older version of accesschk
+> For Windows XP and 2003, use an older version of accesschk :
 
-- [Accesschk-2003-xp.exe](https://github.com/ankh2054/windows-pentest/raw/master/Privelege/accesschk-2003-xp.exe)
+  - [Accesschk-2003-xp.exe](https://github.com/ankh2054/windows-pentest/raw/master/Privelege/accesschk-2003-xp.exe)
 
 Interesting permissions to get shell
 
