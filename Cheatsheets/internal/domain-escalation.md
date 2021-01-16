@@ -104,8 +104,8 @@ Get-ADComputer -Identity <computer_name> -Properties TrustedForDelegation
 
 ### Manual testing
 
-https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/
+[secureauth.com](https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/)
 
 ### Delegation Explained
 
-https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1
+[specterops](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)
