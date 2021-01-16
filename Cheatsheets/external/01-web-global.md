@@ -1,6 +1,6 @@
 # External Penetration Testing
 
-## Tools
+## ** Tools **
 
 ```sh
 amass
@@ -145,7 +145,7 @@ For http://site.com/?q=INJECT_HERE
 
 ---
 
-## ** Bypass WAF **
+## **Bypass WAF**
 
 
 SSRF localhost
