@@ -1,4 +1,4 @@
-# **Domain escalation**
+# Domain escalation
 
 ## Tools
 
