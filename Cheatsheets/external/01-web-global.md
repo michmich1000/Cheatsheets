@@ -1,8 +1,8 @@
 # External Penetration Testing
 
-## `Tools`
+## Tools
 
-```text
+```sh
 amass
 nmap
 gobuster
@@ -11,7 +11,7 @@ Nessus
 Burp Suite
 ```
 
-## `Passive discovery` 
+## Passive discovery
 
 get js script
 
@@ -37,7 +37,7 @@ cat file | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 in js file => curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 ```
 
-## `Active discovery` 
+## Active discovery
 
 ### Services
 

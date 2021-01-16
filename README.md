@@ -5,7 +5,7 @@
 
 <img src="/assets/images/logo_dark.png" data-canonical-src="/assets/images/logo_dark.png" width="45%"/>
 
-> *** Red teamer | Pentester | Ethical Hacker ***
+> ** Red teamer | Pentester | Ethical Hacker **
 
 ---
 
