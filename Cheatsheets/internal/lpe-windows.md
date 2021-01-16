@@ -2,27 +2,28 @@
 
 ## Tools
 
-POWERSHELL
-
-* [https://github.com/411Hall/JAWS](https://github.com/411Hall/JAWS)
-* [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerUp)
-* [https://github.com/rasta-mouse/Sherlock](https://github.com/rasta-mouse/Sherlock)
-* [https://github.com/absolomb/WindowsEnum](https://github.com/absolomb/WindowsEnum)
-
 DOTNET CSHARP
 
-* [https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe)
-* [https://github.com/GhostPack/Seatbelt](https://github.com/GhostPack/Seatbelt)
-* [https://github.com/GhostPack/SharpUp](https://github.com/GhostPack/SharpUp)
-* [https://github.com/GhostPack/Rubeus](https://github.com/GhostPack/Rubeus)
-* [https://github.com/rasta-mouse/Watson](https://github.com/rasta-mouse/Watson)
+* [SharpCollection](https://github.com/Flangvik/SharpCollection) 
+* [winPEAS](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe)
+* [Seatbelt](https://github.com/GhostPack/Seatbelt)
+* [SharpUp](https://github.com/GhostPack/SharpUp)
+* [Rubeus](https://github.com/GhostPack/Rubeus)
+* [Watson](https://github.com/rasta-mouse/Watson)
+
+POWERSHELL
+
+* [JAWS](https://github.com/411Hall/JAWS)
+* [PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerUp)
+* [Sherlock](https://github.com/rasta-mouse/Sherlock)
+* [WindowsEnum](https://github.com/absolomb/WindowsEnum)
 
 EXE CLASSIC
 
-* [https://github.com/M4ximuss/Powerless](https://github.com/M4ximuss/Powerless)
-* [https://github.com/AlessandroZ/BeRoot](https://github.com/AlessandroZ/BeRoot)
-* [https://github.com/pentestmonkey/windows-privesc-check](https://github.com/pentestmonkey/windows-privesc-check)
-* [https://github.com/abatchy17/WindowsExploits](https://github.com/abatchy17/WindowsExploits)
+* [Powerless](https://github.com/M4ximuss/Powerless)
+* [BeRoot](https://github.com/AlessandroZ/BeRoot)
+* [windows-privesc-check](https://github.com/pentestmonkey/windows-privesc-check)
+* [WindowsExploits](https://github.com/abatchy17/WindowsExploits)
 
 ## Basic info
 
@@ -635,7 +636,6 @@ Send data throught the named pipe : program.exe >\\.\pipe\StdOutPipe 2>\\.\pipe\
 
 ## Refs
 
-- [https://github.com/Flangvik/SharpCollection](https://github.com/Flangvik/SharpCollection) 
 - [https://book.hacktricks.xyz/windows/windows-local-privilege-escalation](https://book.hacktricks.xyz/windows/windows-local-privilege-escalation) 
 - [https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology and Resources/Windows - Privilege Escalation.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md)
 
