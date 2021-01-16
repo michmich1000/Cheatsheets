@@ -21,6 +21,14 @@ ps -aux | grep root
 https://github.com/DominicBreuker/pspy 
 ```
 
+## Services listening
+
+```bash
+netstat -latupen | grep LISTEN
+netstat -nlt | awk -F : '/\<tcp\>/ {split($2,a," "); print a[1]}' | xargs -I % bash -c 'echo -ne "\033[1;33m[+]\033[m Port %:\t$(timeout 1 cat </dev/tcp/127.0.0.1/%)\n"'
+netstat -nlt | grep 'tcp ' | grep -Eo "[1-9][0-9]*" | xargs -I {} sh -c "echo "" | nc -v -n -w1 127.0.0.1 {}"
+```
+
 ## Docker
 
 ```bash
