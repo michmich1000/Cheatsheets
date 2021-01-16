@@ -9,6 +9,11 @@
 * [reGeorg](https://github.com/sensepost/reGeorg)
 * sshuttle -r kali@161.105.209.22:22 192.168.30.0/24
 
+### Plink
+
+```sh
+plink.exe -l root -pw password -R 445:127.0.0.1:445 <your_ip>
+```
 
 ### SSHUTTLE
 ```sh
