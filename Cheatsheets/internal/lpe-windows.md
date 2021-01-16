@@ -4,18 +4,18 @@
 
 DOTNET CSHARP
 
-* [SharpCollection](https://github.com/Flangvik/SharpCollection) 
-* [winPEAS](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe)
+* [SharpCollection](https://github.com/Flangvik/SharpCollection) (Full collection of compiled WinPEAS, SeatBelt, SharpUP, etc.)
+* [winPEAS](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe) (Favorite so far)
 * [Seatbelt](https://github.com/GhostPack/Seatbelt)
 * [SharpUp](https://github.com/GhostPack/SharpUp)
-* [Rubeus](https://github.com/GhostPack/Rubeus)
-* [Watson](https://github.com/rasta-mouse/Watson)
+* [Rubeus](https://github.com/GhostPack/Rubeus) (Kerberos exploitation)
+* [Watson](https://github.com/rasta-mouse/Watson) (Kernel Exploitation)
 
 POWERSHELL
 
 * [JAWS](https://github.com/411Hall/JAWS)
 * [PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerUp)
-* [Sherlock](https://github.com/rasta-mouse/Sherlock)
+* [Sherlock](https://github.com/rasta-mouse/Sherlock) (Kernel Exploitation - Depreciated, now use Watson)
 * [WindowsEnum](https://github.com/absolomb/WindowsEnum)
 
 EXE CLASSIC
