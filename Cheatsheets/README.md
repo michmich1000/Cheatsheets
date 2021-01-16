@@ -4,8 +4,8 @@
 
 * [Internal Penetration Testing](internal/internal-global.md)
 * [WIFI](internal/wifi.md)
-* [LPE Windows](internal/lpe-windows.md)
-* [LPE Linux](internal/lpe-linux.md)
+* [Local Privilege Escalation Windows](internal/lpe-windows.md)
+* [Local Privilege Escalation Linux](internal/lpe-linux.md)
 * [Post Exploitation Windows](internal/post-exploitation-windows.md)
 * [Post Exploitation Linux](internal/post-exploitation-linux.md)
 * [Pivoting](internal/pivoting.md)
