@@ -11,6 +11,8 @@ Nessus
 Burp Suite
 ```
 
+--- 
+
 ## Passive discovery
 
 get js script
@@ -36,6 +38,8 @@ get url in file
 cat file | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 in js file => curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 ```
+
+---
 
 ## Active discovery
 
@@ -100,7 +104,9 @@ Dir Listing dump
 wget -r --no-parent target.com/dir
 ```
 
-## Injections
+---
+
+## ** Injections **
 
 ### SSTI
 
@@ -136,6 +142,8 @@ For http://site.com/?q=INJECT_HERE
 /?q=1 or 1=1
 /?q='or''='
 ```
+
+---
 
 ## ** Bypass WAF **
 
@@ -174,6 +182,9 @@ file.jpg%00shell.php
 shell.php%00file.jpg
 shell.php%00.jpg
 ```
+
+---
+
 
 ## `Burp Extenders`
 
