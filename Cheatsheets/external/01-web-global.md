@@ -2,13 +2,13 @@
 
 ## **Tools**
 
-### Automated
+### Automated
 
 - [Sn1per](https://github.com/1N3/Sn1per)
 - [AutoRecon](https://github.com/Tib3rius/AutoRecon)
 - [Legion](https://github.com/carlospolop/legion)
 
-### Manual
+### Manual
 
 - [Arsenal](https://github.com/Orange-Cyberdefense/arsenal)
 
