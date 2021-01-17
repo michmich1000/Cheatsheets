@@ -5,7 +5,7 @@
 - [Bloodhound](https://github.com/BloodHoundAD/BloodHound) & [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
 - [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
 - [Ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
-- [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
+- [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu) (remote graphical view)
 
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
@@ -24,7 +24,6 @@ sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domai
 ```
 
 ---
-
 
 ## **Domain enum**
 
@@ -62,7 +61,7 @@ smbmap -P 445 -H <target> -u '<user>' -p '<pass>'
 smbget -rR smb://<target>/<share>/ -U <user>
 smbclient \\\\<target>\\c$ -U <user>
 smbclient -L //<target> -U '<domain>\<user>`
-upload .ico .scf => Responder/NTLMrelayx
+#upload .ico .scf => Responder/NTLMrelayx
 ```
 
 NFS 
@@ -97,7 +96,7 @@ meterpreter > dcsync_ntlm <DOMAIN>\<user>
 ## Kerbrute AS-REP
 
 ```bash
-nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='megabank.local',userdb=/root/users.txt 10.10.10.169
+nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain>',userdb=/root/users.txt <target>
 ./kerbrute_linux_amd64 userenum -d <domain> usernames.txt -debug
 ```
 
