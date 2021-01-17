@@ -1,6 +1,6 @@
 # Internal Penetration Testing
 
-## **No network access**
+## 1. **No network access**
 
 ### Wi-Fi
 
@@ -116,26 +116,13 @@ Bettercap
 Cain.exe (& Abel)
 ```
 
-### Domain enum
-
-> For more details, see next cheatsheet : [Domain Escalation](08-domain-escalation.md)
-
 ---
-
 
 ## Unprivileged account only 
 
-### Get a shell
+### Get a shell
 
-> for winRM do : `PATH="ruby -e 'puts Gem.user_dir'/bin:$PATH"`
-
-```bash
-.\WmiExec.ps1 -ComputerName "<target>" -Command "Get-ChildItem C:\"
-wmiexec.py <domain>\<user>:<pass>@<target>
-winexe -U <domain>/<user>%<pass> //<target> cmd.exe /c dir C:\
-evil-winrm -i <target> -u <user> -p '<pass>'
-python psexec.py '<user>:<pass>@<target>'
-```
+> For more details, see next cheatsheets : [Shell](../useful-commands/shell.md) and [AV Bypass](09-antivirus-bypasss)
 
 ---
 
@@ -168,10 +155,6 @@ crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --lsa
 ### Pivoting
 
 > For more details, see next cheatsheet : [Pivoting](07-pivoting.md)
-
-### Domain escalation
-
-> For more details, see next cheatsheet : [Domain Escalation](08-domain-escalation.md)
 
 ---
 
