@@ -2,14 +2,15 @@
 
 ## **Tools**
 
-```sh
-amass
-nmap
-gobuster
-nikto
-Nessus
-Burp Suite
-```
+### Automated
+
+- [Sn1per](https://github.com/1N3/Sn1per)
+- [AutoRecon](https://github.com/Tib3rius/AutoRecon)
+- [Legion](https://github.com/carlospolop/legion)
+
+### Manual
+
+- [Arsenal](https://github.com/Orange-Cyberdefense/arsenal)
 
 --- 
 
@@ -36,7 +37,7 @@ get url in file
 
 ```bash
 cat file | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
-in js file => curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
+curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 ```
 
 ---
@@ -49,13 +50,14 @@ in js file => curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9.
 nmap -sS -sV -O --top-ports 1000 --script=banner,nse,http-head
 ```
 
-### Subdomains
+---
 
-amass
+### Subdomains
 
 ```bash
 amass enum -ip -brute -active -d <domain> 
 amass viz -maltego -d <domain> -o mydir
+gobuster dns -d <domain> -w ~/wordlists/subdomains.txt -i
 ```
 
 check if subdomain exist
@@ -64,18 +66,24 @@ check if subdomain exist
 cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t Size:%{size_download}\t %{url_effective}\n' -o /dev/null -sk
 ```
 
+---
+
 ### Vhosts
 
 ```bash
 nmap --script http-vhosts -p 80,8080,443 <target>
+gobuster vhost -u <url> -w common-vhosts.txt
 Burp Intruder (Host header)
 ```
+
+---
 
 ### Urls
 
 ```bash
 ./dirsearch.py -u <target> -e php,html,js,xml -x 500,403
 wfuzz -c -z file,/root/wordlist.txt --hc 404 <target>/FUZZ
+gobuster dir -u https://buffered.io -w ~/wordlists/shortlist.txt -l -v
 Burp Pro (Content Discovery)
 ```
 
@@ -115,6 +123,8 @@ wget -r --no-parent target.com/dir
 test+(${{7*7}})@example.com
 ```
 
+---
+
 ### XSS
 
 ```bash
@@ -122,6 +132,8 @@ test+(<script>alert(0)</script>)@example.com
 test@example(<script>alert(0)</script>).com
 "<script>alert(0)</script>"@example.com
 ```
+
+---
 
 ### SQLI
 
