@@ -25,7 +25,7 @@ sudo ifconfig 10.11.12.13/24 && sudo ip route add default via <gateway_ip>
 
 ---
 
-## **No account yet**
+##2. **No account yet**
 
 ### Physical access
 
