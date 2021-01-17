@@ -37,7 +37,11 @@ impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 ```
 > For more details, see next cheatsheet : [Windows Post Exploitation](05-post-exploitation-windows.md)
 
-### Port and service scan
+---
+
+### Network Access
+
+Port and service scan
 
 nmap
 
@@ -56,7 +60,9 @@ use auxiliary/scanner/http/tomcat_mgr_login
 searchsploit <service_name>
 ```
 
-### Man-In-The-Middle
+---
+
+Man-In-The-Middle
 
 Responder + NTLMrelayx
 

