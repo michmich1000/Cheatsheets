@@ -16,13 +16,6 @@ Manual
 
 ## **Passive discovery**
 
-get js script
-
-```bash
-go get github.com/tomnomnom/waybackurls
-waybackurls internet.org | grep "\.js" | uniq | sort
-```
-
 dork on domain
 
 ```bash
@@ -40,6 +33,13 @@ cat file | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 ```
 
+get js script
+
+```bash
+go get github.com/tomnomnom/waybackurls
+waybackurls internet.org | grep "\.js" | uniq | sort
+```
+
 ---
 
 ## **Active discovery**
@@ -47,7 +47,9 @@ curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 ### Services
 
 ```bash
-nmap -sS -sV -O --top-ports 1000 --script=banner,nse,http-head
+nmap -sS -sV -O --top-ports 1000 --script=banner,nse,http-head -oA top_1000
+nmap -sT -sV -O -p- -oA full_scan
+nmap -sU -sV --top-ports 1000 --open -oA udp_1000
 ```
 
 ---
@@ -55,9 +57,12 @@ nmap -sS -sV -O --top-ports 1000 --script=banner,nse,http-head
 ### Subdomains
 
 ```bash
+#amass
 amass enum -ip -brute -active -d <domain> 
 amass viz -maltego -d <domain> -o mydir
-gobuster dns -d <domain> -w ~/wordlists/subdomains.txt -i
+
+#gobuster
+gobuster dns -i  -w subdomains.txt -d <domain> 
 ```
 
 check if subdomain exist
