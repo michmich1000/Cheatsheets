@@ -4,15 +4,14 @@
 
 ### Tools
 
-```text
-CMSmap
-WhatCMS
-Nikto
-Wig.py
-Wpseku
-WPScan
-droopescan
-joomscan
+```sh
+git clone https://github.com/Dionach/CMSmap && cd CMSmap && pip3 install . && cmsmap.py <target> -o cmsmap.log
+git clone https://github.com/jekyc/wig.git && cd wig && python3 setup.py install && Wig.py <target> -w wig.log 
+nikto -C all -output nikto.html -host <target> 
+WPScan -v --proxy socks5://127.0.0.1:9090 --url <target> -e u1-100,vp,vt --passwords rockyou.txt (need API key)
+git clone https://github.com/m4ll0k/WPSeku.git && cd WPSeku && pip install -r requirements.txt && python wpseku.py --target <target>
+pip install droopescan && droopescan scan drupal -t 32 -u <target> [-U list_of_urls.txt]
+joomscan -u <target>
 ```
 
 ---
@@ -45,7 +44,7 @@ Content-Length: 95
 </methodCall>
 ```
 
-if there is pingback, try :
+If there is pingback, try :
 
 ```bash
 <methodCall>
@@ -122,7 +121,7 @@ Developers: Don’t ever `useeval()` or `dangerouslySetInnerHTML`. Avoid parsing
 
 ## **Angularjs**
 
-check the bypassSecurityTrustX / innerHTML function
+Check the bypassSecurityTrustX / innerHTML function
 
 ```bash
 bypassSecurityTrustHtml
@@ -158,7 +157,7 @@ run script post-merge https://docs.gitlab.com/ee/administration/custom_hooks.htm
 - [test for default password](https://github.com/jenaye/netasq-1300)
 
 [Stormshield Documentation](https://documentation.stormshield.eu/SNS/v3/fr/Content/CLI_Serverd_Commands_reference_Guide_v3/Introduction.htm)
-```sh
+```bash
 # Check default password : \(UpdatePasswd=1 if factory password, 0 if the password already have been changed\) 
 CHPWD 101 code=00a01000 msg="Begin" format="section" \[Result\] UpdatePasswd=0
 ```
@@ -195,13 +194,13 @@ openssl s_client -connect <target>:443 -ssl3
 openssl s_client -connect <target>:443 | openssl x509 -noout -dates
 ```
 
-check Heartbleed
+Check Heartbleed
 
 ```bash
 cat list.txt | while read line ; do echo "QUIT" | openssl s_client -connect $line:443 2>&1 | grep 'server extension "heartbeat" (id=15)' || echo $line: safe; done
 ```
 
-check lucky13
+Check lucky13
 
 ```bash
 openssl s_client -cipher DES-CBC3-SHA -connect xx.fr:443
@@ -211,7 +210,7 @@ openssl s_client -cipher DES-CBC3-SHA -connect xx.fr:443
 
 ## **SSH** 
 
-check if 4096 key
+Check if 4096 key
 
 ```bash
 ssh-keygen -l -f key.pub
