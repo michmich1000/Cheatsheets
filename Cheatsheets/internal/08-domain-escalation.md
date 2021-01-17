@@ -2,16 +2,24 @@
 
 ## Tools
 
-- [Bloodhound](https://github.com/BloodHoundAD/BloodHound) with [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
+- [Bloodhound](https://github.com/BloodHoundAD/BloodHound) & [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
 - [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
+- [Ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
 - [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
 
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
 ```bash
+#enum4linux
 enum4linux -a <target_dc> -u <USER> -p <PASSWORD> -d <domain>
+
+#bloodhound-python
 bloodhound.py -d <DOMAIN> -u <user> -p <password> -dc <FQDN-SERVER> -c all
-python ldapdomaindump.py -u '<domain>\<user>' -p '<pass>' <target>
+
+#ldapdomaindump
+pip install ldapdomaindump && ldapdomaindump -u '<domain>\<user>' -p '<pass>' <target>
+
+#ldapsearch
 sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domain>,dc=<fqdn>" -w '<pass>'
 ```
 
@@ -19,11 +27,6 @@ sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domai
 
 
 ## **Domain enum**
-
-
-
-
-
 
 Get DC IP
 
@@ -62,7 +65,6 @@ smbclient -L //<target> -U '<domain>\<user>`
 upload .ico .scf => Responder/NTLMrelayx
 ```
 
-
 NFS 
 
 ```bash
@@ -73,6 +75,7 @@ mount <target>:/home/xx /mnt/yy
 ---
 
 ## ACLs
+
 Get ACL
 
 ```bash
