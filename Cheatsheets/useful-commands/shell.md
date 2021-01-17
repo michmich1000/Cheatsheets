@@ -3,7 +3,6 @@
 
 ## Windows Shell
 
-> for winRM do : `PATH="ruby -e 'puts Gem.user_dir'/bin:$PATH"`
 
 ```bash
 .\WmiExec.ps1 -ComputerName "<target>" -Command "Get-ChildItem C:\"
@@ -12,6 +11,8 @@ winexe -U <domain>/<user>%<pass> //<target> cmd.exe /c dir C:\
 evil-winrm -i <target> -u <user> -p '<pass>'
 python psexec.py '<user>:<pass>@<target>'
 ```
+
+> for winRM do : `PATH="ruby -e 'puts Gem.user_dir'/bin:$PATH"`
 
 ## Webshell
 

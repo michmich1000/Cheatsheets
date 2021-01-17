@@ -13,3 +13,4 @@ Invoke-WebRequest <file_url> -Outfile <outfile>
 ```powershell
 import-module <full_path_ps1_file>
 ```
+> Full path is mandatory for Import-Module !
