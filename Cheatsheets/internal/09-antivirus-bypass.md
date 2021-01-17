@@ -172,6 +172,7 @@ copy Bin\wraith_x64_encoded.bin \\192.168.56.200\tiki\
 ## Theorical
 
 Every file has a score that gets involved in triggering one of the three different states (which can change during the scanning process) :
+
 - good (autorise)
 - bad (block and alert)
 - unknown (block, autorise, monitor, and/or scary prompt, depending on the AV)
@@ -220,34 +221,41 @@ Properties of the binary to find suspicious things :
 *payload exe => reflective dll => payload dll*
 
 Thread Start Address (DLL are memory-mapped files)
+
 - Depends on artifact or Process Injection routine that ran the payload
 
 Memory permissions
+
 - Avoid RWX permissions (RW => RX)
 - Avoid stagers (use stageless payloads)
 - Avoid module-less threads (CreateThread)
 - module stamping (persistence)
 
 Memory content
+
 - signs or a PE file
 - strings associated with toolset or common techniques
 - image_size, prepend, obfuscate, cleanup, strrep, sleep_mask (Cobalt)
 
 Behaviour
+
 - avoid writting a file to disk
 - spoof parent PID when executing a program
 - injecting into process (!)
 
 Process context to avoid (parent, child):
+
 - explorer.exe, notepad.exe, powershell.exe, rundll32.exe, svchost.exe
 - commonly abused applications
 - different arch (x32 or x64)
 
 Bypass sandbox detonation (VM)
+
 1. detect sandbox
 2. env keying
 
 Whitelised program :
+
 - MS Office Macro
 - Powershell
 - LOLbins
@@ -258,5 +266,7 @@ Whitelised program :
 ## Links
 
 [Network Sockets](https://artikrh.github.io/posts/av-evasion-network-sockets)
+
 [Cobalt Strike: Weaponization](https://www.youtube.com/watch?v=H0_CKdwbMRk)
+
 [Wraith](https://github.com/slaeryan/AQUARMOURY/tree/master/Wraith)
