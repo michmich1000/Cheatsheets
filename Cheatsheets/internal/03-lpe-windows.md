@@ -540,8 +540,8 @@ Invoke-Tater -Command "net localgroup administrators user /add"
 
 **Token Impersonation**
 
-- [https://github.com/foxglovesec/RottenPotato](https://github.com/foxglovesec/RottenPotato) 
-- [https://github.com/breenmachine/RottenPotatoNG](https://github.com/breenmachine/RottenPotatoNG)
+- [RottenPotato](https://github.com/foxglovesec/RottenPotato) 
+- [RottenPotatoNG](https://github.com/breenmachine/RottenPotatoNG)
 
 Incognito (Meterpreter)
 
@@ -569,6 +569,7 @@ Get-Process wininit | Invoke-TokenManipulation -CreateProcess "Powershell.exe -n
 **abusing the golden privileges**
 
 - [Juicy Potato releases](https://github.com/ohpe/juicy-potato/releases) 
+
 > Juicy Potato doesn't work on Windows Server 2019 and Windows 10 1809 +.
 
 ```bat
