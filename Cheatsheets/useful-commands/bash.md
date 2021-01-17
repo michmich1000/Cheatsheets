@@ -26,6 +26,8 @@ df -h
 du -sh
 ```
 
+---
+
 ## Netcat send file
 
 ```bash
@@ -35,6 +37,8 @@ nc -l -p 1234 > out.file
 # sender
 nc -w 3 <ip_listener> 1234 < in.file
 ```
+
+---
 
 ## Nmap parsing
 
@@ -50,6 +54,8 @@ Open Ports
 cat *.nmap | grep -i "tcp open" | cut -d "/" -f1 | sort -u | paste -sd ';'
 ```
 
+---
+
 ## Speak to other users
 
 ```bash
@@ -58,8 +64,12 @@ write <username> /dev/pts/<pts_number>
 echo "hello" |wall
 ```
 
+---
+
 ## Nginx syslink
 
 ```bash
 in "enable" do : ln -s ../site-avaible/<your-conf>.conf .
 ```
+
+

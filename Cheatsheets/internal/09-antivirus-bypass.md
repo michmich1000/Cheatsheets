@@ -17,6 +17,8 @@
 	- bypass ETW and Process Hollowing detection
 	- Bypass specific AV and ERD dll 
 
+---
+
 ### Full PoC (Auto)
 
 Winning combo : SharpBlock + PEzor (bypass Kasp for the moment..)
@@ -45,9 +47,14 @@ Winning combo : SharpBlock + PEzor (bypass Kasp for the moment..)
 
 > SharpBlock can load a shellcode from a webserver, or locally. To get rid of the webserver, you can directly drop the two binaries to the target (packed SharpBlock and packed shellcode) but do not execute the packed shellcode directly or you might get caught by the AV. You only need to execute the packed SharpBlock binary (which will inject the packed shellcode directly into memory).
 
+---
+
+
 ### Full PoC (Manual)
 
 **Todo** 
+
+---
 
 ### Offline testing 
 
@@ -57,6 +64,8 @@ For testing using a Windows VM connecting to an offline C2 :
 3. Set up the network interface to Host-Only for all VMs (Target(s) and C2).
 4. Test your payloads and enjoy your shells :)
 > You may want to use snapshots and/or linked clones after your infrastructure is ready so that you can trash your Windows VM after each test and pop a new one.
+
+---
 
 ### Online testing 
 
@@ -113,10 +122,14 @@ To restrict the Windows VM traffic to the C2 server only (we don't want our payl
 8. For DNS you can add the association into the file : `C:\Windows\System32\drivers\etc\hosts`
 9. Test your payloads and enjoy your shells :+1:
 
+---
+
 ### Automated testing 
 
 CI Pipeline
 **todo**
+
+---
 
 ### VisualStudio compiler
 
@@ -126,12 +139,16 @@ Compiler location
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\bin\Hostx64\x64\Src
 ```
 
+---
+
 ### Fix Pezor
 
 Fixed by author. To check :
 
 [Inline syscall old version](https://github.com/phra/PEzor/commit/531095695f56b7ab3add7c9c154ebce830e534a7)
 
+
+---
 
 ### Vrac commands
 
@@ -184,6 +201,8 @@ Properties of the binary to find suspicious things :
 - append known good program to get good score
 - reduce entropy (not all packed)
 
+---
+
 ### Dynamic analysis
 
 #### 1. Local Sandbox : emulated memory (~ 3sec) 
@@ -193,6 +212,8 @@ Properties of the binary to find suspicious things :
 #### 2. Cloud VM (~ 1min)
 - cheks metadata (sha256 or any ioc from previous analysis)
 - more complete emulation
+
+---
 
 ### IN memory detection evasion
 *payload exe => reflective dll => payload dll*

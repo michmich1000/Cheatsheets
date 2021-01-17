@@ -8,6 +8,8 @@ The PCD built in FTP-Server is defined to be connected with only one user
 root:rootpasswd
 ```
 
+---
+
 ## Alhua
 
 ```bash
@@ -18,7 +20,7 @@ Username: 666666. Password: 666666.
 Username: default. Password: default.
 ```
 
-
+---
 
 ## OpenScape Business Assistant
 

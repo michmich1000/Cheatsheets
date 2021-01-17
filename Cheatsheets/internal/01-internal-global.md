@@ -139,7 +139,9 @@ SMB
 smbmap -H IP -r DOSSIER
 smbmap -H IP --download DOSSIER
 
-smbclient -L ///192.168.0.1 -U <user> -c ls
+# SMB V1
+smbclient -L ///192.168.0.1 -U <user> -c ls [--option='client min protocol=NT1']
+mount //10.11.1.136/"Bob Share" /mnt/bob [-o vers=1.0]
 ```
 
 NFS 

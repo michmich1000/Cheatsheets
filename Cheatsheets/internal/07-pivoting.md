@@ -34,6 +34,8 @@ wpscan --url <url> --proxy socks5://127.0.0.1:9517 --force
 
 Burp => User Options => Socks Proxy
 
+---
+
 
 ## Nmap like
 

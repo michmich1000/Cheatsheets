@@ -6,6 +6,8 @@
 python patator.py pop_passd host=<ip> user=FILE0 password=FILE1 0=usernames.txt  1=top-1000.txt -x ignore:code=500
 ```
 
+---
+
 ## LDAP
 
 ```bash
