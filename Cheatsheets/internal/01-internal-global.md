@@ -4,18 +4,24 @@
 
 ### Wi-Fi
 
-* Crack WPA or crack/replay PEAP \(check next cheatsheet : WIFI\)
+* Crack WPA or crack/replay PEAP
+
+> For more details, see next cheatsheet : WIFI
 
 ### NAC - MAC filtering
 
-* Spoof mac from any authorized device \(printer\) and disconnect it: `macchanger -r eth0`
-* force your static IP to match the one that you spoofed the mac from : `sudo ifconfig 10.11.12.13/24 && sudo ip route add default via <gateway_ip>`
+1. Spoof mac from any authorized device \(e.g printer or voip phone\) and disconnect it: 
+```sh
+macchanger -r eth0
+```
+2. force your static IP to match the one that you spoofed the mac from : 
+```sh
+sudo ifconfig 10.11.12.13/24 && sudo ip route add default via <gateway_ip>
+```
 
 ### NAC - 802.1X
 
-* IEEE 802.1X bypass :
-
-  [https://github.com/Orange-Cyberdefense/fenrir-ocd](https://github.com/Orange-Cyberdefense/fenrir-ocd)
+* [Fenrir](https://github.com/Orange-Cyberdefense/fenrir-ocd) (IEEE 802.1X bypass)
 
 ---
 
@@ -29,7 +35,7 @@ Boot from Kali Linux and dump creds
 cd SystemRoot%\system32\Config\SAM
 impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 ```
-
+> For more details, see next [post-exploitation-windows](05-post-exploitation-windows.md)
 ---
 
 ### Port and service scan
