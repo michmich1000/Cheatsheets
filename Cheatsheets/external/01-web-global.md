@@ -57,11 +57,8 @@ nmap -sU -sV --top-ports 1000 --open -oA udp_1000
 ### Subdomains
 
 ```bash
-#amass
 amass enum -ip -brute -active -d <domain> 
-amass viz -maltego -d <domain> -o mydir
 
-#gobuster
 gobuster dns -i  -w subdomains.txt -d <domain> 
 ```
 
@@ -77,7 +74,9 @@ cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t Size:
 
 ```bash
 nmap --script http-vhosts -p 80,8080,443 <target>
+
 gobuster vhost -u <url> -w common-vhosts.txt
+
 Burp Intruder (Host header)
 ```
 
@@ -86,9 +85,12 @@ Burp Intruder (Host header)
 ### Urls
 
 ```bash
-./dirsearch.py -u <target> -e php,html,js,xml -x 500,403
+dirsearch -u <target> -e php,html,js,xml -x 500,403
+
 wfuzz -c -z file,/root/wordlist.txt --hc 404 <target>/FUZZ
+
 gobuster dir -u https://buffered.io -w ~/wordlists/shortlist.txt -l -v
+
 Burp Pro (Content Discovery)
 ```
 
