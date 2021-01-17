@@ -43,7 +43,7 @@ Winning combo : SharpBlock + PEzor (bypass Kasp for the moment..)
   ./PEzor.sh -unhook -antidebug -text -rx -sleep=150 SharpBlock.exe -p '-e <SHELLCODE_NAME>.bin.packed.exe -s "c:\program files\internet explorer\iexplore.exe"'
   ```
 5. Setup your launcher (and webserver), and execute the packed binary file from the target
-6. Be patient (\~5min), get your shell and enjoy
+6. Be patient (around 5minn depending on the sleep argument set), get your shell and enjoy
 
 > SharpBlock can load a shellcode from a webserver, or locally. To get rid of the webserver, you can directly drop the two binaries to the target (packed SharpBlock and packed shellcode) but do not execute the packed shellcode directly or you might get caught by the AV. You only need to execute the packed SharpBlock binary (which will inject the packed shellcode directly into memory).
 

