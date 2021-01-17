@@ -94,12 +94,11 @@ gobuster dir -u https://buffered.io -w ~/wordlists/shortlist.txt -l -v
 Burp Pro (Content Discovery)
 ```
 
-Found asset and params
+URL finder
 
 ```bash
-assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)' | while read url; do vars=$(curl -s $url | grep -Eo "var [a-zA-Z0-9]+" | sed -e 's,'var','"$url"?',g' -e 's/ //g' | grep -v '.js' | sed 's/.*/&=xss/g'); echo -e "\e[1;33m$url\n\e[1;32m$vars"; done
+wget -qO- https://stackoverflow.com/ | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | sort -u
 ```
-
 link finder
 
 ```bash
@@ -107,16 +106,16 @@ https://github.com/GerbenJavado/LinkFinder
  python linkfinder.py -i https://example.com -d -o cli
 ```
 
-URL finder
-
-```bash
-wget -qO- https://stackoverflow.com/ | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | sort -u
-```
-
-Dir Listing dump
+Directory listing recustive dump
 
 ```bash
 wget -r --no-parent target.com/dir
+```
+
+Find asset and params
+
+```bash
+assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)' | while read url; do vars=$(curl -s $url | grep -Eo "var [a-zA-Z0-9]+" | sed -e 's,'var','"$url"?',g' -e 's/ //g' | grep -v '.js' | sed 's/.*/&=xss/g'); echo -e "\e[1;33m$url\n\e[1;32m$vars"; done
 ```
 
 ---

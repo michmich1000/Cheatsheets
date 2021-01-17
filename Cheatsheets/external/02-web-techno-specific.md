@@ -9,19 +9,23 @@
 nikto -C all -output nikto.html -host <target> 
 
 #cmsmap
-git clone https://github.com/Dionach/CMSmap && cd CMSmap && pip3 install . && cmsmap.py <target> -o cmsmap.log
+git clone https://github.com/Dionach/CMSmap && cd CMSmap && pip3 install .
+cmsmap.py <target> -o cmsmap.log
 
 #wig
-git clone https://github.com/jekyc/wig.git && cd wig && python3 setup.py install && Wig.py <target> -w wig.log 
+git clone https://github.com/jekyc/wig.git && cd wig && python3 setup.py install
+Wig.py <target> -w wig.log 
 
-#wpscan
-WPScan -v --proxy socks5://127.0.0.1:9090 --url <target> -e u1-100,vp,vt --passwords rockyou.txt (need API key)
+#wpscan (need API key)
+WPScan -v --proxy socks5://127.0.0.1:9090 -e u1-100,vp,vt --passwords rockyou.txt --api-token <API_key> --url <target>
 
 #wpseku
-git clone https://github.com/m4ll0k/WPSeku.git && cd WPSeku && pip install -r requirements.txt && python wpseku.py --target <target>
+git clone https://github.com/m4ll0k/WPSeku.git && cd WPSeku && pip install -r requirements.txt
+python wpseku.py --target <target>
 
 #droopescan
-pip install droopescan && droopescan scan drupal -t 32 -u <target> [-U list_of_urls.txt]
+pip install droopescan
+droopescan scan drupal -t 32 -u <target> [-U list_of_urls.txt]
 
 #joomscan
 joomscan -u <target>
@@ -37,11 +41,11 @@ Find version
 * Html source code
 * CMSmap or WPScan
 
-XMLrpc
+**XMLrpc**
 
 List methods
 
-```bash
+```raw
 POST /xmlrpc.php HTTP/1.1
 Host: <target>
 Accept-Encoding: gzip, deflate
