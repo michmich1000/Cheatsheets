@@ -49,4 +49,4 @@ sshuttle -r kali@<ip_target>:22 <target_network>/24
 
 ## Nmap like
 
-**PortqryUI \(Nmap like for windows\)**
+[PortqryUI](https://www.microsoft.com/en-us/download/details.aspx?id=24009) : Nmap like for windows

