@@ -5,9 +5,10 @@
 ### Tools
 
 ```text
-Nikto
 CMSmap
 WhatCMS
+Nikto
+Wig.py
 Wpseku
 WPScan
 droopescan
@@ -110,7 +111,10 @@ creer new users INSERT INTO jos_users (name, username, password, usertype, gid, 
 
 ## **Reactjs**
 
-Security Testers: Inject JavaScript and JSON wherever you can and see what happens. Developers: Don’t ever `useeval()` or `dangerouslySetInnerHTML`. Avoid parsing user-supplied JSON.
+- [React Developer Tools](https://addons.mozilla.org/fr/firefox/addon/react-devtools/) (edit props/state/hooks values)
+
+Security Testers: Inject JavaScript and JSON wherever you can and see what happens. 
+Developers: Don’t ever `useeval()` or `dangerouslySetInnerHTML`. Avoid parsing user-supplied JSON.
 
 ---
 

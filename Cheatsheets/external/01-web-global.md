@@ -203,3 +203,4 @@ shell.php%00.jpg
 Extension|Description
 ---|----
 `Retire.js`|[find vulnerable JavaScript libraries](https://github.com/PortSwigger/retire-js)
+`Autorize`|[find privileges escalations by replaying admin requests as a simple user](https://portswigger.net/bappstore/f9bbac8c4acf4aefa4d7dc92a991af2f)
