@@ -10,6 +10,11 @@
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
 ```bash
+# Install bloodhound
+sudo apt-get update && sudo apt-get install bloodhound python3-pip && git clone https://github.com/SecureAuthCorp/impacket.git && cd impacket && pip3 install .
+```
+
+```bash
 #enum4linux
 enum4linux -a <target_dc> -u <USER> -p <PASSWORD> -d <domain>
 

@@ -72,4 +72,11 @@ echo "hello" |wall
 in "enable" do : ln -s ../site-avaible/<your-conf>.conf .
 ```
 
+## Docker
 
+Install docker on kali
+```sh
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+echo 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' | sudo tee /etc/apt/sources.list.d/docker.list
+sudo apt update && sudo apt remove docker docker-engine docker.io && sudo apt install docker-ce -y
+```
