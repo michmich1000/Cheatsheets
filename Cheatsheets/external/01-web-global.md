@@ -114,10 +114,10 @@ Burp Intruder (Host header)
 dirsearch -u <target> -e php,html,js,xml -x 500,403
 
 wfuzz -c -z file,/root/wordlist.txt --hc 404 <target>/FUZZ
+wfuzz -c -z file,/root/wordlist.txt --hc 404 --hl 0 <target>/FUZZ
 
 gobuster dir -u https://buffered.io -w ~/wordlists/shortlist.txt -l -v
-
-Burp Pro (Content Discovery)
+gobuster fuzz -u https://example.com/?FUZZ=test -w parameter-names.txt
 ```
 
 URL finder
@@ -129,7 +129,7 @@ link finder
 
 ```bash
 https://github.com/GerbenJavado/LinkFinder
- python linkfinder.py -i https://example.com -d -o cli
+python linkfinder.py -i https://example.com -d -o cli
 ```
 
 Directory listing recustive dump
