@@ -148,6 +148,8 @@ assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)
 
 ## **LFI**
 
+Local file inclusion
+
 ### FUZZ
 
 ```bash
