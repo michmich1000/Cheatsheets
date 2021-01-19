@@ -92,7 +92,10 @@ tar xvjf ubunturoot.tar.bz2
 cp dokeygen.sh 
 chroot ubunturoot /dokeygen.sh 1 -t dsa -b 1024 -f /tmp/dsa_1024_1
 
-ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub
+ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.
+
+#add "PubkeyAcceptedKeyTypes +ssh-dss" into client ssh conf
+#ssh -vvvvvvvvvvvvvvvvvvvvv helps to understand !
 ```
 
 
