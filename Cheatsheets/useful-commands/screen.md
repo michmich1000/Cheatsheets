@@ -11,8 +11,17 @@ ctrl+a :multiuser on
 If you are stucked with a small windows into multiuser screen
 
 ```bash
-ctrl+a d (detach)
-screen -rd (reattach detaching everyone else)
+# detach
+ctrl+a d
+# reattach detaching everyone else
+screen -rd 
 ```
+
+log screen
+
+```bash
+ctrl+a H
+```
+
 
 ---

