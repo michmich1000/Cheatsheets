@@ -56,6 +56,14 @@ cat *.nmap | grep -i "tcp open" | cut -d "/" -f1 | sort -u | paste -sd ';'
 
 ---
 
+## Nessus parsing
+
+Open Ports
+
+```bash
+cat <filename>.csv |grep -i 'tcp",' |cut -d "," -f7 | tr -d '"' |sort -u | sed -r '/^\s*$/d' | tr "\n" ",  " | rev | cut -c2- |rev | sed 's/, */, /g'
+```
+
 ## Speak to other users
 
 ```bash
