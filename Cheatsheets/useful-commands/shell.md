@@ -3,16 +3,21 @@
 
 ## Windows Shell
 
+### SMB
 
 ```bash
 .\WmiExec.ps1 -ComputerName "<target>" -Command "Get-ChildItem C:\"
 wmiexec.py <domain>\<user>:<pass>@<target>
 winexe -U <domain>/<user>%<pass> //<target> cmd.exe /c dir C:\
-evil-winrm -i <target> -u <user> -p '<pass>'
 python psexec.py '<user>:<pass>@<target>'
 ```
 
-> for winRM do : `PATH="ruby -e 'puts Gem.user_dir'/bin:$PATH"`
+### WinrRM
+
+```bash
+gem install evil-winrm
+evil-winrm -i <target> -u <user> -p '<pass>'
+```
 
 ## Webshell
 
