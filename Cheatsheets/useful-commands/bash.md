@@ -58,6 +58,12 @@ cat *.nmap | grep -i "tcp open" | cut -d "/" -f1 | sort -u | paste -sd ';'
 
 ## Nessus parsing
 
+Hosts up
+
+```bash
+cat <filename>.csv |grep -i 'tcp",' |cut -d "," -f5 | tr -d '"' |sort -u > perim_up_nessus.txt
+```
+
 Open Ports
 
 ```bash

