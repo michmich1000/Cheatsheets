@@ -22,10 +22,8 @@ git clone https://github.com/1N3/Sn1per && cd Sn1per && bash install.sh
 # Install AutoRecon
 sudo docker build -t tib3rius/autorecon .
 # Manual install
-apt install -y python3 python3-pip python3-venv
+apt install -y python3 python3-pip python3-venv seclists curl enum4linux gobuster nbtscan nikto nmap onesixtyone oscanner smbclient smbmap smtp-user-enum snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf
 python3 -m pip install --user pipx && python3 -m pipx ensurepath
-# on another terminal
-apt install -y seclists curl enum4linux gobuster nbtscan nikto nmap onesixtyone oscanner smbclient smbmap smtp-user-enum snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf
 
 # Install Legion
 docker build -t legion .
@@ -36,7 +34,6 @@ git clone https://github.com/carlospolop/legion.git /opt/legion && cd /opt/legio
 # Install Arsenal
 git clone https://github.com/Orange-Cyberdefense/arsenal.git && cd arsenal && python3 setup.py install
 ```
-
 
 --- 
 
