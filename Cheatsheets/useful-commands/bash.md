@@ -1,5 +1,23 @@
 # Bash
 
+## Compilation
+
+Compile for linux x86 on a x64 machine
+
+```bash
+sudo apt update && sudo apt install -y gcc-multilib 
+gcc -Wl,--hash-style=both -m32 <exploit.c>
+```
+
+Cross-Compile for x86 Windows from x64 linux machine
+
+```bash
+sudo apt update && sudo apt install -y mingw-w64
+i686-w64-mingw32-gcc <exploit.c>
+i686-w64-mingw32-gcc -lws2_32 MS11-046.c
+```
+
+
 ## Search for files
 
 ```bash
