@@ -2,14 +2,14 @@
 
 ## Compilation
 
-Compile for linux x86 on a x64 machine
+Compile for x86 Linux from a x64 Linux machine
 
 ```bash
 sudo apt update && sudo apt install -y gcc-multilib 
 gcc -Wl,--hash-style=both -m32 <exploit.c>
 ```
 
-Cross-Compile for x86 Windows from x64 linux machine
+Cross-Compile for x86 Windows from a x64 Linux machine
 
 ```bash
 sudo apt update && sudo apt install -y mingw-w64
