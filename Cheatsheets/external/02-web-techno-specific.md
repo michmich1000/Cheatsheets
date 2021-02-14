@@ -238,4 +238,9 @@ grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|h
 ```
 
 
+## **Manual upload**
+
+```bash
+curl -i -X PUT -H "Content-Type: application/xml; charset=utf-8" -d @"/tmp/some-file.xml" http://<target>/newpage
+```
 

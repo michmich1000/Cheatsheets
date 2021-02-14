@@ -5,6 +5,9 @@
 - [Bloodhound](https://github.com/BloodHoundAD/BloodHound) & [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
 - [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
 - [Ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
+- [adidnsdump](https://github.com/dirkjanm/adidnsdump)
+- [SharpSniper](https://github.com/HunnicCyber/SharpSniper)
+- [Inveigh](https://github.com/Kevin-Robertson/Inveigh)
 - [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu) (remote graphical view)
 
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
@@ -16,10 +19,10 @@ sudo apt-get update && sudo apt-get install bloodhound python3-pip && git clone 
 
 ```bash
 #enum4linux
-enum4linux -a <target_dc> -u <USER> -p <PASSWORD> -d <domain>
+enum4linux -a <target_dc> <user> -p <pass> -d <domain>
 
 #bloodhound-python
-bloodhound.py -d <DOMAIN> -u <user> -p <password> -dc <FQDN-SERVER> -c all
+bloodhound.py -d <DOMAIN> <user> -p <pass> -dc <FQDN-SERVER> -c all
 
 #ldapdomaindump
 pip install ldapdomaindump && ldapdomaindump -u '<domain>\<user>' -p '<pass>' <target>
@@ -39,11 +42,26 @@ cat /etc/resolv.conf
 nslookup <domain>
 ```
 
-Password policy \(especially lockout threshold for bruteforce\)
+Domain users and password policy \(especially complexity and lockout threshold for bruteforce\)
 
 ```bash
 enum4linux -P -o <target>
 enum4linux -a <target>
+enum4linux <target> |grep "user:" | cut -d '[' -f2 | cut -d "]" -f1 > users.txt
+```
+
+Domain computers 
+
+```bash
+#pip install git+https://github.com/dirkjanm/adidnsdump#egg=adidnsdump
+adidnsdump -u <domain>\\<user> -p <pass>
+adidnsdump -u <domain>\\<user> -p <pass> --forest --include-tombstoned
+adidnsdump -u <domain>\\<user> -p <pass> --dns-tcp
+
+Get-ADComputer -Filter * -Property * | Select-Object Name,OperatingSystem,OperatingSystemVersion,ipv4Address | Export-CSV ADcomputerslist.csv -NoTypeInformation -Encoding UTF8
+
+# Find specific computer of domain user
+SharpSniper.exe emusk <username> <password>
 ```
 
 ### Open shares \(SMB, NFS, FTP, etc\)
@@ -214,3 +232,20 @@ Get-ADComputer -Identity <computer_name> -Properties TrustedForDelegation
 ### Delegation Explained
 
 - [specterops.io](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)
+
+
+### Refs
+
+- https://0xsp.com/ad-attack-or-defense/ad-ttps-list
+- https://m0chan.github.io/2019/07/30/Windows-Notes-and-Cheatsheet.html
+- https://github.com/yeyintminthuhtut/Awesome-Red-Teaming
+- https://ired.team/
+- https://github.com/vysecurity/RedTips
+- https://0x00-0x00.github.io/
+- https://blog.xpnsec.com/
+- https://egre55.github.io
+- https://rastamouse.me/
+- https://posts.specterops.io/
+- https://dirkjanm.io/
+- https://adsecurity.org/
+- http://www.labofapenetrationtester.com/

@@ -1,5 +1,11 @@
 # Brute-force
 
+## Offline 
+```bash
+john --worlist=rockyou.txt --format=NT hashsNT.txt --rules=korelogic
+john --worlist=rockyou.txt --format=NT hashsNT.txt --rules=insidepro
+```
+
 ## TCP 445 (SMB)
 
 ```bash

