@@ -48,7 +48,7 @@ inurl:example.com ext:log
 inurl:example.com intitle:"index of" ext:sql|xls|xml|json|csv
 inurl:example.com "MYSQL_ROOT_PASSWORD:" ext:env OR ext:yml -git
 
-# check on dehashed, raidforums.com snusbase, leakedsource, etc.
+# check on pastebin, dehashed, raidforums, snusbase, leakedsource, etc.
 ```
 
 get url in file

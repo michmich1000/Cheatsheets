@@ -6,6 +6,7 @@
 - [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
 - [Ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
 - [adidnsdump](https://github.com/dirkjanm/adidnsdump)
+- [windapsearch](https://github.com/ropnop/windapsearch)
 - [SharpSniper](https://github.com/HunnicCyber/SharpSniper)
 - [Inveigh](https://github.com/Kevin-Robertson/Inveigh)
 - [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu) (remote graphical view)
@@ -80,6 +81,7 @@ pip install -r requirements.txt
 smbmap -H IP -r DOSSIER
 smbmap -H IP --download DOSSIER
 smbmap -P 445 -H <target> -u '<user>' -p '<pass>' 
+smbmap --host-file smb-hosts.txt -u '<user>' -p '<pass>' -q -R --depth 3 --exclude ADMIN$ IPC$ -A '(web|server|global|index|login|logout|auth|httpd|config).(xml|config|conf|asax|aspx|php|asp|jsp|html)'
 
 # SMB V1
 smbclient -L ///192.168.0.1 -U <user> -c ls [--option='client min protocol=NT1']
