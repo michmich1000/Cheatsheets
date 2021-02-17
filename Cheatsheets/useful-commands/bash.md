@@ -1,5 +1,19 @@
 # Bash
 
+## Alias
+
+```bash
+#Clipbloard
+alias sclip="xclip -selection c"
+alias gclip="xclip -selection c -o"
+
+#IPs
+grep -ao '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'| sort -u
+
+# SAM
+awk -F: '{print $1":"$3":"$4}' |tr [:upper:] [:lower:] | sort -u
+```
+
 ## Save output to log file
 
 ```bash
