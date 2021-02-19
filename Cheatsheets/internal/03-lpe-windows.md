@@ -49,6 +49,13 @@ List all env variables
 Get-ChildItem Env: | ft Key,Value
 ```
 
+Find Writeable Folder 
+
+```bat
+echo %temp%
+echo %tmp%
+```
+
 List all drives
 
 ```bat

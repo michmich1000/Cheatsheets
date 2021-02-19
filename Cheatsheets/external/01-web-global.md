@@ -2,37 +2,78 @@
 
 ## **Tools**
 
-Automated
-
+- [Burp Suite](https://portswigger.net/burp/releases)
+- [httpx](https://github.com/projectdiscovery/httpx)
+- [Nuclei](https://github.com/projectdiscovery/nuclei)
 - [Sn1per](https://github.com/1N3/Sn1per)
 - [AutoRecon](https://github.com/Tib3rius/AutoRecon)
 - [Legion](https://github.com/carlospolop/legion)
-
-Manual
-
 - [Arsenal](https://github.com/Orange-Cyberdefense/arsenal)
 
+### httpx 
+
 ```bash
+# Install golang & httpx
+sudo apt update && sudo apt install -y golang subfinder && export GOROOT=/usr/lib/go && export GOPATH=$HOME/go && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH;
+GO111MODULE=on go get -v github.com/projectdiscovery/httpx/cmd/httpx && httpx -version
+
+# Usage 
+httpx -l hosts.txt -silent -title -content-length -status-code
+subfinder -d <target> -silent | httpx -title -content-length -status-code -silent
+```
+
+### Nuclei 
+
+```bash
+# Install Nuclei
+GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei; nuclei -version
+```
+
+### Sn1per 
+
+```bash
+# Install docker
+sudo apt update && sudo apt install -y docker.io && sudo usermod -aG docker $USER && exec sg docker newgrp `id -gn`
+
 # Install Sn1per
 docker pull xerosecurity/sn1per
-docker run -it xerosecurity/sn1per /bin/bash
-# Manual install
-git clone https://github.com/1N3/Sn1per && cd Sn1per && bash install.sh
+docker run -it xerosecurity/sn1per /bin/bash && sniper --help
 
+# Manual install
+git clone https://github.com/1N3/Sn1per && cd Sn1per && bash install.sh && sniper --help
+```
+
+### Autorecon 
+
+```bash
 # Install AutoRecon
-sudo docker build -t tib3rius/autorecon .
-# Manual install
-apt install -y python3 python3-pip python3-venv seclists curl enum4linux gobuster nbtscan nikto nmap onesixtyone oscanner smbclient smbmap smtp-user-enum snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf
+wget https://raw.githubusercontent.com/Tib3rius/AutoRecon/master/Dockerfile && docker build -t tib3rius/autorecon .
+docker run -it -v ~/results:/results --rm --name autorecon-container tib3rius/autorecon --help
+
+# Manual install pipx
+sudo apt update && sudo apt install -y python3 python3-pip python3-venv seclists curl enum4linux gobuster nbtscan nikto nmap onesixtyone oscanner smbclient smbmap smtp-user-enum snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf
 python3 -m pip install --user pipx && python3 -m pipx ensurepath
+pipx install git+https://github.com/Tib3rius/AutoRecon.git && autorecon --help
 
-# Install Legion
-docker build -t legion .
-docker run -it legion bash
-# Manual install
-git clone https://github.com/carlospolop/legion.git /opt/legion && cd /opt/legion/git && ./install.sh && ln -s /opt/legion/legion.py /usr/bin/legion
+# Manual install python3
+git clone https://github.com/Tib3rius/AutoRecon.git && cd AutoRecon && python3 -m pip install -r requirements.txt && cd src/autorecon/ && python3 autorecon.py --help
+```
 
+### Legion 
+
+```bash
+# Manual install (as root)
+git clone https://github.com/carlospolop/legion.git /opt/legion && cd /opt/legion/git && ./install.sh && mv /usr/bin/legion /usr/bin/legion2 && ln -s /opt/legion/legion.py /usr/bin/legion && legion
+```
+
+### Arsenal 
+
+```bash
 # Install Arsenal
-git clone https://github.com/Orange-Cyberdefense/arsenal.git && cd arsenal && python3 setup.py install
+git clone https://github.com/Orange-Cyberdefense/arsenal.git && cd arsenal && ./addalias.sh && ./run
+
+# Install Arsenal (with package)
+git clone https://github.com/Orange-Cyberdefense/arsenal.git && cd arsenal && sudo python3 setup.py install; cd arsenal; python3 app.py
 ```
 
 --- 
@@ -48,21 +89,23 @@ inurl:example.com ext:log
 inurl:example.com intitle:"index of" ext:sql|xls|xml|json|csv
 inurl:example.com "MYSQL_ROOT_PASSWORD:" ext:env OR ext:yml -git
 
-# check on pastebin, dehashed, raidforums, snusbase, leakedsource, etc.
+example.com site:pastebin.com
+# search for leaks on pastebin, dehashed, raidforums, snusbase, leakedsource, etc.
 ```
 
 get url in file
 
 ```bash
 cat file | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
-curl http://host.xx/file.js | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
+curl http://<target>/file.js | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*"*
 ```
 
 get js script
 
 ```bash
 go get github.com/tomnomnom/waybackurls
-waybackurls internet.org | grep "\.js" | uniq | sort
+waybackurls <target> | grep "\.js" | uniq | sort
+
 ```
 
 ---

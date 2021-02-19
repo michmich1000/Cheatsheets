@@ -3,14 +3,14 @@
 ## Alias
 
 ```bash
-#Clipbloard
+# Clipboard
 alias sclip="xclip -selection c"
 alias gclip="xclip -selection c -o"
 
-#IPs
+# IPs
 grep -ao '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'| sort -u
 
-# SAM
+# SAM hash (from crackmapexec log files)
 awk -F: '{print $1":"$3":"$4}' |tr [:upper:] [:lower:] | sort -u
 ```
 

