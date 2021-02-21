@@ -87,7 +87,7 @@ df -h
 nc -l -p 1234 > out.file
 
 # sender
-nc -w 3 <ip_listener> 1234 < in.file
+nc -w 3 <listener_ip> 1234 < in.file
 ```
 
 ---
@@ -126,7 +126,6 @@ sudo apt update && sudo apt install -y golang subfinder && export GOROOT=/usr/li
 
 ### Install Docker
 
-Install docker on kali
 ```sh
 # Install docker from kali repo
 sudo apt update && sudo apt install -y docker.io && sudo usermod -aG docker $USER && exec sg docker newgrp `id -gn`
@@ -147,8 +146,6 @@ wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add
 ### Install Arsenal 
 
 Inventory of useful commands
-
-- [Arsenal](https://github.com/Orange-Cyberdefense/arsenal)
 
 ```bash
 # Install Arsenal

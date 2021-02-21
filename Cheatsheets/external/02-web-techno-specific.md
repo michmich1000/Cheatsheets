@@ -196,7 +196,7 @@ https://XXXX/dana-na/setup/psalinstall.cgi
 
 * [testssh.sh](https://github.com/drwetter/testssl.sh)
 
-### Openssl
+Openssl
 
 ```bash
 openssl s_client -cipher BEAST -connect <target>:443
