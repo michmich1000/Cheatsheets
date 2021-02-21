@@ -5,29 +5,26 @@
 ### Tools
 
 ```sh
-#nikto
-nikto -C all -output nikto.html -host <target> 
-
-#cmsmap
+# cmsmap
 git clone https://github.com/Dionach/CMSmap && cd CMSmap && pip3 install .
 cmsmap.py <target> -o cmsmap.log
 
-#wig
+# wig
 git clone https://github.com/jekyc/wig.git && cd wig && python3 setup.py install
 Wig.py <target> -w wig.log 
 
-#wpscan (need API key)
+# wpscan (need API key)
 WPScan -v --proxy socks5://127.0.0.1:9090 -e u1-100,vp,vt --passwords rockyou.txt --api-token <API_key> --url <target>
 
-#wpseku
+# wpseku
 git clone https://github.com/m4ll0k/WPSeku.git && cd WPSeku && pip install -r requirements.txt
 python wpseku.py --target <target>
 
-#droopescan
+# droopescan
 pip install droopescan
 droopescan scan drupal -t 32 -u <target> [-U list_of_urls.txt]
 
-#joomscan
+# joomscan
 joomscan -u <target>
 ```
 

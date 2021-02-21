@@ -10,6 +10,21 @@ alias gclip="xclip -selection c -o"
 # IPs
 grep -ao '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'| sort -u
 
+# IP Ranges 
+awk -F. '{print $1"."$2"."$3".0/24"}'
+
+## Nmap parsing (Hosts up)
+cat *.gnmap | grep -i "open/tcp" | cut -d " " -f2 | sort -u
+
+## Nmap parsing (Open Ports)
+cat *.nmap | grep -i " open" | cut -d "/" -f1 | sort -u | paste -sd ','
+
+## Nessus parsing (Hosts up)
+cat *.csv |grep -i 'tcp",' |cut -d "," -f5 | tr -d '"' |sort -u
+
+## Nessus parsing (Open Ports) 
+cat *.csv |grep -i 'tcp",' |cut -d "," -f7 | tr -d '"' |sort -u | sed -r '/^\s*$/d' | tr "\n" ",  " | rev | cut -c2- |rev | sed 's/, */, /g' | cut -f 2- -d ' '
+
 # SAM hash (from crackmapexec log files)
 awk -F: '{print $1":"$3":"$4}' |tr [:upper:] [:lower:] | sort -u
 ```
@@ -77,35 +92,6 @@ nc -w 3 <ip_listener> 1234 < in.file
 
 ---
 
-## Nmap parsing
-
-Hosts up
-
-```bash
-cat *.gnmap | grep -i "open/tcp" | cut -d " " -f2 | sort -u > perim_up.txt
-```
-
-Open Ports
-
-```bash
-cat *.nmap | grep -i "tcp open" | cut -d "/" -f1 | sort -u | paste -sd ';'
-```
-
----
-
-## Nessus parsing
-
-Hosts up
-
-```bash
-cat <filename>.csv |grep -i 'tcp",' |cut -d "," -f5 | tr -d '"' |sort -u > perim_up_nessus.txt
-```
-
-Open Ports
-
-```bash
-cat <filename>.csv |grep -i 'tcp",' |cut -d "," -f7 | tr -d '"' |sort -u | sed -r '/^\s*$/d' | tr "\n" ",  " | rev | cut -c2- |rev | sed 's/, */, /g'
-```
 
 ## Speak to other users
 
@@ -123,24 +109,52 @@ echo "hello" |wall
 in "enable" do : ln -s ../site-avaible/<your-conf>.conf .
 ```
 
-## Docker
-
-Install docker on kali
-```sh
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-echo 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' | sudo tee /etc/apt/sources.list.d/docker.list
-sudo apt update && sudo apt remove docker docker-engine docker.io && sudo apt install docker-ce -y
-```
-
-## SublimeText 
-
-```sh
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - && sudo apt-get install apt-transport-https && echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list && sudo apt-get update && sudo apt-get install sublime-text
-```
-
-### RDP 
+## RDP 
 
 ```sh
 xfreerdp /u:<username> /d:<domain> /pth:[lm]:<nt> /v:<target>
 rdesktop -u <username> -p <pass> -r disk:floppy=/tmp/share <target>
 ```
+
+## One-line install
+
+### Install Golang
+
+```bash
+sudo apt update && sudo apt install -y golang subfinder && export GOROOT=/usr/lib/go && export GOPATH=$HOME/go && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH;
+```
+
+### Install Docker
+
+Install docker on kali
+```sh
+# Install docker from kali repo
+sudo apt update && sudo apt install -y docker.io && sudo usermod -aG docker $USER && exec sg docker newgrp `id -gn`
+
+# Install docker from docker repo
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+echo 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' | sudo tee /etc/apt/sources.list.d/docker.list
+sudo apt update && sudo apt remove docker docker-engine docker.io && sudo apt install docker-ce -y
+```
+
+### Install SublimeText 
+
+```sh
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - && sudo apt-get install apt-transport-https && echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list && sudo apt-get update && sudo apt-get install sublime-text
+```
+
+
+### Install Arsenal 
+
+Inventory of useful commands
+
+- [Arsenal](https://github.com/Orange-Cyberdefense/arsenal)
+
+```bash
+# Install Arsenal
+git clone https://github.com/Orange-Cyberdefense/arsenal.git && cd arsenal && ./addalias.sh && ./run
+
+# Install Arsenal (with package)
+git clone https://github.com/Orange-Cyberdefense/arsenal.git && cd arsenal && sudo python3 setup.py install; cd arsenal; python3 app.py
+```
+

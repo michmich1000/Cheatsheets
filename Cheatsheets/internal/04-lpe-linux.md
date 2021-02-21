@@ -17,6 +17,8 @@ cat /etc/*release
 cat /etc/issue
 ```
 
+### Compile exploit
+
 Compile for x86 on a x64 machine
 
 ```bash

