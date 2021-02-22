@@ -36,6 +36,7 @@
 
 - https://casvancooten.com/posts/2020/05/oscp-cheat-sheet-and-command-reference/
 - https://github.com/Ondrik8/OSCP_note
+- https://github.com/0x4D31/awesome-oscp
 
 
 ## DIFR

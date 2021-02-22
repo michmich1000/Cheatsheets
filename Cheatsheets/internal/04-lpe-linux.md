@@ -17,20 +17,10 @@ cat /etc/*release
 cat /etc/issue
 ```
 
-### Compile exploit
-
-Compile for x86 on a x64 machine
+### Check exploit
 
 ```bash
-sudo apt update && sudo apt install -y gcc-multilib 
-gcc -Wl,--hash-style=both -m32 <exploit.c>
-```
-
-Cross-Compile for Windows from Linux
-
-```bash
-sudo apt update && sudo apt install -y mingw-w64
-i686-w64-mingw32-gcc <exploit.c>
+searchsploit linux kernel | grep -v dos | grep <kernel_version> | grep -i 'root|privilege|exploit'
 ```
 
 ---

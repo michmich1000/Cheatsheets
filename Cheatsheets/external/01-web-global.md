@@ -31,8 +31,8 @@ Full scanner including many other tools
 
 ```bash
 # Install Sn1per
-docker pull xerosecurity/sn1per
-docker run -it xerosecurity/sn1per /bin/bash && sniper --help
+docker run -it xerosecurity/sn1per /bin/bash
+sniper -t <target>
 
 # Manual install
 git clone https://github.com/1N3/Sn1per && cd Sn1per && bash install.sh && sniper --help
@@ -372,6 +372,23 @@ XML External Entities
 ```
 
 ---
+
+
+### SSRF 
+
+[ssrfuzz](https://github.com/ryandamour/ssrfuzz)
+
+```bash
+go get -u github.com/ryandamour/ssrfuzz
+
+echo "http://<target>" | ssrfuzz scan
+echo "http://<target>/test.php?u=" | go run main.go scan
+cat file_of_domains.txt | ssrfuzz scan
+ssrfuzz scan -d file_of_domains.txt
+```
+
+---
+
 
 ### XSS
 

@@ -377,9 +377,9 @@ sc qc service name
 
 # Look for Binary_path_name and see if it is unquoted.
 
-#Metasploit
+# Metasploit
 exploit/windows/local/trusted_service_path
-#PowerSploit
+# PowerSploit
 SharpUp PowerUp
 ```
 
