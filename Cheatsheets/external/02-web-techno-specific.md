@@ -111,7 +111,7 @@ Joomla 1.5
 user:md5_gen(1)MD5$SALT
 ```
 
-*  [https://www.exploit-db.com/exploits/6234](https://www.exploit-db.com/exploits/6234)
+* [https://www.exploit-db.com/exploits/6234](https://www.exploit-db.com/exploits/6234)
 * [http://www.passwordtool.hu/joomla-password-hash-generator-salt-key](http://www.passwordtool.hu/joomla-password-hash-generator-salt-key)
 
 ```bash
@@ -122,9 +122,12 @@ creer new users INSERT INTO jos_users (name, username, password, usertype, gid, 
 
 ## Moodle
 
->https://github.com/inc0d3/moodlescan
+- [https://github.com/inc0d3/moodlescan](https://github.com/inc0d3/moodlescan)
 
-`python moodlescan.py -u  <URL> -k`
+```bash
+# sudo apt update && sudo apt install python3 python3-pip && cd moodlescan && pip3 install -r requirements.txt
+python3 moodlescan.py -k -u <URL> 
+```
 
 
 ---
