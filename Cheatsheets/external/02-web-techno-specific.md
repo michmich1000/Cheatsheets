@@ -120,6 +120,15 @@ creer new users INSERT INTO jos_users (name, username, password, usertype, gid, 
 
 ---
 
+## Moodle
+
+>https://github.com/inc0d3/moodlescan
+
+`python moodlescan.py -u  <URL> -k`
+
+
+---
+
 ## **Reactjs**
 
 - [React Developer Tools](https://addons.mozilla.org/fr/firefox/addon/react-devtools/) (edit props/state/hooks values)
