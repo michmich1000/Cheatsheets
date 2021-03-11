@@ -13,9 +13,6 @@ cmsmap.py <target> -o cmsmap.log
 git clone https://github.com/jekyc/wig.git && cd wig && python3 setup.py install
 Wig.py <target> -w wig.log 
 
-# wpscan (need API key)
-WPScan -v --proxy socks5://127.0.0.1:9090 -e u1-100,vp,vt --passwords rockyou.txt --api-token <API_key> --url <target>
-
 # wpseku
 git clone https://github.com/m4ll0k/WPSeku.git && cd WPSeku && pip install -r requirements.txt
 python wpseku.py --target <target>
@@ -31,6 +28,14 @@ joomscan -u <target>
 ---
 
 ### Wordpress
+```sh
+Wpscan (need API key)
+WPScan -v --proxy socks5://127.0.0.1:9090 -e u1-100,ap,at,cb,dbe --passwords rockyou.txt --api-token <API_key> --url <target>
+* ap all plugins
+* at all themes
+* cb config backups
+* dbe database export
+```
 
 Find version
 
