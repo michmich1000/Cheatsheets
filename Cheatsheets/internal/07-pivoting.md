@@ -19,6 +19,9 @@ Socks proxy (socks5)
 
 ```bash
 ssh -l root -pw password -D 1234 <target>
+
+# Reverse dynamic 
+ssh -R 1234 <target>
 ```
 
 Double SSH tunnel
@@ -108,11 +111,16 @@ nc -v -lk -p 8001 -e /usr/bin/nc 127.0.0.1 8000
 nc.traditional -l -p 8001 -c "nc 127.0.0.1 8000"
 ```
 
-## [ReGeorg](https://github.com/sensepost/reGeorg)
+### [ReGeorg](https://github.com/sensepost/reGeorg)
 
 Socks proxy over web
 
-## [PortqryUI](https://www.microsoft.com/en-us/download/details.aspx?id=24009)
+## Scan 
 
-Nmap like for windows
+[PortqryUI](https://www.microsoft.com/en-us/download/details.aspx?id=24009)
+
+```sh
+. .\Invoke-Portscan.ps1
+Invoke-Portscan -Hosts <target>,<target2>
+```
 

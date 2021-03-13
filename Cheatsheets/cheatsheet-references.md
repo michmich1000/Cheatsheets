@@ -8,7 +8,7 @@
 - [https://yolospacehacker.com/en/hackersguide.php](https://yolospacehacker.com/en/hackersguide.php)
 
 
-## AD & Red Team
+## AD & Red Team
 
 - [https://casvancooten.com/posts/2020/11/windows-active-directory-exploitation-cheat-sheet-and-command-reference/](https://casvancooten.com/posts/2020/11/windows-active-directory-exploitation-cheat-sheet-and-command-reference/)
 - [https://0xsp.com/ad-attack-or-defense/ad-ttps-list](https://0xsp.com/ad-attack-or-defense/ad-ttps-list)
@@ -25,17 +25,17 @@
 - [https://adsecurity.org/](https://adsecurity.org/)
 - [http://www.labofapenetrationtester.com/](http://www.labofapenetrationtester.com/)
 
-## Linux 
+## Linux 
 
 - [https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
 
-## OSCP
+## OSCP
 
 - [https://casvancooten.com/posts/2020/05/oscp-cheat-sheet-and-command-reference/](https://casvancooten.com/posts/2020/05/oscp-cheat-sheet-and-command-reference/)
 - [https://github.com/Ondrik8/OSCP_note](https://github.com/Ondrik8/OSCP_note)
 - [https://github.com/0x4D31/awesome-oscp](https://github.com/0x4D31/awesome-oscp)
 
-## DIFR
+## DFIR
 
 Digital Forensics and Incident Response
 
