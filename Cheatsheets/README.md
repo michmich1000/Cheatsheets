@@ -27,6 +27,7 @@
 
 ## Useful Commands
 
+* [Fail2ban](useful-commands/fail2ban.md)
 * [Bash](useful-commands/bash.md)
 * [Git](useful-commands/git.md)
 * [Powershell](useful-commands/powershell.md)
