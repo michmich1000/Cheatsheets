@@ -91,6 +91,14 @@ Try DNS tunneling to exfiltrate data over the internet
 
 - [http://requestbin.net/dns](http://requestbin.net/dns)
 
+- [dnscat2](https://github.com/iagox86/dnscat2)
+
+```sh
+git clone https://github.com/iagox86/dnscat2.git
+cd dnscat2/server/
+bundle install
+```
+
 ## Troubleshooting
 
 ### unblock wifi card

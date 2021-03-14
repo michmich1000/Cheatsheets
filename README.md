@@ -26,3 +26,22 @@
 
 ## Website
 - [michmich.eu](https://michmich.eu)
+
+---
+
+## How to contribute
+
+Just fork repository then create branch, work and push your content + create PR
+
+```bash
+git clone <your_fork>
+git checkout -b MyBranch
+git add -p
+git commit -m "xx"
+git push origin MyBranch
+```
+
+## Contributors
+
+- [Jenaye](https://github.com/jenaye)
+- Juan-Pablito(https://github.com/juan-pablito)

