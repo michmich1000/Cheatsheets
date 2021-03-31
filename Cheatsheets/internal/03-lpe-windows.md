@@ -88,7 +88,7 @@ whoami /groups
 List all users
 
 ```bat
-qwinsta
+qwinsta (can be run on remote `qwinsta /server:192.168.1.2`)
 net user
 whoami /all
 
