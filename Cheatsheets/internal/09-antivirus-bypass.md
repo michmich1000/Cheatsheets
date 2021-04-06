@@ -10,6 +10,7 @@
 
 ### Packer
 - [PEzor](https://github.com/phra/PEzor)
+- [ScareCrow](https://github.com/optiv/ScareCrow)
 
 ### Memory injection
 - [SharpBlock](https://github.com/CCob/SharpBlock)
@@ -17,7 +18,7 @@
 	- bypass ETW and Process Hollowing detection
 	- Bypass specific AV and ERD dll 
 
-### Not distributed to online AV 
+### Not distributed to online AV
 - [antiscan.me](https://antiscan.me)
 - [nodistribute](https://nodistribute.com/)
 
@@ -74,7 +75,7 @@ $buf = [Byte[]] (0x48, 0x31, 0xC0)
 $vp.Invoke($funcAddr, 3, 0x20, [ref]$oldProtectionBuffer)
 ```
 
-## Applocker whitelist bypass
+### Applocker whitelist bypass
 
 - LOLBAS
 - Copy binary to trusted folders

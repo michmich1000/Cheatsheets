@@ -690,7 +690,7 @@ Reverse engineering software
 Send data throught the named pipe : program.exe >\\.\pipe\StdOutPipe 2>\\.\pipe\StdErrPipe
 ```
 
-## UAC Bypass
+## **UAC Bypass**
 
 ```sh
 # https://github.com/enigma0x3/Misc-PowerShell-Stuff/blob/master/Invoke-EventVwrBypass.ps1

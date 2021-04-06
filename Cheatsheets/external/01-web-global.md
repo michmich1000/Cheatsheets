@@ -187,6 +187,14 @@ assetfinder <target> | gau | egrep -v '(.css|.png|.jpeg|.jpg|.svg|.gif|.wolf)' |
 
 ---
 
+### Manual upload
+
+```bash
+curl -i -X PUT -H "Content-Type: application/xml; charset=utf-8" -d @"/tmp/some-file.xml" http://<target>/newpage
+```
+
+---
+
 ## **Common attacks**
 
 ### All Injections 
@@ -389,8 +397,7 @@ XML External Entities
 
 ---
 
-
-### SSRF 
+### SSRF
 
 [ssrfuzz](https://github.com/ryandamour/ssrfuzz)
 

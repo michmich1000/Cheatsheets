@@ -2,7 +2,7 @@
 
 ## **Domain enum**
 
-### GUI enumeration
+### GUI enumeration
 
 - [RSAT](https://download.microsoft.com/download/1/D/8/1D8B5022-5477-4B9A-8104-6A71FF9D98AB/WindowsTH-RSAT_WS_1709-x64.msu)
 
@@ -39,11 +39,17 @@ git clone https://github.com/ropnop/windapsearch.git && pip install python-ldap 
 sudo ldapsearch -x -LLL -H ldap://webmail.<domain>.fr -D "cn=<cn>" -b "dc=<domain>,dc=<fqdn>" -w '<pass>'
 
 enum4linux -a <target>
+```
+
+### Find domain name
+
+```bash
+cat /etc/resolv.
 
 Get-NetDomain
 Get-DomainSID
 
-
+nmap -sT -vvv --open -T2 -sC --script=*-ntlm-info -sV  -p 110,995,143,993,3389,23,25,465,587,119,433,563,1433,80,8080,443,8443 <targets>
 ```
 
 ### Users enumeration
@@ -101,7 +107,6 @@ $Searcher = New-Object DirectoryServices.DirectorySearcher ; $Searcher.Filter = 
 Get-NetDomainController
 ```
 
-
 Domain computers 
 
 - [adidnsdump](https://github.com/dirkjanm/adidnsdump)
@@ -125,6 +130,9 @@ Find-WMILocalAdminAccess
 
 # Find computer where current can get a shell
 Get-NetComputer -Unconstrained
+
+# One-line powershell reverse lookup
+for ($i=1; $i -le 254; $i++) { $a=Get-Random -Maximum 4; echo "10.11.12.$i"  $ErrorActionPreference = "SilentlyContinue"; [System.Net.DNS]::GetHostbyAddress("10.11.12.$i").HostName; $ErrorActionPreference = "Continue"; sleep $a }
 ```
 
 ### Shares enumeration
@@ -253,7 +261,7 @@ $parameters=@("arg1", "arg2")
 [namespace.Class]::Main($parameters)
 ```
 
-### Kerberos Dump 
+### Kerberos Dump
 
 ```bash
 # List SPN

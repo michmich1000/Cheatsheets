@@ -250,11 +250,3 @@ Extract sensitive info
 ```bash
 grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into" APKfolder/
 ```
-
-
-## **Manual upload**
-
-```bash
-curl -i -X PUT -H "Content-Type: application/xml; charset=utf-8" -d @"/tmp/some-file.xml" http://<target>/newpage
-```
-

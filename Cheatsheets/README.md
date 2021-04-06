@@ -1,7 +1,6 @@
 # Summary
 
 ## [Cheatsheet references](cheatsheet-references.md)
-
 ## External (Web)
 
 * [External Penetration Testing](external/01-web-global.md)
@@ -27,11 +26,9 @@
 
 ## Useful Commands
 
-* [Fail2ban](useful-commands/fail2ban.md)
-* [Bash](useful-commands/bash.md)
 * [Git](useful-commands/git.md)
-* [Powershell](useful-commands/powershell.md)
 * [Python](useful-commands/python.md)
 * [Screen](useful-commands/screen.md)
 * [Shells](useful-commands/shell.md)
-* [Windows cmd](useful-commands/windows-cmd.md)
+* [Unix](useful-commands/unix.md)
+* [Windows](useful-commands/windows.md)
