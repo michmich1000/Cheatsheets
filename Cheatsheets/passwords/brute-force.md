@@ -1,6 +1,7 @@
 # Brute-force
 
-## Offline 
+## Offline
+
 ```bash
 john --worlist=rockyou.txt --format=NT hashsNT.txt --rules=korelogic
 john --worlist=rockyou.txt --format=NT hashsNT.txt --rules=insidepro

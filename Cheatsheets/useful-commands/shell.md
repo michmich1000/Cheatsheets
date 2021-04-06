@@ -288,7 +288,7 @@ python3 -m http.server 8080
 ### SMB impacket
 
 ```bash
-impacket-smbserver -smb2support share_name /tmp/sharefolder
+sudo impacket-smbserver -smb2support share_name /tmp/sharefolder
 copy \\<listener_ip>\<share_name>\<file>
 ```
 
