@@ -27,7 +27,8 @@
 ## Website
 - [michmich.eu](https://michmich.eu)
 
-### How to contribute
+### How to contribute
+
 Just fork [this repository](https://github.com/michmich1000/Cheatsheets), then create a branch, work and push your content + create PR :
 
 ```bash
@@ -38,6 +39,7 @@ git commit -m "YourCommitName"
 git push origin <YourBranch>
 ```
 
-### Contributors
+### Contributors
+
 - [Jenaye](https://github.com/jenaye)
 - [Juan-Pablito](https://github.com/juan-pablito)
