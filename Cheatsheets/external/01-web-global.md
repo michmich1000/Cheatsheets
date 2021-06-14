@@ -145,6 +145,22 @@ wfuzz  --hh 0  -H 'Host: FUZZ.<target_domain>' -u http://<target_ip> --hc 400 -w
 echo -e "<target_ip>\t<target_domain>" >> /etc/hosts
 ```
 
+### Screenshot
+Take screenshot of one/many targets
+
+# Install gowitness
+
+`go get -u github.com/sensepost/gowitness`
+
+# Usage 
+
+```
+gowitness single https://jenaye.fr
+gowitness file -f <path_to_file>
+gowitness nmap -f nmap.xml --open --service-contains http
+./gowitness report serve # to start webview with all screenshots
+``` 
+
 ---
 
 ### Urls
