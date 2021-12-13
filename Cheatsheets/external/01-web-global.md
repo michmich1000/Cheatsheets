@@ -8,12 +8,31 @@ Web prober for fast discovery
 
 ```bash
 # Install httpx
-GO111MODULE=on go get -v github.com/projectdiscovery/httpx/cmd/httpx && httpx -version
+go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest && httpx -version
 
 # Usage 
 httpx -l hosts.txt -silent -title -content-length -status-code
-subfinder -d <target> -silent | httpx -title -content-length -status-code -silent
+
+or it can be pipe with nmap file
+
+cat *.gnmap | grep http | awk '{ print $2; }' | uniq | httpx -title -content-length -content-type -status-code -tech-detect -sr -srd ./httpx-responses -vhost -websocket -follow-redirects -ports 25,80,81,135,389,443,1080,3000,3306,8080,8443,8888,9090,8089 -retries 2 -timeout 8 -threads 50 -o httpx-redirects.txt
+
+
 ```
+
+### [subfinder](https://github.com/projectdiscovery/subfinder) 
+
+Subfinder is a subdomain discovery tool 
+
+```bash
+# Install subfinder
+go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+
+# Usage with httpx and dnsx
+subfinder -d <target> -silent | httpx -title -content-length -status-code -silent
+subfinder -silent -d <target> | dnsx -silent -rcode noerror,servfail,refused
+```
+
 
 ### [Nuclei](https://github.com/projectdiscovery/nuclei)
 
@@ -24,6 +43,20 @@ Full scanner based on templates
 GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei; nuclei -version
 nuclei -l urls.txt -t 'cves/CVE-2020*'
 ```
+
+
+### [dnsx](https://github.com/projectdiscovery/dnsx)
+
+Fast and multi-purpose DNS toolkit allow to run multiple DNS queries.
+
+```bash
+# Install dnsx
+go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+
+# Usage 
+dnsx -l hosts.txt -resp -a -aaaa -cname -mx -ns --soa -txt | awk '{ print $2; }' | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' | sort -u | uniq > all-ips.txt
+```
+
 
 ### [Sn1per](https://github.com/1N3/Sn1per)
 
@@ -102,6 +135,12 @@ go get github.com/tomnomnom/waybackurls
 waybackurls <target> | grep "\.js" | uniq | sort
 ```
 
+get informations about IPs (alias)
+
+```bash
+ipinfo='for ip in $(cat hosts.txt); do echo -n \"$ip:\"; curl -s ipinfo.io/$ip | jq ; done'
+```
+
 ---
 
 ## **Active discovery**
@@ -122,6 +161,8 @@ nmap -sU -sV --top-ports 1000 --open -oA udp_1000 <target>
 amass enum -ip -brute -active -d <domain> 
 
 gobuster dns -i  -w subdomains.txt -d <domain> 
+
+curl -s https://crt.sh/\?q\=%25.<DOMAIN.COM>\&output\=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u | uniq
 ```
 
 check if subdomain exist
