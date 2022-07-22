@@ -132,7 +132,6 @@ you also can do this to get all banned ip from jail `zgrep 'Ban' /var/log/fail2b
 >since 0.10 version u can use `unban -all`
 
 
-
 ## One-line install
 
 ### Install Golang
