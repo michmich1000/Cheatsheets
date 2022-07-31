@@ -132,6 +132,24 @@ you also can do this to get all banned ip from jail `zgrep 'Ban' /var/log/fail2b
 >since 0.10 version u can use `unban -all`
 
 
+## veracrypt
+
+### How to create volume
+`veracrypt -t --create report.vc --hash sha512 --encryption AES --filesystem ext4 --volume-type normal -k "" --pim 0 --size 200M` 
+
+> You can also add --password test but, isn't recommended
+
+### How to open volume
+
+`veracrypt <PathToFile.vc> /media/<YourFolder>` 
+>By default it will mount into /media/veracrypt<X>
+
+### How to lock volume
+
+`veracrypt -d <PathToFile.vc>`
+>By default -d without vc file will lock every container
+
+
 
 ## One-line install
 
