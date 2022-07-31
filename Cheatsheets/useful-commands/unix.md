@@ -132,6 +132,7 @@ you also can do this to get all banned ip from jail `zgrep 'Ban' /var/log/fail2b
 >since 0.10 version u can use `unban -all`
 
 
+
 ## veracrypt
 
 ### How to create volume
@@ -148,6 +149,7 @@ you also can do this to get all banned ip from jail `zgrep 'Ban' /var/log/fail2b
 
 `veracrypt -d <PathToFile.vc>`
 >By default -d without vc file will lock every container
+
 
 
 

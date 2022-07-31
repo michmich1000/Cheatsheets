@@ -17,6 +17,7 @@
 * [Pivoting](internal/07-pivoting.md)
 * [Domain Escalation](internal/08-domain-escalation.md)
 * [Antivirus Bypass](internal/09-antivirus-bypass.md)
+* [Kerberos](internal/10-kerberos.md)
 
 ## Passwords
 
