@@ -69,6 +69,13 @@ impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 
 ### Network Access
 
+**Get-DC-IP**
+
+```
+nslookup -type=ANY _ldap._tcp.dc._msdcs.<DOMAIN>
+nslookup gc._msdcs.<DOMAIN>
+```
+
 **Man-In-The-Middle**
 
 Responder + NTLMrelayx
