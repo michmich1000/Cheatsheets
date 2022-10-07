@@ -3,8 +3,15 @@
 ## Offline
 
 ```bash
-john --worlist=rockyou.txt --format=NT hashsNT.txt --rules=korelogic
-john --worlist=rockyou.txt --format=NT hashsNT.txt --rules=insidepro
+Brute force :
+john --format=NT hashNT.txt
+hashcat -m 1000 -a 3 hashNT.txt
+
+Dictionnaire :
+john --format=NT hashNT.txt --worlist=dictionnary.txt  --rules=korelogic
+john --format=NT hashNT.txt --worlist=dictionnary.txt --rules=insidepro
+hashcat -m 1000 -a 0 hashNT.txt dictionnary.txt -r rules/best64.rule
+ 
 ```
 
 ## TCP 445 (SMB)
