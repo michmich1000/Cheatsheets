@@ -148,6 +148,13 @@ python3 moodlescan.py -k -u <URL>
 ---
 
 
+## Webpack configuration (.map)
+
+use sourcemapper
+
+`for i in `cat url.txt`; do ./sourcemapper -url $i.map -output ~/home/jenaye/loot; done`
+
+
 ## **Angularjs**
 
 Check the bypassSecurityTrustX / innerHTML function
