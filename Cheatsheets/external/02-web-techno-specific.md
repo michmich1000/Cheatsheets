@@ -152,7 +152,7 @@ python3 moodlescan.py -k -u <URL>
 
 use sourcemapper
 
-`for i in `cat url.txt`; do ./sourcemapper -url $i.map -output ~/home/jenaye/loot; done`
+`for i in `cat url.txt`; do ./sourcemapper -url $i.map -output output_dir; done`
 
 
 ## **Angularjs**
