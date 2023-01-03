@@ -140,7 +140,7 @@ python3 moodlescan.py -k -u <URL>
 
 ### Enumeration using STEWS : 
 
-https://github.com/PalindromeLabs/STEWS
+you can use : https://github.com/PalindromeLabs/STEWS/blob/main/vuln-detect/STEWS-vuln-detect.py
 
 ### SQl injection : 
 
