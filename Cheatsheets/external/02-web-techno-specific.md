@@ -134,6 +134,21 @@ creer new users INSERT INTO jos_users (name, username, password, usertype, gid, 
 python3 moodlescan.py -k -u <URL> 
 ```
 
+---
+
+## **Websocket**
+
+### Enumeration using STEWS : 
+
+you can use : https://github.com/PalindromeLabs/STEWS/blob/main/vuln-detect/STEWS-vuln-detect.py
+
+### SQl injection : 
+
+- [Python MITM](https://gist.github.com/jenaye/2b0a369ed85de912926fec69c4f07167)
+
+Run `python3 mitm_websocket.py ws://localhost:8156/ws` and after
+your sqlmap : `http://localhost:8081/?id=1" --batch --dbs`
+
 
 ---
 
