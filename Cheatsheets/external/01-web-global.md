@@ -15,7 +15,7 @@ httpx -l hosts.txt -silent -title -content-length -status-code
 
 or it can be pipe with nmap file
 
-cat *.gnmap | grep http | awk '{ print $2; }' | uniq | httpx -title -content-length -content-type -status-code -tech-detect -sr -srd ./httpx-responses -vhost -websocket -follow-redirects -ports 25,80,81,135,389,443,1080,3000,3306,8080,8443,8888,9090,8089 -retries 2 -timeout 8 -threads 50 -o httpx-redirects.txt
+cat *.gnmap | grep http | awk '{ print $2; }' | uniq | httpx -title -content-length -content-type -status-code -tech-detect -sr -srd ./httpx-responses -vhost -websocket -follow-redirects -ports 25,80,81,135,389,443,1080,3000,3306,8080,8443,8888,9090,8089 -retries 2 -timeout 8 -threads 50 -o httpx-redirects.txt --proxy socks5://127.0.0.1:6666
 
 
 ```
@@ -41,7 +41,7 @@ Full scanner based on templates
 ```bash
 # Install Nuclei
 GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei; nuclei -version
-nuclei -l urls.txt -t 'cves/CVE-2020*'
+nuclei -l urls.txt -t 'cves/CVE-2020* -p socks5://127.0.0.1:6666'
 ```
 
 
@@ -171,6 +171,14 @@ check if subdomain exist
 cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t Size:%{size_download}\t %{url_effective}\n' -o /dev/null -sk
 ```
 
+subdomain wordlist generator and check if subdomain exist 
+
+```bash
+go install github.com/projectdiscovery/alterx/cmd/alterx@latest
+cat targets.txt | alterx -p "{{word}}.{{suffix}}" -pp word=dev| dnsx 
+
+```
+
 ---
 
 ### Vhosts
@@ -197,6 +205,7 @@ Take screenshot of one/many targets
 
 ```
 gowitness single https://jenaye.fr
+gowitness file -p socks5://127.0.0.1:6666 -f ~/.yelaa/rt.txt --screenshot-path ~/.yelaa/rt
 gowitness file -f <path_to_file>
 gowitness nmap -f nmap.xml --open --service-contains http
 ./gowitness report serve # to start webview with all screenshots
