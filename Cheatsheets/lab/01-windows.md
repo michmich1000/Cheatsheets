@@ -32,6 +32,6 @@ go to HKEY_LOCAL_MACHINE SOFTWARE Microsoft Windows CurrentVersion Policies Syst
 ```
 
 
-## 2. ** Enable Windows**
+## 2. **Enable Windows**
 
 open powershell as admin and run `irm https://massgrave.dev/get | iex`
