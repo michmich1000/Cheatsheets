@@ -35,3 +35,28 @@ go to HKEY_LOCAL_MACHINE SOFTWARE Microsoft Windows CurrentVersion Policies Syst
 ## 2. **Enable Windows**
 
 open powershell as admin and run `irm https://massgrave.dev/get | iex`
+
+
+## 3. **Setup env for create payload**
+
+
+### Setup env for C++
+
+
+### Setup env for .NET
+
+
+## 4. **Tools to help**
+
+### **Debugger**
+
+* [x32dbg](https://x64dbg.com/)
+* [x64dbg](https://x64dbg.com/)
+
+### **Analysis**
+
+* [PE-bear](https://github.com/hasherezade/pe-bear)
+* [pe-sieve64](https://github.com/hasherezade/pe-sieve)
+* [Process hacker 2](https://processhacker.sourceforge.io/downloads.php)
+* [Processus Explorer](https://learn.microsoft.com/fr-fr/sysinternals/downloads/process-explorer)
+* [Process monitor](https://learn.microsoft.com/en-us/sysinternals/downloads/procmon)
