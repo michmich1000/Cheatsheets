@@ -76,6 +76,12 @@ nslookup -type=ANY _ldap._tcp.dc._msdcs.<DOMAIN>
 nslookup gc._msdcs.<DOMAIN>
 ```
 
+With [DC Detector](https://github.com/noraj/dcdetector)
+
+```
+dcd -d <DOMAIN>
+```
+
 **Man-In-The-Middle**
 
 Responder + NTLMrelayx
