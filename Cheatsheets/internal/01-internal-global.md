@@ -29,7 +29,7 @@ sudo ifconfig <static_ip>/24 && sudo ip route add default via <gateway_ip>
 
 ### Coerce (Null session)
 
-`wget https://gist.githubusercontent.com/zblurx/99fe1971562593fd1211931bdc979fbb/raw/dabb939a29a39a758e6852002066bac099368867/esc8fuzzer.py`
+`wget https://gist.githubusercontent.com/zblurx/99fe1971562593fd1211931bdc979fbb/raw/6e18ba3b0694303d6eca3fda8505cf800ef83540/esc8fuzzer.py`
 
 then `esc8fuzzer.py <cidr>` 
 
