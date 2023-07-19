@@ -236,6 +236,16 @@ copy Bin\wraith_x64_encoded.bin \\192.168.56.200\tiki\
 
 ```
 
+### LOLBIN
+
+#### tpmtool
+`tpmtool.exe drivertracing stop` it will run cmd.exe who call logman.exe in the current folder
+
+#### IE
+
+By navigating to URI: `shell:::{3f6bc534-dfa1-4ab4-ae54-ef25a74e0107}` you can spawn `rstrui.exe` (System Restore). 
+If you modify the `SystemRoot` environment variable and copy over DLLs you can run whatever you like.
+
 ---
 
 ## Theorical
@@ -329,6 +339,7 @@ Whitelised program :
 - Powershell
 - LOLbins
 - DLL SIdeloading
+
 
 ---
 

