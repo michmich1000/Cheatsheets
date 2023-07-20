@@ -333,7 +333,7 @@ lsassy <target> -d <domain> -u <user> -p <pass>
 
 ## 5. **Domain admin account**
 
-### Dump NDTS.dit from DC
+### Dump NTDS.dit from DC
 
 ```bash
 # CrackMapExec using password
