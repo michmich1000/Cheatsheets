@@ -8,6 +8,9 @@ Download :
 
 password : `12345`
 
+
+> ipad root default password : `alpine` 
+
 ## [Frida](https://github.com/frida)
 
 check if your device is connected : `ideviceinfo`
@@ -70,3 +73,15 @@ run `frida-ps -Uai` then `objection -g <Identifier> explore`
 ### Hooking on method
 
 `ios hooking watch method "-[iGoat_Swift.BinaryCookiesExerciseVC verifyItemPressed]" --dump-args --dump-backtrace --dump-return`
+
+
+### env
+
+
+`env` 
+
+```
+CachesDirectory    /var/mobile/Containers/Data/Application/xxx/Library/Caches
+DocumentDirectory  /var/mobile/Containers/Data/Application/xxx/Documents
+LibraryDirectory   /var/mobile/Containers/Data/Application/xxx/Library
+``` 
