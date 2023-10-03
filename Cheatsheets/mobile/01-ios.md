@@ -53,6 +53,15 @@ run `frida-ps -Uai` then `objection -g <Identifier> explore`
 
 `ios nsuserdefaults get` and check `RecentWebSearches` 
 
+### Search for password
+
+
+`fridump -s -U "My App"`
+
+`strings *.data > strings.txt`
+
+and now grep into "pass", "password", "secret", "credential" etc
+
 
 ### Search for cookie 
 
@@ -84,4 +93,41 @@ run `frida-ps -Uai` then `objection -g <Identifier> explore`
 CachesDirectory    /var/mobile/Containers/Data/Application/xxx/Library/Caches
 DocumentDirectory  /var/mobile/Containers/Data/Application/xxx/Documents
 LibraryDirectory   /var/mobile/Containers/Data/Application/xxx/Library
+```
+
+
+### run js from frida
+
+`frida -U -f com.xxx.yyy -l alert.js`
+
+alert script example
+
+```
+var UIAlertController = ObjC.classes.UIAlertController;
+var UIAlertAction = ObjC.classes.UIAlertAction;
+var UIApplication = ObjC.classes.UIApplication;
+var handler = new ObjC.Block({ retType: 'void', argTypes: ['object'], implementation: function () {} });
+
+ObjC.schedule(ObjC.mainQueue, function () {
+  var alert = UIAlertController.alertControllerWithTitle_message_preferredStyle_('Frida', 'pwned!', 1);
+  var defaultAction = UIAlertAction.actionWithTitle_style_handler_('OK', 0, handler);
+  alert.addAction_(defaultAction);
+  UIApplication.sharedApplication().keyWindow().rootViewController().presentViewController_animated_completion_(alert, true, NULL);
+})
+```
+
+with python : `python3 hook.py alert.js`
+
+
+```
+import frida, sys
+
+with open(sys.argv[1], 'r') as f:
+        jscode = f.read()
+process = frida.get_usb_device().attach('<APP NAME>')
+script = process.create_script(jscode)
+print('[ * ] Running alert on target')
+script.load()
+sys.stdin.read()
 ``` 
+
