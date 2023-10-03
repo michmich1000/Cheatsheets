@@ -131,3 +131,7 @@ script.load()
 sys.stdin.read()
 ``` 
 
+
+### run static analysis using frida
+
+`frida --codeshare interference-security/ios-app-static-analysis -U <appName>`  (it will execute this code https://codeshare.frida.re/@interference-security/ios-app-static-analysis/ ) 
